@@ -1,10 +1,11 @@
 using UnityEngine;
 
+// Script to manipulate the training data
 public class DataVisualizer : MonoBehaviour {
     public GameObject dataPointPrefab;
     public Material SetosaMaterial;
     public Material NonSetosaMaterial;
-    // Define your DataPoint class
+
     [System.Serializable]
     public class DataPoint {
         public float sepal_length;
@@ -14,7 +15,7 @@ public class DataVisualizer : MonoBehaviour {
         public string prediction;
     }
 
-    // Embed your data directly as an array of DataPoint objects
+    // Array of DataPoint objects
     private DataPoint[] dataPoints = new DataPoint[] {
         new DataPoint { sepal_length = 5.1f, sepal_width = 3.5f, petal_length = 1.4f, petal_width = 0.2f, prediction = "Iris-setosa" },
         new DataPoint { sepal_length = 4.9f, sepal_width = 3.0f, petal_length = 1.4f, petal_width = 0.2f, prediction = "Iris-setosa" },
@@ -170,29 +171,30 @@ public class DataVisualizer : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-    foreach (DataPoint point in dataPoints) {
-        // Adjust positions based on provided offsets and invert Z-coordinate
-        Vector3 position = new Vector3(
-            point.sepal_length*(10) + 720, // X-coordinate adjustment
-            point.sepal_width*(10) + 547,  // Y-coordinate adjustment
-            -point.petal_length*(10) + 56  // Z-coordinate adjustment and inversion
-        );
+        // For every data point in the set plot it
+        foreach (DataPoint point in dataPoints) {
+            // Adjust positions based on provided offsets and invert Z-coordinate
+            Vector3 position = new Vector3(
+                point.sepal_length*(10) + 720, // X-coordinate adjustment
+                point.sepal_width*(10) + 547,  // Y-coordinate adjustment
+                -point.petal_length*(10) + 56  // Z-coordinate adjustment and inversion
+            );
 
-        // Instantiate a sphere at the adjusted position
-        GameObject sphere = Instantiate(dataPointPrefab, position, Quaternion.identity);
+            // Instantiate a sphere at the adjusted position
+            GameObject sphere = Instantiate(dataPointPrefab, position, Quaternion.identity);
 
-        // Determine scale based on petal_width, with a chosen multiplier for visualization purposes
-        float baseScale = 0.1f; // Minimum scale to ensure visibility
-        float scaleMultiplier = 5.0f; // Adjust this multiplier based on your preference
-        float scale = baseScale + (point.petal_width * scaleMultiplier);
-        sphere.transform.localScale = new Vector3(scale, scale, scale);
+            // Determine scale based on petal_width, with a chosen multiplier for visualization purposes
+            float baseScale = 0.1f; // Minimum scale to ensure visibility
+            float scaleMultiplier = 5.0f; // Adjust this multiplier based on your preference
+            float scale = baseScale + (point.petal_width * scaleMultiplier);
+            sphere.transform.localScale = new Vector3(scale, scale, scale);
 
-        // Assign material based on the prediction
-        Material chosenMaterial = point.prediction == "Iris-setosa" ? SetosaMaterial : NonSetosaMaterial;
-        sphere.GetComponent<Renderer>().material = chosenMaterial;
+            // Assign material based on the prediction
+            Material chosenMaterial = point.prediction == "Iris-setosa" ? SetosaMaterial : NonSetosaMaterial;
+            sphere.GetComponent<Renderer>().material = chosenMaterial;
 
-        Debug.Log($"Data point instantiated at: {position} with scale: {scale}");
+            Debug.Log($"Data point instantiated at: {position} with scale: {scale}");
+        }
     }
-}
 
 }
