@@ -1,6 +1,9 @@
 using UnityEngine;
 
 public class DataVisualizer : MonoBehaviour {
+    public GameObject dataPointPrefab;
+    public Material SetosaMaterial;
+    public Material NonSetosaMaterial;
     // Define your DataPoint class
     [System.Serializable]
     public class DataPoint {
@@ -167,12 +170,29 @@ public class DataVisualizer : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        // Assuming you only want to log the first data point for now
-        if (dataPoints.Length > 0) {
-            Debug.Log($"First data point: Sepal Length = {dataPoints[0].sepal_length}, Sepal Width = {dataPoints[0].sepal_width}, Petal Length = {dataPoints[0].petal_length}, Petal Width = {dataPoints[0].petal_width}, Prediction = {dataPoints[0].prediction}");
-        }
-        else {
-            Debug.LogError("No data points available.");
-        }
+    foreach (DataPoint point in dataPoints) {
+        // Adjust positions based on provided offsets and invert Z-coordinate
+        Vector3 position = new Vector3(
+            point.sepal_length*(10) + 720, // X-coordinate adjustment
+            point.sepal_width*(10) + 547,  // Y-coordinate adjustment
+            -point.petal_length*(10) + 56  // Z-coordinate adjustment and inversion
+        );
+
+        // Instantiate a sphere at the adjusted position
+        GameObject sphere = Instantiate(dataPointPrefab, position, Quaternion.identity);
+
+        // Determine scale based on petal_width, with a chosen multiplier for visualization purposes
+        float baseScale = 0.1f; // Minimum scale to ensure visibility
+        float scaleMultiplier = 5.0f; // Adjust this multiplier based on your preference
+        float scale = baseScale + (point.petal_width * scaleMultiplier);
+        sphere.transform.localScale = new Vector3(scale, scale, scale);
+
+        // Assign material based on the prediction
+        Material chosenMaterial = point.prediction == "Iris-setosa" ? SetosaMaterial : NonSetosaMaterial;
+        sphere.GetComponent<Renderer>().material = chosenMaterial;
+
+        Debug.Log($"Data point instantiated at: {position} with scale: {scale}");
     }
+}
+
 }
