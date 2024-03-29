@@ -175,9 +175,9 @@ public class DataVisualizer : MonoBehaviour {
         foreach (DataPoint point in dataPoints) {
             // Adjust positions based on provided offsets and invert Z-coordinate
             Vector3 position = new Vector3(
-                point.sepal_length*(12) + 720-40, // X-coordinate adjustment
-                point.sepal_width*(12) + 547 -40,  // Y-coordinate adjustment
-                -point.petal_length*(12) + 56 +40 // Z-coordinate adjustment and inversion
+                point.sepal_length*(12) + 720, // X-coordinate adjustment
+                point.sepal_width*(12) + 547,  // Y-coordinate adjustment
+                -point.petal_length*(12) + 56 // Z-coordinate adjustment and inversion
             );
 
             // Instantiate a sphere at the adjusted position
