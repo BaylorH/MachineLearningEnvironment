@@ -175,9 +175,9 @@ public class DataVisualizer : MonoBehaviour {
         foreach (DataPoint point in dataPoints) {
             // Adjust positions based on provided offsets and invert Z-coordinate
             Vector3 position = new Vector3(
-                point.sepal_length*(10) + 720, // X-coordinate adjustment
-                point.sepal_width*(10) + 547,  // Y-coordinate adjustment
-                -point.petal_length*(10) + 56  // Z-coordinate adjustment and inversion
+                point.sepal_length*(12) + 720-40, // X-coordinate adjustment
+                point.sepal_width*(12) + 547 -40,  // Y-coordinate adjustment
+                -point.petal_length*(12) + 56 +40 // Z-coordinate adjustment and inversion
             );
 
             // Instantiate a sphere at the adjusted position
@@ -185,7 +185,7 @@ public class DataVisualizer : MonoBehaviour {
 
             // Determine scale based on petal_width, with a chosen multiplier for visualization purposes
             float baseScale = 0.1f; // Minimum scale to ensure visibility
-            float scaleMultiplier = 5.0f; // Adjust this multiplier based on your preference
+            float scaleMultiplier = 3.0f;
             float scale = baseScale + (point.petal_width * scaleMultiplier);
             sphere.transform.localScale = new Vector3(scale, scale, scale);
 
