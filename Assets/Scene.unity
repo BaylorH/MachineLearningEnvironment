@@ -1425,6 +1425,7 @@ MonoBehaviour:
   sepalLengthInput: {fileID: 0}
   sepalWidthInput: {fileID: 0}
   dataPointPrefab: {fileID: 0}
+  client: {fileID: 0}
 --- !u!1 &614135074
 GameObject:
   m_ObjectHideFlags: 0
@@ -2743,7 +2744,7 @@ GameObject:
   - component: {fileID: 1784797346}
   - component: {fileID: 1784797345}
   m_Layer: 0
-  m_Name: HelloClientObject
+  m_Name: ClientObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
