@@ -3,7 +3,14 @@ guid: be0b277c3b318ab44a0960515cb57bdf
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - dataPointPrefab: {fileID: 2276175150501940869, guid: 6acb8149aac7df34ebd9170bf3ba09c2, type: 3}
+  - SetosaMaterial: {instanceID: 0}
+  - NonSetosaMaterial: {instanceID: 0}
+  - petalLengthInput: {instanceID: 0}
+  - petalWidthInput: {instanceID: 0}
+  - sepalLengthInput: {instanceID: 0}
+  - sepalWidthInput: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

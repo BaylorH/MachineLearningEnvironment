@@ -1,10 +1,24 @@
+using TMPro;
 using UnityEngine;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 // Script to manipulate the training data
 public class DataVisualizer : MonoBehaviour {
     public GameObject dataPointPrefab;
     public Material SetosaMaterial;
     public Material NonSetosaMaterial;
+
+    // input fields
+    public TMP_InputField petalLengthInput;
+    public TMP_InputField petalWidthInput;
+    public TMP_InputField sepalLengthInput;
+    public TMP_InputField sepalWidthInput;
+    //public GameObject dataPointPrefab;
 
     [System.Serializable]
     public class DataPoint {
@@ -171,6 +185,8 @@ public class DataVisualizer : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
+        FindInputFields();
+
         // For every data point in the set plot it
         foreach (DataPoint point in dataPoints) {
             // Adjust positions based on provided offsets and invert Z-coordinate
@@ -196,5 +212,27 @@ public class DataVisualizer : MonoBehaviour {
             Debug.Log($"Data point instantiated at: {position} with scale: {scale}");
         }
     }
+    private void FindInputFields()
+    {
+        petalLengthInput = GameObject.Find("PetalLength").GetComponent<TMP_InputField>();
+        petalWidthInput = GameObject.Find("PetalWidth").GetComponent<TMP_InputField>();
+        sepalLengthInput = GameObject.Find("SepalLength").GetComponent<TMP_InputField>();
+        sepalWidthInput = GameObject.Find("SepalWidth").GetComponent<TMP_InputField>();
+        dataPointPrefab = GameObject.Find("DataPoint");
+    }
+    public void AddData()
+    {
+        double[] inputs = new double[4];
+        inputs[0] = double.Parse(petalLengthInput.text);
+        inputs[1] = double.Parse(petalWidthInput.text);
+        inputs[2] = double.Parse(sepalLengthInput.text);
+        inputs[3] = double.Parse(sepalWidthInput.text);
 
+        Vector3 position = new Vector3((float)inputs[0] * 10 + 720, (float)inputs[1] * 10 + 547, -(float)inputs[2] * 10 + 56);
+        GameObject newDataPoint = Instantiate(dataPointPrefab, position, Quaternion.identity);
+        float baseScale = 0.1f; // Minimum scale to ensure visibility
+        float scaleMultiplier = 5.0f; // Adjust this multiplier based on your preference
+        float scale = baseScale + ((float)inputs[3] * scaleMultiplier);
+        newDataPoint.transform.localScale = new Vector3(scale, scale, scale);
+    }
 }

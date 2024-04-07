@@ -1,4 +1,4 @@
-using System;
+/*using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -44,4 +44,4 @@ public class PlaceDataScript : MonoBehaviour
         float scale = baseScale + ((float)inputs[3] * scaleMultiplier);
         newDataPoint.transform.localScale = new Vector3(scale, scale, scale);
     }
-}
+}*/

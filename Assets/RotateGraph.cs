@@ -4,44 +4,51 @@ using UnityEngine;
 
 public class RotateGraph : MonoBehaviour
 {
-    public float PCRotationSpeed = 10f;
+    public float rotationSpeed = 20f;
     public Camera cam;
+    public Vector3 rotationCenter = new Vector3(-50f, 72f, -450f);
 
-    private void OnMouseDrag()
-    {
-        float rotX = Input.GetAxis("Mouse X") * PCRotationSpeed;
-        float rotY = Input.GetAxis("Mouse Y") * PCRotationSpeed;
-
-        Vector3 right = Vector3.Cross(lhs: cam.transform.up, rhs: transform.position - cam.transform.position);
-        Vector3 up = Vector3.Cross(lhs: transform.position - cam.transform.position, rhs: right);
-        transform.rotation = Quaternion.AngleAxis(-rotX, up) * transform.rotation;
-        transform.rotation = Quaternion.AngleAxis(rotY, right) * transform.rotation;
-    }
+    private bool isDragging = false;
+    private Vector3 lastMousePosition;
 
     private void Update()
     {
-        // get user input
-        foreach(Touch touch in Input.touches)
+        // Mouse Input
+        if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log(message: "Touching at: " + touch.position);
-            Ray camRay = cam.ScreenPointToRay(touch.position);
-            RaycastHit raycastHit;
-            if (Physics.Raycast(camRay, out raycastHit, maxDistance: 10))
-            {
-                if (touch.phase == TouchPhase.Began)
-                {
-                    Debug.Log(message: "Touch phase began at: " + touch.position);
-                } else if (touch.phase == TouchPhase.Moved)
-                {
-                    Debug.Log(message: "Touch phase Moved");
-                    transform.Rotate(xAngle: touch.deltaPosition.y * PCRotationSpeed,
-                        yAngle: -touch.deltaPosition.x * PCRotationSpeed, zAngle: 0, relativeTo: Space.World);
-                } 
-                else if (touch.phase == TouchPhase.Ended)
-                {
-                    Debug.Log(message: "Touch phase Ended");
-                }
-            }
+            isDragging = true;
+            lastMousePosition = Input.mousePosition;
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            isDragging = false;
+        }
+
+        if (isDragging)
+        {
+            Vector3 delta = Input.mousePosition - lastMousePosition;
+            float rotX = delta.y * rotationSpeed * Time.deltaTime;
+            float rotY = -delta.x * rotationSpeed * Time.deltaTime;
+
+            cam.transform.RotateAround(rotationCenter, cam.transform.right, rotX);
+            cam.transform.RotateAround(rotationCenter, Vector3.up, rotY);
+
+            lastMousePosition = Input.mousePosition;
+        }
+
+        // Arrow Key Input (Optional)
+        float arrowKeyHorizontal = Input.GetAxis("Horizontal");
+        float arrowKeyVertical = Input.GetAxis("Vertical");
+
+        if (arrowKeyHorizontal != 0 || arrowKeyVertical != 0)
+        {
+            float rotX = arrowKeyVertical * rotationSpeed * Time.deltaTime;
+            float rotY = -arrowKeyHorizontal * rotationSpeed * Time.deltaTime;
+
+            cam.transform.RotateAround(rotationCenter, cam.transform.right, rotX);
+            cam.transform.RotateAround(rotationCenter, Vector3.up, rotY);
+
+            Debug.Log("Arrow Key Movement: Horizontal = " + arrowKeyHorizontal + ", Vertical = " + arrowKeyVertical);
         }
     }
 }
