@@ -15,6 +15,9 @@ public class PlaceDataScript : MonoBehaviour
     public TMP_InputField sepalWidthInput;
     public GameObject dataPointPrefab;
 
+    public Client client;
+    private string prediction;
+
     void Start()
     {
         FindInputFields();
@@ -31,11 +34,13 @@ public class PlaceDataScript : MonoBehaviour
 
     public void AddData()
     {
-        double[] inputs = new double[4];
-        inputs[0] = double.Parse(petalLengthInput.text);
-        inputs[1] = double.Parse(petalWidthInput.text);
-        inputs[2] = double.Parse(sepalLengthInput.text);
-        inputs[3] = double.Parse(sepalWidthInput.text);
+        float[] inputs = new float[4];
+        inputs[0] = float.Parse(petalLengthInput.text);
+        inputs[1] = float.Parse(petalWidthInput.text);
+        inputs[2] = float.Parse(sepalLengthInput.text);
+        inputs[3] = float.Parse(sepalWidthInput.text);
+
+        Predict(inputs);
 
         Vector3 position = new Vector3((float)inputs[0]*10 + 720, (float)inputs[1]*10 + 547, -(float)inputs[2]*10 + 56);
         GameObject newDataPoint = Instantiate(dataPointPrefab, position, Quaternion.identity);
@@ -43,5 +48,18 @@ public class PlaceDataScript : MonoBehaviour
         float scaleMultiplier = 5.0f; // Adjust this multiplier based on your preference
         float scale = baseScale + ((float)inputs[3] * scaleMultiplier);
         newDataPoint.transform.localScale = new Vector3(scale, scale, scale);
+
+        
+    }
+
+    private void Predict(float[] inputs)
+    {
+        client.Predict(inputs, output =>
+        {
+            
+        }, error =>
+        {
+
+        });
     }
 }*/

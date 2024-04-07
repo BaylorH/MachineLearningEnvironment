@@ -63,8 +63,10 @@ class Net(nn.Module):
         
         
 net = Net(train_x.shape[1], hidden_size, num_layers)
+
 # loss function is nn.MSELoss since it is regression task
 criterion = nn.CrossEntropyLoss()
+
 #using Adam as optimizer
 optimizer = optim.Adam(net.parameters(), lr=learning_rate)
 
@@ -81,6 +83,8 @@ for epoch in range(epoch_size): # starting with 10 epochs
         loss = criterion(outputs, labels)
         loss.backward()
         optimizer.step()
+
+torch.save(net.state_dict(), 'iris_classification_model.pt')
 
 def get_user_input():
     sepal_length = float(input("Enter Sepal Length: "))
@@ -102,5 +106,3 @@ with torch.no_grad(): # since we're not training, we don't need to calculate the
         print("Would you like to exit (y/n)")
         if input() == "y": 
             flag = False 
-
-torch.save(net.state_dict(), 'iris_classification_model.h5')
