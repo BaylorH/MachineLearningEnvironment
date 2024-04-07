@@ -52,14 +52,4 @@ public class PlaceDataScript : MonoBehaviour
         
     }
 
-    private void Predict(float[] inputs)
-    {
-        client.Predict(inputs, output =>
-        {
-            
-        }, error =>
-        {
-
-        });
-    }
 }*/
