@@ -1311,13 +1311,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 397987760}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dcb5b303f22073c45a9ecf408f32d9b1, type: 3}
+  m_Script: {fileID: 11500000, guid: e18e0206556092148af2c52a5630cf26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
-  distance: 5
-  xSpeed: 120
-  ySpeed: 120
+  _target: {x: 765.4, y: 584.9, z: 12.2}
+  _distance: 210
+  _xSpeed: 100
+  _ySpeed: -80
+  _zoomSpeed: 90
+  _yMinLimit: -10
+  _yMaxLimit: 50
 --- !u!1 &543522014
 GameObject:
   m_ObjectHideFlags: 0
