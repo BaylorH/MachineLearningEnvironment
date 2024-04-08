@@ -21,6 +21,11 @@ public class DataVisualizer : MonoBehaviour {
     public TMP_InputField sepalWidthInput;
     //public GameObject dataPointPrefab;
 
+    public PredictionClient client;
+
+    public TextMeshProUGUI predictionText;
+    private string prediction;
+
     [System.Serializable]
     public class DataPoint {
         public float sepal_length;
@@ -219,6 +224,7 @@ public class DataVisualizer : MonoBehaviour {
             Debug.Log($"Data point instantiated at: {position} with scale: {scale}");
         }
     }
+
     private void FindInputFields()
     {
         petalLengthInput = GameObject.Find("PetalLength").GetComponent<TMP_InputField>();
@@ -229,20 +235,38 @@ public class DataVisualizer : MonoBehaviour {
     }
     public void AddData()
     {
-        double[] inputs = new double[4];
-        inputs[0] = double.Parse(petalLengthInput.text);
-        inputs[1] = double.Parse(petalWidthInput.text);
-        inputs[2] = double.Parse(sepalLengthInput.text);
-        inputs[3] = double.Parse(sepalWidthInput.text);
+        float[] inputs = new float[4];
 
-        Vector3 finalPosition = new Vector3((float)inputs[0] * 10 + 720, (float)inputs[1] * 10 + 547, -(float)inputs[2] * 10 + 56);
+        inputs[0] = float.Parse(sepalLengthInput.text); 
+        inputs[1] = float.Parse(sepalWidthInput.text);
+        inputs[2] = float.Parse(petalLengthInput.text); 
+        inputs[3] = float.Parse(petalWidthInput.text);
+
+        Predict(inputs);
+        Debug.Log(prediction);
+        predictionText.text = prediction;
+
+        Vector3 finalPosition = new Vector3(inputs[0] * 10 + 720, inputs[1] * 10 + 547, -inputs[2] * 10 + 56);
         Vector3 position = new Vector3(829, 648, -54);
         GameObject newDataPoint = Instantiate(dataPointPrefab, position, Quaternion.identity);
         float baseScale = 0.1f; // Minimum scale to ensure visibility
         float scaleMultiplier = 5.0f; // Adjust this multiplier based on your preference
-        float scale = baseScale + ((float)inputs[3] * scaleMultiplier);
+        float scale = baseScale + (inputs[3] * scaleMultiplier);
         newDataPoint.transform.localScale = new Vector3(scale, scale, scale);
+        Material chosenMaterial = prediction == "Iris-setosa" ? SetosaMaterial : NonSetosaMaterial;
+        newDataPoint.GetComponent<Renderer>().material = chosenMaterial;
         MoveTowards mT = newDataPoint.GetComponent<MoveTowards>();
         mT.moveTowards(finalPosition);
+    }
+
+    private void Predict(float[] input)
+    {
+        client.Predict(input, output =>
+        {
+            prediction = "Prediction: " + output;
+        }, error =>
+        {
+            // TODO: 
+        });
     }
 }

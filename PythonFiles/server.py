@@ -22,10 +22,10 @@ class Net(nn.Module):
 input_feature_size = 4
 hidden_size = 5
 num_layers = 2
-net = Net(input_feature_size, hidden_size, num_layers)
-net.load_state_dict(torch.load('iris_classification_model.pt'))
+model = Net(input_feature_size, hidden_size, num_layers)
+model.load_state_dict(torch.load('iris_classification_model.pt'))
 
-net.eval() # turn on evaluation model
+model.eval() # turn on evaluation model
 
 context = zmq.Context()
 socket = context.socket(zmq.REP)
@@ -33,17 +33,18 @@ socket.bind("tcp://*:5555")
 
 while True:
     #  Wait for next request from client
-    bytes_received = socket.recv(32)
-    input_data = torch.tensor(np.frombuffer(bytes_received, dtype=np.float64))
+    bytes_received = socket.recv(16)
+    input_data = torch.tensor(np.frombuffer(bytes_received, dtype=np.float32), dtype=torch.float32)
     print(input_data)
 
     with torch.no_grad():
-        output = net(input_data)
+        output = model(input_data.unsqueeze(0))
         _, predicted = torch.max(output, 1)
         if predicted == 1:
             predictedMessage = "Iris-setosa"  
         else: 
             predictedMessage = "Iris-nonsetosa"
+        print(predictedMessage)
 
     
-    socket.send()
+    socket.send(bytes(predictedMessage, 'utf-8'))

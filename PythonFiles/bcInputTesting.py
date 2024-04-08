@@ -22,7 +22,7 @@ encoder = LabelEncoder()
 encoder.fit(y)
 y = encoder.transform(y)
 
-train_x, test_x, train_y, test_y = train_test_split(x, y, train_size=.6, shuffle=True)
+train_x, test_x, train_y, test_y = train_test_split(x, y, train_size=.95, shuffle=True)
 
 train_x = torch.tensor(train_x, dtype=torch.float32)
 train_y = torch.tensor(train_y, dtype=torch.int64)
