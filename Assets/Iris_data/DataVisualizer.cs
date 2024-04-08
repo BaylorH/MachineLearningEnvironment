@@ -196,7 +196,7 @@ public class DataVisualizer : MonoBehaviour {
         // For every data point in the set plot it
         foreach (DataPoint point in dataPoints) {
             // Adjust positions based on provided offsets and invert Z-coordinate
-            float scaler = 20;
+            float scaler = 20.0f;
             Vector3 position = new Vector3(
                 point.sepal_length*(scaler) + 720 - xMin*scaler, // X-coordinate adjustment
                 point.sepal_width*(scaler) + 547 -yMin*scaler,  // Y-coordinate adjustment
@@ -207,8 +207,8 @@ public class DataVisualizer : MonoBehaviour {
             GameObject sphere = Instantiate(dataPointPrefab, position, Quaternion.identity);
 
             // Determine scale based on petal_width, with a chosen multiplier for visualization purposes
-            float baseScale = 0.1f; // Minimum scale to ensure visibility
-            float scaleMultiplier = 3.0f;
+            float baseScale = 3.0f; // Minimum scale to ensure visibility
+            float scaleMultiplier = 1.5f;
             float scale = baseScale + (point.petal_width * scaleMultiplier);
             sphere.transform.localScale = new Vector3(scale, scale, scale);
 
