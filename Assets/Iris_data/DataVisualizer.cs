@@ -225,7 +225,7 @@ public class DataVisualizer : MonoBehaviour {
         petalWidthInput = GameObject.Find("PetalWidth").GetComponent<TMP_InputField>();
         sepalLengthInput = GameObject.Find("SepalLength").GetComponent<TMP_InputField>();
         sepalWidthInput = GameObject.Find("SepalWidth").GetComponent<TMP_InputField>();
-        dataPointPrefab = GameObject.Find("DataPoint");
+        //dataPointPrefab = GameObject.Find("DataPoint");
     }
     public void AddData()
     {
@@ -235,11 +235,14 @@ public class DataVisualizer : MonoBehaviour {
         inputs[2] = double.Parse(sepalLengthInput.text);
         inputs[3] = double.Parse(sepalWidthInput.text);
 
-        Vector3 position = new Vector3((float)inputs[0] * 10 + 720, (float)inputs[1] * 10 + 547, -(float)inputs[2] * 10 + 56);
+        Vector3 finalPosition = new Vector3((float)inputs[0] * 10 + 720, (float)inputs[1] * 10 + 547, -(float)inputs[2] * 10 + 56);
+        Vector3 position = new Vector3(829, 648, -54);
         GameObject newDataPoint = Instantiate(dataPointPrefab, position, Quaternion.identity);
         float baseScale = 0.1f; // Minimum scale to ensure visibility
         float scaleMultiplier = 5.0f; // Adjust this multiplier based on your preference
         float scale = baseScale + ((float)inputs[3] * scaleMultiplier);
         newDataPoint.transform.localScale = new Vector3(scale, scale, scale);
+        MoveTowards mT = newDataPoint.GetComponent<MoveTowards>();
+        mT.moveTowards(finalPosition);
     }
 }
