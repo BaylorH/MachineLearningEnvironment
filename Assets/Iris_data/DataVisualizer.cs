@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using System.Linq;
 
 // Script to manipulate the training data
 public class DataVisualizer : MonoBehaviour {
@@ -187,13 +188,19 @@ public class DataVisualizer : MonoBehaviour {
     void Start() {
         FindInputFields();
 
+        // Get min points
+        float xMin = dataPoints.Min(p => p.sepal_length);
+        float yMin = dataPoints.Min(p => p.sepal_width);
+        float zMin = dataPoints.Min( p => p.petal_length);
+
         // For every data point in the set plot it
         foreach (DataPoint point in dataPoints) {
             // Adjust positions based on provided offsets and invert Z-coordinate
+            float scaler = 20;
             Vector3 position = new Vector3(
-                point.sepal_length*(12) + 720, // X-coordinate adjustment
-                point.sepal_width*(12) + 547,  // Y-coordinate adjustment
-                -point.petal_length*(12) + 56 // Z-coordinate adjustment and inversion
+                point.sepal_length*(scaler) + 720 - xMin*scaler, // X-coordinate adjustment
+                point.sepal_width*(scaler) + 547 -yMin*scaler,  // Y-coordinate adjustment
+                -point.petal_length*(scaler) + 56  +zMin*scaler// Z-coordinate adjustment and inversion
             );
 
             // Instantiate a sphere at the adjusted position
