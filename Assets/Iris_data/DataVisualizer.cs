@@ -19,7 +19,6 @@ public class DataVisualizer : MonoBehaviour {
     public TMP_InputField petalWidthInput;
     public TMP_InputField sepalLengthInput;
     public TMP_InputField sepalWidthInput;
-    //public GameObject dataPointPrefab;
 
     public PredictionClient client;
 
@@ -254,6 +253,7 @@ public class DataVisualizer : MonoBehaviour {
         float scale = baseScale + (inputs[3] * scaleMultiplier);
         newDataPoint.transform.localScale = new Vector3(scale, scale, scale);
         Material chosenMaterial = prediction == "Iris-setosa" ? SetosaMaterial : NonSetosaMaterial;
+        Debug.Log(chosenMaterial);
         newDataPoint.GetComponent<Renderer>().material = chosenMaterial;
         MoveTowards mT = newDataPoint.GetComponent<MoveTowards>();
         mT.moveTowards(finalPosition);
@@ -268,5 +268,20 @@ public class DataVisualizer : MonoBehaviour {
         {
             // TODO: 
         });
+    }
+
+    //display the user input?
+    public void displayInput() {
+        string petalLength = petalLengthInput.text;
+        string petalWidth = petalWidthInput.text;
+        string sepalLength = sepalLengthInput.text;
+        string sepalWidth = sepalWidthInput.text;
+
+        string displayString = $"Petal Length: {petalLength}\n" +
+                               $"Petal Width: {petalWidth}\n" +
+                               $"Sepal Length: {sepalLength}\n" +
+                               $"Sepal Width: {sepalWidth}";
+        
+        Debug.Log(displayString);
     }
 }

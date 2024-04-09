@@ -29,8 +29,7 @@ public class PredictionRequester : RunAbleThread {
                     }
                 }
 
-                if (gotMessage)
-                {
+                if (gotMessage) {
                     onOutputReceived?.Invoke(output);
                 }
             }

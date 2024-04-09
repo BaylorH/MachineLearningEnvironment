@@ -7,20 +7,17 @@ public class PredictionClient : MonoBehaviour
 
     private void Start() => InitializeServer();
 
-    public void InitializeServer()
-    {
+    public void InitializeServer() {
         predictionRequester = new PredictionRequester();
         predictionRequester.Start();
     }
 
-    public void Predict(float[] input, Action<string> onOutputReceived, Action<Exception> fallback)
-    {
+    public void Predict(float[] input, Action<string> onOutputReceived, Action<Exception> fallback) {
         predictionRequester.SetOnTextReceivedListener(onOutputReceived, fallback);
         predictionRequester.SendInput(input);
     }
 
-    private void OnDestroy()
-    {
+    private void OnDestroy() {
         predictionRequester.Stop();
     }
 }
