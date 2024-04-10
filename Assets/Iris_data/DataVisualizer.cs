@@ -234,10 +234,6 @@ public class DataVisualizer : MonoBehaviour {
     }
     public void AddData()
     {
-        // Get min points
-        float xMin = dataPoints.Min(p => p.sepal_length);
-        float yMin = dataPoints.Min(p => p.sepal_width);
-        float zMin = dataPoints.Min(p => p.petal_length);
 
         float[] inputs = new float[4];
 
@@ -250,13 +246,11 @@ public class DataVisualizer : MonoBehaviour {
         Debug.Log(prediction);
         predictionText.text = prediction;
 
-        float scaler = 20.0f;
-
-        Vector3 finalPosition = new Vector3(inputs[0] * 10 + 720 - xMin * scaler, inputs[1] * 10 + 547 - yMin * scaler, -inputs[2] * 10 + 56 + zMin * scaler);
+        Vector3 finalPosition = new Vector3(inputs[0] * 10 + 720, inputs[1] * 10 + 547, -inputs[2] * 10 + 56);
         Vector3 position = new Vector3(829, 648, -54);
         GameObject newDataPoint = Instantiate(dataPointPrefab, position, Quaternion.identity);
-        float baseScale = 3.0f; // Minimum scale to ensure visibility
-        float scaleMultiplier = 1.5f; // Adjust this multiplier based on your preference
+        float baseScale = 0.1f; // Minimum scale to ensure visibility
+        float scaleMultiplier = 5.0f; // Adjust this multiplier based on your preference
         float scale = baseScale + (inputs[3] * scaleMultiplier);
         newDataPoint.transform.localScale = new Vector3(scale, scale, scale);
         Material chosenMaterial = prediction == "Iris-setosa" ? SetosaMaterial : NonSetosaMaterial;
