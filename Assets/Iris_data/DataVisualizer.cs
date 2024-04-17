@@ -207,15 +207,17 @@ public class DataVisualizer : MonoBehaviour {
                 -point.petal_length*(scaler) + 56  +zMin*scaler// Z-coordinate adjustment and inversion
             );
 
-            // Instantiate a sphere at the adjusted position
-            GameObject sphere = Instantiate(dataPointPrefab, position, Quaternion.identity);
+            // Adjust rotation to point up
+            Quaternion rotation = Quaternion.Euler(-90, 0, 0);
+            // Instantiate a sphere at the adjusted position and rotation
+            GameObject sphere = Instantiate(dataPointPrefab, position, rotation);
 
             // Determine scale based on petal_width, with a chosen multiplier for visualization purposes
-            float baseScale = 3.0f; // Minimum scale to ensure visibility
-            float scaleMultiplier = 1.5f;
+            float baseScale = 20.0f; // Minimum scale to ensure visibility
+            float scaleMultiplier = 10f;
             float scale = baseScale + (point.petal_width * scaleMultiplier);
             sphere.transform.localScale = new Vector3(scale, scale, scale);
-
+ 
             // Assign material based on the prediction
             Material chosenMaterial = point.prediction == "Iris-setosa" ? SetosaMaterial : NonSetosaMaterial;
             sphere.GetComponent<Renderer>().material = chosenMaterial;
@@ -248,9 +250,11 @@ public class DataVisualizer : MonoBehaviour {
 
         Vector3 finalPosition = new Vector3(inputs[0] * 10 + 720, inputs[1] * 10 + 547, -inputs[2] * 10 + 56);
         Vector3 position = new Vector3(829, 648, -54);
-        GameObject newDataPoint = Instantiate(dataPointPrefab, position, Quaternion.identity);
-        float baseScale = 0.1f; // Minimum scale to ensure visibility
-        float scaleMultiplier = 5.0f; // Adjust this multiplier based on your preference
+        // Adjust rotation to point up
+        Quaternion rotation = Quaternion.Euler(-90, 0, 0);
+        GameObject newDataPoint = Instantiate(dataPointPrefab, position, rotation);
+        float baseScale = 20f; // Minimum scale to ensure visibility
+        float scaleMultiplier = 10.0f; // Adjust this multiplier based on your preference
         float scale = baseScale + (inputs[3] * scaleMultiplier);
         newDataPoint.transform.localScale = new Vector3(scale, scale, scale);
         Material chosenMaterial = prediction == "Iris-setosa" ? SetosaMaterial : NonSetosaMaterial;

@@ -4,13 +4,15 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - dataPointPrefab: {fileID: 2276175150501940869, guid: 6acb8149aac7df34ebd9170bf3ba09c2, type: 3}
+  - dataPointPrefab: {fileID: 919132149155446097, guid: be1bfd67f77003a4fb721982e10b1ec1, type: 3}
   - SetosaMaterial: {instanceID: 0}
   - NonSetosaMaterial: {instanceID: 0}
   - petalLengthInput: {instanceID: 0}
   - petalWidthInput: {instanceID: 0}
   - sepalLengthInput: {instanceID: 0}
   - sepalWidthInput: {instanceID: 0}
+  - client: {instanceID: 0}
+  - predictionText: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
