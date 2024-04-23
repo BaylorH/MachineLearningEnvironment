@@ -8,6 +8,6 @@ public class StartScreen : MonoBehaviour
     // Start is called before the first frame update
     public void OnPlayButton ()
     {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene("graphScene");
     }
 }
