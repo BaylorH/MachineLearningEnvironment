@@ -203,8 +203,8 @@ public class DataVisualizer : MonoBehaviour {
             float scaler = 20.0f;
             Vector3 position = new Vector3(
                 point.sepal_length*(scaler) + 720 - xMin*scaler, // X-coordinate adjustment
-                point.sepal_width*(scaler) + 547 -yMin*scaler,  // Y-coordinate adjustment
-                -point.petal_length*(scaler) + 56  +zMin*scaler// Z-coordinate adjustment and inversion
+                point.sepal_width*(scaler) + 547 - yMin*scaler,  // Y-coordinate adjustment
+                -point.petal_length*(scaler) + 56 + zMin*scaler // Z-coordinate adjustment and inversion
             );
 
             // Adjust rotation to point up
@@ -260,11 +260,21 @@ public class DataVisualizer : MonoBehaviour {
             return; // Exit the method if parsing fails
         }
 
+        // Get min points
+        float xMin = dataPoints.Min(p => p.sepal_length);
+        float yMin = dataPoints.Min(p => p.sepal_width);
+        float zMin = dataPoints.Min(p => p.petal_length);
+
         Predict(inputs);
         Debug.Log(prediction);
         predictionText.text = prediction;
 
-        Vector3 finalPosition = new Vector3(inputs[0] * 10 + 720, inputs[1] * 10 + 547, -inputs[2] * 10 + 56);
+        float scaler = 20.0f;
+        Vector3 finalPosition = new Vector3(
+            inputs[0] * scaler + 720 - xMin * scaler, // X-coordinate adjustment
+            inputs[1] * scaler + 547 - yMin * scaler, // Y-coordinate adjustment
+            -inputs[2] * scaler + 56 + zMin * scaler // Z-coordinate adjustment and inversion
+        );
         Vector3 position = new Vector3(829, 648, -54);
         // Adjust rotation to point up
         Quaternion rotation = Quaternion.Euler(-90, 0, 0);
