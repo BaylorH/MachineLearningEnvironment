@@ -1586,7 +1586,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Input a flower to engage our binary classification tool. With 99% accuracy,
+  m_text: Input a flower to engage our binary classification tool. With 100% accuracy,
     we'll visualize and determine if it's Setosa or Non-Setosa.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
