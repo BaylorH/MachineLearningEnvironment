@@ -236,13 +236,29 @@ public class DataVisualizer : MonoBehaviour {
     }
     public void AddData()
     {
+        // Check if any input field is empty
+        if (string.IsNullOrWhiteSpace(sepalLengthInput.text) ||
+                string.IsNullOrWhiteSpace(sepalWidthInput.text) ||
+                string.IsNullOrWhiteSpace(petalLengthInput.text) ||
+                string.IsNullOrWhiteSpace(petalWidthInput.text)) {
+            Debug.LogError("All input fields must be filled.");
+            predictionText.text = "Error: All fields must be filled.";
+            return; // Exit the method early if any field is empty
+        }
 
         float[] inputs = new float[4];
 
-        inputs[0] = float.Parse(sepalLengthInput.text); 
-        inputs[1] = float.Parse(sepalWidthInput.text);
-        inputs[2] = float.Parse(petalLengthInput.text); 
-        inputs[3] = float.Parse(petalWidthInput.text);
+        try {
+            inputs[0] = float.Parse(sepalLengthInput.text);
+            inputs[1] = float.Parse(sepalWidthInput.text);
+            inputs[2] = float.Parse(petalLengthInput.text);
+            inputs[3] = float.Parse(petalWidthInput.text);
+        }
+        catch (FormatException) {
+            Debug.LogError("Input is not in a correct numeric format.");
+            predictionText.text = "Error: Please enter valid numbers.";
+            return; // Exit the method if parsing fails
+        }
 
         Predict(inputs);
         Debug.Log(prediction);
@@ -262,6 +278,12 @@ public class DataVisualizer : MonoBehaviour {
         newDataPoint.GetComponent<Renderer>().material = chosenMaterial;
         MoveTowards mT = newDataPoint.GetComponent<MoveTowards>();
         mT.moveTowards(finalPosition);
+
+        // Reset user input fields
+        petalLengthInput.text = "";
+        petalWidthInput.text = "";
+        sepalLengthInput.text = "";
+        sepalWidthInput.text = "";
     }
 
     private void Predict(float[] input)
