@@ -1,5 +1,3 @@
-
-import time
 import zmq
 import numpy as np
 import torch

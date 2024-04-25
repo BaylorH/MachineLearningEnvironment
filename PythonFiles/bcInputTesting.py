@@ -26,7 +26,6 @@ train_x, test_x, train_y, test_y = train_test_split(x, y, train_size=.95, shuffl
 
 train_x = torch.tensor(train_x, dtype=torch.float32)
 train_y = torch.tensor(train_y, dtype=torch.int64)
-test_x = torch.tensor(test_x, dtype=torch.float32)
 
 class IrisDataset(Dataset):
     def __init__(self, train_x, train_y):
@@ -86,23 +85,3 @@ for epoch in range(epoch_size): # starting with 10 epochs
 
 torch.save(net.state_dict(), 'iris_classification_model.pt')
 
-def get_user_input():
-    sepal_length = float(input("Enter Sepal Length: "))
-    sepal_width = float(input("Enter Sepal Width: "))
-    petal_length = float(input("Enter Petal Length: "))
-    petal_width = float(input("Enter Petal Width: "))
-    
-    return torch.tensor([[sepal_length, sepal_width, petal_length, petal_width]], dtype=torch.float32)
-
-print("Please input Iris measurments")
-flag = True
-net.eval() # turn on evaluation model, also a good practice to do
-with torch.no_grad(): # since we're not training, we don't need to calculate the gradients for our outputs, so turn on no_grad mode
-    while flag:
-        user_input = get_user_input()
-        output = net(user_input)
-        _, predicted = torch.max(output, 1)
-        print("Iris-setosa") if predicted == 1 else print("Iris-nonsetosa")
-        print("Would you like to exit (y/n)")
-        if input() == "y": 
-            flag = False 
