@@ -266,6 +266,7 @@ public class DataVisualizer : MonoBehaviour {
         float zMin = dataPoints.Min(p => p.petal_length);
 
         Predict(inputs);
+        System.Threading.Thread.Sleep(500);
         Debug.Log(prediction);
         predictionText.text = prediction;
 
@@ -283,7 +284,7 @@ public class DataVisualizer : MonoBehaviour {
         float scaleMultiplier = 10.0f; // Adjust this multiplier based on your preference
         float scale = baseScale + (inputs[3] * scaleMultiplier);
         newDataPoint.transform.localScale = new Vector3(scale, scale, scale);
-        Material chosenMaterial = prediction == "Iris-setosa" ? SetosaMaterial : NonSetosaMaterial;
+        Material chosenMaterial = prediction == "Prediction: Iris-setosa" ? SetosaMaterial : NonSetosaMaterial;
         Debug.Log(chosenMaterial);
         newDataPoint.GetComponent<Renderer>().material = chosenMaterial;
         MoveTowards mT = newDataPoint.GetComponent<MoveTowards>();
