@@ -190,6 +190,7 @@ public class DataVisualizer : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
+        runPythonServer();
         FindInputFields();
 
         // Get min points
@@ -320,5 +321,13 @@ public class DataVisualizer : MonoBehaviour {
                                $"Sepal Width: {sepalWidth}";
         
         Debug.Log(displayString);
+    }
+
+    public void runPythonServer()
+    {
+        //Setup Process object
+        //Set start info to "CMD.exe"
+        //Write path navigation
+        //Run python script
     }
 }
