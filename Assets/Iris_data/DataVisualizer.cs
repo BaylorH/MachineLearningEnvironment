@@ -23,6 +23,7 @@ public class DataVisualizer : MonoBehaviour {
     public PredictionClient client;
 
     public TextMeshProUGUI predictionText;
+    public TextMeshProUGUI ErrorText;
     private string prediction;
 
     [System.Serializable]
@@ -242,7 +243,8 @@ public class DataVisualizer : MonoBehaviour {
                 string.IsNullOrWhiteSpace(petalLengthInput.text) ||
                 string.IsNullOrWhiteSpace(petalWidthInput.text)) {
             Debug.LogError("All input fields must be filled.");
-            predictionText.text = "Error: All fields must be filled.";
+            //predictionText.text = "Error: All fields must be filled.";
+            ErrorText.text = "Error: All fields must be filled.";
             return; // Exit the method early if any field is empty
         }
 
@@ -256,7 +258,8 @@ public class DataVisualizer : MonoBehaviour {
         }
         catch (FormatException) {
             Debug.LogError("Input is not in a correct numeric format.");
-            predictionText.text = "Error: Please enter valid numbers.";
+            //predictionText.text = "Error: Please enter valid numbers.";
+            ErrorText.text = "Error: Please enter valid numbers.";
             return; // Exit the method if parsing fails
         }
 
@@ -269,6 +272,7 @@ public class DataVisualizer : MonoBehaviour {
         System.Threading.Thread.Sleep(500);
         Debug.Log(prediction);
         predictionText.text = prediction;
+        ErrorText.text = "";
 
         float scaler = 20.0f;
         Vector3 finalPosition = new Vector3(
