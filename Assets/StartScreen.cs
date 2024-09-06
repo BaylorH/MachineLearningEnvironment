@@ -20,6 +20,7 @@ public class StartScreen : MonoBehaviour
         transition.SetTrigger("Start");
         yield return new WaitForSeconds(transitionTime);
         SceneManager.LoadScene("graphScene");
+        DynamicGI.UpdateEnvironment();
 
     }
 }
