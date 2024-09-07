@@ -1,0 +1,41 @@
+.header {
+    font-size: 40px;
+    color: rgb(255, 255, 255);
+    -unity-text-align: upper-center;
+    margin-top: 0;
+    -unity-font-definition: initial;
+    -unity-font: url("project://database/Assets/Unity%20UI%20Samples/Fonts/Jupiter/Jupiter.ttf?fileID=12800000&guid=7cb2912222469634ba17a77055919ea8&type=3#Jupiter");
+    justify-content: flex-start;
+    align-self: auto;
+    align-items: auto;
+}
+
+.button {
+    font-size: 15px;
+    width: 75px;
+    height: 24px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    background-image: url("project://database/Assets/Unity%20UI%20Samples/Textures%20and%20Sprites/SF%20UI/SF%20Button.psd?fileID=21300000&guid=9a32a6cc2cb803443983d45d4a513506&type=3#SF Button - Hover");
+    background-color: rgba(128, 128, 128, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    color: rgb(255, 255, 255);
+    -unity-font: url("project://database/Assets/Unity%20UI%20Samples/Fonts/Jupiter/Jupiter.ttf?fileID=12800000&guid=7cb2912222469634ba17a77055919ea8&type=3#Jupiter");
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    margin-top: 25px;
+    align-items: stretch;
+    align-self: center;
+    -unity-font-definition: initial;
+    transition-duration: 0.35s;
+}
+
+.button:hover {
+    scale: 1.1 1.1;
+    -unity-background-image-tint-color: rgb(144, 144, 144);
+}
