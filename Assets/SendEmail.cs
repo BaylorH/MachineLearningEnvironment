@@ -1,16 +1,21 @@
 using System;
+using System.Net;
+using System.Net.Mail;
+using System.Net.Security;
+using System.Security.Cryptography.X509Certificates;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class FeedbackManager : MonoBehaviour
 {
-    public TMP_InputField feedbackInputField; // Input field for the feedback text
-    public Button submitButton; // Button to submit feedback
-    public Text feedbackMessage; // Text to display messages (success or error)
+    public TMP_InputField feedbackInputField;
+    public Button submitButton;
+    public TextMeshProUGUI feedbackMessage;
 
-    // Replace with your actual email address
-    private string email = "3d.ml.learning.environment@gmail.com";
+    private readonly string email = "3d.ml.learning.environment@gmail.com";
+    private readonly int smtpPort = 587; // gmail SMTP port
+    private readonly string smtpPassword = "awnujokciuwpgskd"; // password for the email account
 
     void Start()
     {
@@ -19,16 +24,44 @@ public class FeedbackManager : MonoBehaviour
 
     public void SendEmail()
     {
-        string subject = MyEscapeURL("My Subject");
-        string body = MyEscapeURL("Please Enter your message here.");
+        try
+        {
+            var mail = new MailMessage
+            {
+                From = new MailAddress(email),
+                Subject = "Feedback from Unity App",
+                Body = $"Feedback:\n{feedbackInputField.text}\n\n" +
+                   $"________\n\n" +
+                   $"Model: {SystemInfo.deviceModel}\n" +
+                   $"OS: {SystemInfo.operatingSystem}\n" +
+                   $"________"
+            };
+            mail.To.Add(email);
 
-        Application.OpenURL("mailto:" + email + "?subject=" + subject + "&body=" + body);
+            // Configure the SMTP client
+            var smtpServer = new SmtpClient("smtp.gmail.com")
+            {
+                Port = smtpPort,
+                Credentials = new NetworkCredential(email, smtpPassword),
+                EnableSsl = true
+            };
+
+            // Bypass SSL certificate validation (not recommended for production)
+            ServicePointManager.ServerCertificateValidationCallback =
+                delegate (object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+                {
+                    return true;
+                };
+
+            // Send the email
+            smtpServer.Send(mail);
+
+            feedbackMessage.text = "Feedback sent successfully!";
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Failed to send email: " + ex.Message);
+            feedbackMessage.text = "Error: Unable to send feedback.";
+        }
     }
-
-    string MyEscapeURL(string URL)
-    {
-        return Uri.EscapeDataString(URL).Replace("+", "%20");
-    }
-
-
 }

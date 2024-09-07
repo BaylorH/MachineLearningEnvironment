@@ -242,8 +242,7 @@ public class DataVisualizer : MonoBehaviour {
                 string.IsNullOrWhiteSpace(sepalWidthInput.text) ||
                 string.IsNullOrWhiteSpace(petalLengthInput.text) ||
                 string.IsNullOrWhiteSpace(petalWidthInput.text)) {
-            Debug.LogError("All input fields must be filled.");
-            //predictionText.text = "Error: All fields must be filled.";
+            // Debug.LogError("All input fields must be filled.");
             ErrorText.text = "Error: All fields must be filled.";
             return; // Exit the method early if any field is empty
         }
