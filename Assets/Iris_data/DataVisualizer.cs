@@ -267,9 +267,10 @@ public class DataVisualizer : MonoBehaviour {
         float yMin = dataPoints.Min(p => p.sepal_width);
         float zMin = dataPoints.Min(p => p.petal_length);
 
-        Predict(inputs);
+        string predictedLabel = Predict(inputs);
         System.Threading.Thread.Sleep(500);
         Debug.Log(prediction);
+        Debug.Log("predicted label:" + predictedLabel);
         predictionText.text = prediction;
         ErrorText.text = "";
 
@@ -300,7 +301,7 @@ public class DataVisualizer : MonoBehaviour {
         sepalWidthInput.text = "";
     }
 
-    private void Predict(float[] input)
+    private string Predict(float[] input)
     {
         client.Predict(input, output =>
         {
@@ -309,6 +310,7 @@ public class DataVisualizer : MonoBehaviour {
         {
             // TODO: 
         });
+        return prediction;
     }
 
     //display the user input?
