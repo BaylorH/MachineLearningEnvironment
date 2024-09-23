@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/graphScene.unity
     guid: 63daa92de5695d24899c687188863f4f
+  - enabled: 1
+    path: Assets/otherScene.unity
+    guid: a2b8e1bd9ecbb2747bf2ae0ffa378411
   m_configObjects: {}
