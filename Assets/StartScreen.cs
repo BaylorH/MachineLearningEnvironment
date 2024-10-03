@@ -32,16 +32,29 @@ public class StartScreen : MonoBehaviour
         DynamicGI.UpdateEnvironment();
     }
 
-    public void On_IRIS_dataset ()
+    public void On_BINARYIRIS_dataset ()
     {
-        StartCoroutine(LoadIRIS());
+        StartCoroutine(LoadBinaryIRIS());
     }
 
-    IEnumerator LoadIRIS()
+    IEnumerator LoadBinaryIRIS()
     {
         transition.SetTrigger("Start");
         yield return new WaitForSeconds(transitionTime);
-        SceneManager.LoadScene("graphScene");
+        SceneManager.LoadScene("BinaryIrisScene");
+        DynamicGI.UpdateEnvironment();
+    }
+
+    public void On_KNNIRIS_dataset ()
+    {
+        StartCoroutine(LoadKNNIRIS());
+    }
+
+    IEnumerator LoadKNNIRIS()
+    {
+        transition.SetTrigger("Start");
+        yield return new WaitForSeconds(transitionTime);
+        SceneManager.LoadScene("KNNIrisScene");
         DynamicGI.UpdateEnvironment();
     }
 
@@ -54,7 +67,7 @@ public class StartScreen : MonoBehaviour
     {
         transition.SetTrigger("Start");
         yield return new WaitForSeconds(transitionTime);
-        SceneManager.LoadScene("otherScene");
+        SceneManager.LoadScene("KNNIrisScene");
         DynamicGI.UpdateEnvironment();
     }
 
