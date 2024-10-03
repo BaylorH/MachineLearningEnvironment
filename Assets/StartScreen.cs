@@ -8,6 +8,30 @@ public class StartScreen : MonoBehaviour
     public Animator transition;
     public float transitionTime = 1f;
     // Start is called before the first frame update
+    public void On_BINARY_algorithm()
+    {
+        StartCoroutine(LoadBINARY());
+    }
+    IEnumerator LoadBINARY()
+    {
+        transition.SetTrigger("Start");
+        yield return new WaitForSeconds(transitionTime);
+        SceneManager.LoadScene("BinaryScene");
+        DynamicGI.UpdateEnvironment();
+    }
+
+    public void On_KNN_algorithm()
+    {
+        StartCoroutine(LoadKNN());
+    }
+    IEnumerator LoadKNN()
+    {
+        transition.SetTrigger("Start");
+        yield return new WaitForSeconds(transitionTime);
+        SceneManager.LoadScene("KNNScene");
+        DynamicGI.UpdateEnvironment();
+    }
+
     public void On_IRIS_dataset ()
     {
         StartCoroutine(LoadIRIS());

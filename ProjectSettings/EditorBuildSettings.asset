@@ -14,4 +14,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/otherScene.unity
     guid: a2b8e1bd9ecbb2747bf2ae0ffa378411
+  - enabled: 1
+    path: Assets/BinaryScene.unity
+    guid: 21476700382c546f4971b4f65ee2c32d
+  - enabled: 1
+    path: Assets/KNNScene.unity
+    guid: da1567258c76040608ee201624335d8c
   m_configObjects: {}
