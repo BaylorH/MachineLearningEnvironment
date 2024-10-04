@@ -11,6 +11,14 @@ using System.Linq;
 public class DiabetesDataVisualizer : MonoBehaviour
 {
     public GameObject dataPointPrefab;
+    public Material DiabeticMaterial;
+    public Material NondiabeticMaterial;
+
+    // input fields
+    public TMP_InputField glucoseInput;
+    public TMP_InputField bloodPressureInput;
+    public TMP_InputField bmiInput;
+    public TMP_InputField ageInput;
 
     public KNNDiabetesPredictionClient client;
 
