@@ -12,7 +12,7 @@ public class DiabetesDataVisualizer : MonoBehaviour
 {
     public GameObject dataPointPrefab;
     public Material DiabeticMaterial;
-    public Material NondiabeticMaterial;
+    public Material NonDiabeticMaterial;
 
     // input fields
     public TMP_InputField glucoseInput;
@@ -809,11 +809,136 @@ public class DiabetesDataVisualizer : MonoBehaviour
 
     void Start()
     {
-        // copy from iris
+        FindInputFields();
+
+        // Get min points
+        float xMin = dataPoints.Min(p => p.glucose);
+        float yMin = dataPoints.Min(p => p.blood_pressure);
+        float zMin = dataPoints.Min(p => p.bmi);
+
+        // For every data point in the set plot it
+        foreach (DiabetesDataPoint point in dataPoints)
+        {
+            // Adjust positions based on provided offsets and invert Z-coordinate
+            float scaler = 0.5f;
+            float glucoseScaler = 0.5f;
+            float bloodPressureScaler = 0.5f;
+            float bmiScaler = 1.7f;
+
+            Vector3 position = new Vector3(
+                point.glucose * (glucoseScaler) + 720 - xMin * scaler, // X-coordinate adjustment
+                point.blood_pressure * (bloodPressureScaler) + 547 - yMin * scaler,  // Y-coordinate adjustment
+                -point.bmi * (bmiScaler) + 56 + zMin * scaler // Z-coordinate adjustment and inversion
+            );
+
+            // Adjust rotation to point up
+            Quaternion rotation = Quaternion.Euler(-90, 0, 0);
+            // Instantiate a sphere at the adjusted position and rotation
+            GameObject sphere = Instantiate(dataPointPrefab, position, rotation);
+
+            // Determine scale based on petal_width, with a chosen multiplier for visualization purposes
+            float baseScale = 1f; // Minimum scale to ensure visibility
+            float scaleMultiplier = .1f;
+            float scale = baseScale + (point.age * scaleMultiplier);
+            sphere.transform.localScale = new Vector3(scale, scale, scale);
+
+            // Assign material based on the prediction
+            Material chosenMaterial = point.prediction == "Diabetic" ? DiabeticMaterial : NonDiabeticMaterial;
+            sphere.GetComponent<Renderer>().material = chosenMaterial;
+
+            Debug.Log($"Data point instantiated at: {position} with scale: {scale}");
+        }
     }
 
-    void Update()
+    private void FindInputFields()
     {
-        // copy from iris
+        glucoseInput = GameObject.Find("Glucose").GetComponent<TMP_InputField>();
+        bloodPressureInput = GameObject.Find("BloodPressure").GetComponent<TMP_InputField>();
+        bmiInput = GameObject.Find("BMI").GetComponent<TMP_InputField>();
+        ageInput = GameObject.Find("Age").GetComponent<TMP_InputField>();
+    }
+
+    public void AddData()
+    {
+        // Check if any input field is empty
+        if (string.IsNullOrWhiteSpace(glucoseInput.text) ||
+                string.IsNullOrWhiteSpace(bloodPressureInput.text) ||
+                string.IsNullOrWhiteSpace(bmiInput.text) ||
+                string.IsNullOrWhiteSpace(ageInput.text))
+        {
+            // Debug.LogError("All input fields must be filled.");
+            ErrorText.text = "Error: All fields must be filled.";
+            return; // Exit the method early if any field is empty
+        }
+
+        float[] inputs = new float[4];
+
+        try
+        {
+            inputs[0] = float.Parse(glucoseInput.text);
+            inputs[1] = float.Parse(bloodPressureInput.text);
+            inputs[2] = float.Parse(bmiInput.text);
+            inputs[3] = float.Parse(ageInput.text);
+        }
+        catch (FormatException)
+        {
+            Debug.LogError("Input is not in a correct numeric format.");
+            //predictionText.text = "Error: Please enter valid numbers.";
+            ErrorText.text = "Error: Please enter valid numbers.";
+            return; // Exit the method if parsing fails
+        }
+
+        // Get min points
+        float xMin = dataPoints.Min(p => p.glucose);
+        float yMin = dataPoints.Min(p => p.blood_pressure);
+        float zMin = dataPoints.Min(p => p.bmi);
+
+        string predictedLabel = Predict(inputs);
+        System.Threading.Thread.Sleep(500);
+        Debug.Log(prediction);
+        Debug.Log("predicted label:" + predictedLabel);
+        predictionText.text = prediction;
+        ErrorText.text = "";
+
+        float scaler = 0.5f;
+        float glucoseScaler = 0.5f;
+        float bloodPressureScaler = 0.5f;
+        float bmiScaler = 1.7f;
+        Vector3 finalPosition = new Vector3(
+            inputs[0] * glucoseScaler + 720 - xMin * scaler, // X-coordinate adjustment
+            inputs[1] * bloodPressureScaler + 547 - yMin * scaler, // Y-coordinate adjustment
+            -inputs[2] * bmiScaler + 56 + zMin * scaler // Z-coordinate adjustment and inversion
+        );
+        Vector3 position = new Vector3(829, 648, -54);
+        // Adjust rotation to point up
+        Quaternion rotation = Quaternion.Euler(-90, 0, 0);
+        GameObject newDataPoint = Instantiate(dataPointPrefab, position, rotation);
+        float baseScale = 1f; // Minimum scale to ensure visibility
+        float scaleMultiplier = .1f;
+        float scale = baseScale + (inputs[3] * scaleMultiplier);
+        newDataPoint.transform.localScale = new Vector3(scale, scale, scale);
+        Material chosenMaterial = prediction == "Prediction: Diabetic" ? DiabeticMaterial : NonDiabeticMaterial;
+        Debug.Log(chosenMaterial);
+        newDataPoint.GetComponent<Renderer>().material = chosenMaterial;
+        MoveTowards mT = newDataPoint.GetComponent<MoveTowards>();
+        mT.moveTowards(finalPosition);
+
+        // Reset user input fields
+        glucoseInput.text = "";
+        bloodPressureInput.text = "";
+        bmiInput.text = "";
+        ageInput.text = "";
+        ageInput.text = "";
+    }
+
+    private string Predict(float[] input)
+    {
+        client.Predict(input, output =>
+        {
+            prediction = "Prediction: " + output;
+        }, error =>
+        {
+        });
+        return prediction;
     }
 }
