@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.49641407, b: 0.57481736, a: 1}
+  m_IndirectSpecularColor: {r: 0.4465797, g: 0.4964149, b: 0.5748187, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -344,26 +344,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -113.388, z: 0}
---- !u!1 &37295367 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: aead319807aae044487d039020947576, type: 3}
-  m_PrefabInstance: {fileID: 906931292}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &37295368
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 37295367}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a661bc022cb9be4f8470b225083f82f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  target_pos: {x: 0, y: 0, z: 0}
-  speed: 80
-  velocity: {x: 0, y: 0, z: 0}
 --- !u!1 &40707262
 GameObject:
   m_ObjectHideFlags: 0
@@ -2881,7 +2861,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be0b277c3b318ab44a0960515cb57bdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataPointPrefab: {fileID: 37295367}
+  dataPointPrefab: {fileID: 0}
   SetosaMaterial: {fileID: 2100000, guid: 08996e96009b6453ea8061d534867b6e, type: 2}
   NonSetosaMaterial: {fileID: 2100000, guid: 70759b161869f48f28eeedb7d30d29c5, type: 2}
   petalLengthInput: {fileID: 0}
@@ -2939,7 +2919,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a1025f682989bb459d1fd3bd449cf6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataPointPrefab: {fileID: 2276175150501940869, guid: 6acb8149aac7df34ebd9170bf3ba09c2, type: 3}
+  dataPointPrefab: {fileID: 2276175150501940869, guid: 1d52bd96520404397bbd5f461520e8c7, type: 3}
   DiabeticMaterial: {fileID: 2100000, guid: 08996e96009b6453ea8061d534867b6e, type: 2}
   NonDiabeticMaterial: {fileID: 2100000, guid: 70759b161869f48f28eeedb7d30d29c5, type: 2}
   glucoseInput: {fileID: 0}
@@ -3625,66 +3605,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 734943267}
   m_CullTransparentMesh: 1
---- !u!1001 &906931292
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: -8679921383154817045, guid: aead319807aae044487d039020947576, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: aead319807aae044487d039020947576, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.099999994
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: aead319807aae044487d039020947576, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: aead319807aae044487d039020947576, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7071067
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: aead319807aae044487d039020947576, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7071068
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: aead319807aae044487d039020947576, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: aead319807aae044487d039020947576, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: aead319807aae044487d039020947576, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: aead319807aae044487d039020947576, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: aead319807aae044487d039020947576, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 919132149155446097, guid: aead319807aae044487d039020947576, type: 3}
-      propertyPath: m_Name
-      value: Iris_setosa
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: aead319807aae044487d039020947576, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 37295368}
-  m_SourcePrefab: {fileID: 100100000, guid: aead319807aae044487d039020947576, type: 3}
 --- !u!1 &939237192
 GameObject:
   m_ObjectHideFlags: 0
@@ -8122,7 +8042,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be0b277c3b318ab44a0960515cb57bdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataPointPrefab: {fileID: 37295367}
+  dataPointPrefab: {fileID: 0}
   SetosaMaterial: {fileID: 2100000, guid: 5eac65fd6a1a8394abb4ddf030fe73ee, type: 2}
   NonSetosaMaterial: {fileID: 2100000, guid: ef985fdd8a8bc194d80a9f0de8fa141e, type: 2}
   petalLengthInput: {fileID: 0}
@@ -8178,4 +8098,3 @@ SceneRoots:
   - {fileID: 543522018}
   - {fileID: 2037165075}
   - {fileID: 329612524}
-  - {fileID: 906931292}

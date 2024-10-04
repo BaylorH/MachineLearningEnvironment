@@ -3,7 +3,17 @@ guid: 6a1025f682989bb459d1fd3bd449cf6d
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - dataPointPrefab: {fileID: 2276175150501940869, guid: 1d52bd96520404397bbd5f461520e8c7, type: 3}
+  - DiabeticMaterial: {instanceID: 0}
+  - NonDiabeticMaterial: {instanceID: 0}
+  - glucoseInput: {instanceID: 0}
+  - bloodPressureInput: {instanceID: 0}
+  - bmiInput: {instanceID: 0}
+  - ageInput: {instanceID: 0}
+  - client: {instanceID: 0}
+  - predictionText: {instanceID: 0}
+  - ErrorText: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
