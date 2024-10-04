@@ -848,7 +848,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1437454723}
         m_TargetAssemblyTypeName: StartScreen, Assembly-CSharp
-        m_MethodName: On_OTHER_dataset
+        m_MethodName: On_BINARYDIABETES_dataset
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

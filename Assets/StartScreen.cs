@@ -8,6 +8,7 @@ public class StartScreen : MonoBehaviour
     public Animator transition;
     public float transitionTime = 1f;
     // Start is called before the first frame update
+    // From Start scene, if select 'Binary classification'
     public void On_BINARY_algorithm()
     {
         StartCoroutine(LoadBINARY());
@@ -20,6 +21,7 @@ public class StartScreen : MonoBehaviour
         DynamicGI.UpdateEnvironment();
     }
 
+    // From Start scene, if select 'K-Nearest Neighbors'
     public void On_KNN_algorithm()
     {
         StartCoroutine(LoadKNN());
@@ -32,11 +34,11 @@ public class StartScreen : MonoBehaviour
         DynamicGI.UpdateEnvironment();
     }
 
+    // From BinaryScene, if select 'Iris dataset'
     public void On_BINARYIRIS_dataset ()
     {
         StartCoroutine(LoadBinaryIRIS());
     }
-
     IEnumerator LoadBinaryIRIS()
     {
         transition.SetTrigger("Start");
@@ -45,11 +47,11 @@ public class StartScreen : MonoBehaviour
         DynamicGI.UpdateEnvironment();
     }
 
+    // From KNNScene, if select 'Iris dataset'
     public void On_KNNIRIS_dataset ()
     {
         StartCoroutine(LoadKNNIRIS());
     }
-
     IEnumerator LoadKNNIRIS()
     {
         transition.SetTrigger("Start");
@@ -58,12 +60,11 @@ public class StartScreen : MonoBehaviour
         DynamicGI.UpdateEnvironment();
     }
 
-    public void On_OTHER_dataset ()
+    public void On_BINARYDIABETES_dataset ()
     {
-        StartCoroutine(LoadOTHER());
+        StartCoroutine(LoadBINARYDIABETES());
     }
-
-    IEnumerator LoadOTHER()
+    IEnumerator LoadBINARYDIABETES()
     {
         transition.SetTrigger("Start");
         yield return new WaitForSeconds(transitionTime);
@@ -71,11 +72,23 @@ public class StartScreen : MonoBehaviour
         DynamicGI.UpdateEnvironment();
     }
 
+    public void On_KNNDIABETES_dataset ()
+    {
+        StartCoroutine(LoadKNNDIABETES());
+    }
+    IEnumerator LoadKNNDIABETES()
+    {
+        transition.SetTrigger("Start");
+        yield return new WaitForSeconds(transitionTime);
+        SceneManager.LoadScene("KNNDiabetesScene");
+        DynamicGI.UpdateEnvironment();
+    }
+
+    // If 'Main menu' button is selected
     public void onMAIN ()
     {
         StartCoroutine(LoadMAIN());
     }
-
     IEnumerator LoadMAIN()
     {
         transition.SetTrigger("Start");
