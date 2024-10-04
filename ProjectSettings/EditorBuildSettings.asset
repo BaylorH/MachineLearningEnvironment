@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/KNNScene.unity
     guid: da1567258c76040608ee201624335d8c
+  - enabled: 1
+    path: Assets/KNNDiabetesScene.unity
+    guid: c05b13a6c1c4749669c4d36ac59443ba
   m_configObjects: {}
