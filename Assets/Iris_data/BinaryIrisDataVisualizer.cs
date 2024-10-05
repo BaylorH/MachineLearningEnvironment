@@ -25,6 +25,7 @@ public class BinaryIrisDataVisualizer : MonoBehaviour
 
     public TextMeshProUGUI predictionText;
     public TextMeshProUGUI ErrorText;
+    public TextMeshProUGUI accuracyText;
     private string prediction;
 
     [System.Serializable]
@@ -195,6 +196,10 @@ public class BinaryIrisDataVisualizer : MonoBehaviour
     void Start()
     {
         FindInputFields();
+
+        // Display the accuracy on start after training
+        float finalAccuracy = client.GetAccuracy();
+        //accuracyText.text = $"Model Accuracy: {finalAccuracy}%";
 
         // Get min points
         float xMin = dataPoints.Min(p => p.sepal_length);
