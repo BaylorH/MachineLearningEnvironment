@@ -185,17 +185,26 @@ public class BinaryIrisPredictionClient : MonoBehaviour
         new IrisDataPoint { sepal_length = 5.9f, sepal_width = 3.0f, petal_length = 5.1f, petal_width = 1.8f, prediction = "Iris-nonsetosa" },
     };
 
+    private NeuralNetwork net;
+
     private void Start()
     {
         InitializeData();
+
+        // define neural network (same structure as in python: 2 layers)
+        net = new NeuralNetwork(inputSize: 4, hiddenSize: 5, outputSize: 2);
+
+        // train neural network
+        TrainNetwork();
     }
 
     private void InitializeData()
     {
+        // convert IrisDataPoint array into training data and labels
         List<float[]> dataArrayList = new List<float[]>();
         List<string> labelList = new List<string>();
 
-        foreach (KNNIrisDataVisualizer.IrisDataPoint point in irisDataPoints)
+        foreach (IrisDataPoint point in irisDataPoints)
         {
             dataArrayList.Add(new float[] { point.sepal_length, point.sepal_width, point.petal_length, point.petal_width });
             labelList.Add(point.prediction);
@@ -205,11 +214,49 @@ public class BinaryIrisPredictionClient : MonoBehaviour
         trainingLabels = labelList.ToArray();
     }
 
+    // train the network using a simple gradient descent
+    private void TrainNetwork()
+    {
+        float learningRate = 0.01f;
+        int epochs = 20;
+
+        // binary encoding for labels ("Iris-setosa" -> 0, "Iris-nonsetosa" -> 1)
+        int[] trainLabels = new int[trainingLabels.Length];
+        for (int i = 0; i < trainingLabels.Length; i++)
+        {
+            trainLabels[i] = trainingLabels[i] == "Iris-setosa" ? 0 : 1;
+        }
+
+        for (int epoch = 0; epoch < epochs; epoch++)
+        {
+            float epochLoss = 0f;
+            for (int i = 0; i < trainingData.Length; i++)
+            {
+                float[] input = trainingData[i];
+                int label = trainLabels[i];
+
+                // forward pass
+                float[] output = net.Forward(input);
+
+                // calculate loss
+                float loss = CrossEntropyLoss(output, label);
+                epochLoss += loss;
+
+                // backpropagate and update weights
+                net.Backpropagate(input, label, learningRate);
+            }
+
+            Debug.Log($"Epoch {epoch + 1}/{epochs}, Loss: {epochLoss / trainingData.Length}");
+        }
+    }
+
     public void Predict(float[] input, Action<string> onOutputReceived, Action<Exception> fallback)
     {
         try
         {
-            string prediction = BinaryPredict(input);
+            float[] output = net.Forward(input);
+            int predictedClass = output[0] > output[1] ? 0 : 1; // choose class with highest value
+            string prediction = predictedClass == 0 ? "Iris-setosa" : "Iris-nonsetosa";
             onOutputReceived(prediction);
         }
         catch (Exception ex)
@@ -218,39 +265,168 @@ public class BinaryIrisPredictionClient : MonoBehaviour
         }
     }
 
-    private string BinaryPredict(float[] input)
+    private float CrossEntropyLoss(float[] output, int target)
     {
-        // Simple logistic regression prediction logic
-        // This is a very basic implementation for demonstration purposes
-        // Normally, you would train your model on the data
-
-        float threshold = 0.5f; // Threshold for binary classification
-        float linearCombination = LogisticFunction(input); // Calculate the linear combination for the logistic function
-
-        // Use a simple threshold to determine class
-        return linearCombination >= threshold ? "Iris-nonsetosa" : "Iris-setosa";
+        float epsilon = 1e-9f;
+        float targetValue = target == 0 ? output[0] : output[1];
+        return -Mathf.Log(targetValue + epsilon);
     }
 
-    private float LogisticFunction(float[] input)
-    {
-        // Example weights for the logistic regression model (these would normally be learned through training)
-        float[] weights = { 0.3f, 0.5f, -0.2f, 0.1f };
-        float bias = -1.0f; // Example bias term
+}
+public class NeuralNetwork
+{
+    private float[] hiddenWeights;
+    private float[] outputWeights;
+    private float biasHidden, biasOutput;
+    private int inputSize;
+    private int hiddenSize;
+    private int outputSize;
 
-        // Calculate the linear combination of inputs and weights
-        float z = bias;
-        for (int i = 0; i < input.Length; i++)
+    public NeuralNetwork(int inputSize, int hiddenSize, int outputSize)
+    {
+        this.inputSize = inputSize;
+        this.hiddenSize = hiddenSize;
+        this.outputSize = outputSize;
+
+        // initialize random weights for hidden layer
+        hiddenWeights = new float[inputSize * hiddenSize];
+        for (int i = 0; i < hiddenWeights.Length; i++)
         {
-            z += weights[i] * input[i];
+            hiddenWeights[i] = UnityEngine.Random.Range(-1f, 1f);
         }
 
-        // Apply the sigmoid function
-        return Sigmoid(z);
+        // initialize random weights for output layer
+        outputWeights = new float[hiddenSize * outputSize];
+        for (int i = 0; i < outputWeights.Length; i++)
+        {
+            outputWeights[i] = UnityEngine.Random.Range(-1f, 1f);
+        }
+
+        biasHidden = UnityEngine.Random.Range(-1f, 1f);
+        biasOutput = UnityEngine.Random.Range(-1f, 1f);
     }
 
-    private float Sigmoid(float z)
+    // forward pass: Input -> Hidden Layer -> Output Layer
+    public float[] Forward(float[] input)
     {
-        // Sigmoid function
-        return 1 / (1 + Mathf.Exp(-z));
+        // hidden layer computation
+        float[] hiddenOutput = new float[hiddenSize];
+        for (int i = 0; i < hiddenSize; i++)
+        {
+            hiddenOutput[i] = biasHidden;
+            for (int j = 0; j < inputSize; j++)
+            {
+                hiddenOutput[i] += input[j] * hiddenWeights[j * hiddenSize + i];
+            }
+            hiddenOutput[i] = ReLU(hiddenOutput[i]); // ReLU activation function
+        }
+
+        // output layer computation
+        float[] finalOutput = new float[outputSize]; // binary output (2 classes)
+        for (int i = 0; i < outputSize; i++)
+        {
+            finalOutput[i] = biasOutput;
+            for (int j = 0; j < hiddenSize; j++)
+            {
+                finalOutput[i] += hiddenOutput[j] * outputWeights[j * outputSize + i];
+            }
+        }
+
+        // apply softmax for output layer
+        return Softmax(finalOutput);
+    }
+
+    // backpropagation for weight updates
+    public void Backpropagate(float[] input, int target, float learningRate)
+    {
+        // forward pass to get the outputs
+        float[] hiddenOutput = new float[hiddenSize];
+        for (int i = 0; i < hiddenSize; i++)
+        {
+            hiddenOutput[i] = biasHidden;
+            for (int j = 0; j < inputSize; j++)
+            {
+                hiddenOutput[i] += input[j] * hiddenWeights[j * hiddenSize + i];
+            }
+            hiddenOutput[i] = ReLU(hiddenOutput[i]); // ReLU activation function
+        }
+
+        // get the output from the forward pass
+        float[] finalOutput = new float[outputSize];
+        for (int i = 0; i < outputSize; i++)
+        {
+            finalOutput[i] = biasOutput;
+            for (int j = 0; j < hiddenSize; j++)
+            {
+                finalOutput[i] += hiddenOutput[j] * outputWeights[j * outputSize + i];
+            }
+        }
+        finalOutput = Softmax(finalOutput);
+
+        // compute the output layer error (Cross entropy derivative)
+        float[] outputError = new float[outputSize];
+        for (int i = 0; i < outputSize; i++)
+        {
+            outputError[i] = finalOutput[i] - (i == target ? 1 : 0);
+        }
+
+        // backpropagate to the hidden layer
+        float[] hiddenError = new float[hiddenSize];
+        for (int i = 0; i < hiddenSize; i++)
+        {
+            hiddenError[i] = 0;
+            for (int j = 0; j < outputSize; j++)
+            {
+                hiddenError[i] += outputError[j] * outputWeights[i * outputSize + j];
+            }
+            hiddenError[i] *= ReLUDerivative(hiddenOutput[i]);
+        }
+
+        // update output layer weights
+        for (int i = 0; i < hiddenSize; i++)
+        {
+            for (int j = 0; j < outputSize; j++)
+            {
+                outputWeights[i * outputSize + j] -= learningRate * outputError[j] * hiddenOutput[i];
+            }
+        }
+
+        // update hidden layer weights
+        for (int i = 0; i < inputSize; i++)
+        {
+            for (int j = 0; j < hiddenSize; j++)
+            {
+                hiddenWeights[i * hiddenSize + j] -= learningRate * hiddenError[j] * input[i];
+            }
+        }
+
+        // update biases
+        for (int i = 0; i < outputSize; i++)
+        {
+            biasOutput -= learningRate * outputError[i];
+        }
+        for (int i = 0; i < hiddenSize; i++)
+        {
+            biasHidden -= learningRate * hiddenError[i];
+        }
+    }
+
+    // ReLU activation function
+    private float ReLU(float x)
+    {
+        return Mathf.Max(0, x);
+    }
+
+    // derivative of ReLU
+    private float ReLUDerivative(float x)
+    {
+        return x > 0 ? 1f : 0f;
+    }
+
+    // softmax activation function for the output layer
+    private float[] Softmax(float[] z)
+    {
+        float sumExp = Mathf.Exp(z[0]) + Mathf.Exp(z[1]);
+        return new float[] { Mathf.Exp(z[0]) / sumExp, Mathf.Exp(z[1]) / sumExp };
     }
 }
