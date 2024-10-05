@@ -8,6 +8,7 @@ public class StartScreen : MonoBehaviour
     public Animator transition;
     public float transitionTime = 1f;
     // Start is called before the first frame update
+
     // From Start scene, if select 'Binary classification'
     public void On_BINARY_algorithm()
     {
@@ -60,6 +61,7 @@ public class StartScreen : MonoBehaviour
         DynamicGI.UpdateEnvironment();
     }
 
+    // From BinaryScene, if select 'Diabetes dataset'
     public void On_BINARYDIABETES_dataset ()
     {
         StartCoroutine(LoadBINARYDIABETES());
@@ -68,10 +70,11 @@ public class StartScreen : MonoBehaviour
     {
         transition.SetTrigger("Start");
         yield return new WaitForSeconds(transitionTime);
-        SceneManager.LoadScene("KNNIrisScene");
+        SceneManager.LoadScene("BinaryDiabetesScene");
         DynamicGI.UpdateEnvironment();
     }
 
+    // From KNNScene, if select 'Diabetes dataset'
     public void On_KNNDIABETES_dataset ()
     {
         StartCoroutine(LoadKNNDIABETES());
