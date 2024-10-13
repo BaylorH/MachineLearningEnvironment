@@ -33,6 +33,8 @@ public class BinaryIrisPredictionClient : MonoBehaviour
 {
     private float[][] trainingData;
     private string[] trainingLabels;
+    private float[][] testData;
+    private string[] testLabels;
     private float accuracy;
 
     private IrisDataPoint[] irisDataPoints = new IrisDataPoint[] {
@@ -215,6 +217,21 @@ public class BinaryIrisPredictionClient : MonoBehaviour
 
         trainingData = dataArrayList.ToArray();
         trainingLabels = labelList.ToArray();
+
+        // shuffle data and labels
+        System.Random rand = new System.Random();
+        var shuffledData = dataArrayList.Zip(labelList, (data, label) => new { data, label })
+                                        .OrderBy(x => rand.Next())
+                                        .ToArray();
+
+        // split into training and testing sets (80% training, 20% testing)
+        int splitIndex = (int)(0.8 * shuffledData.Length);
+
+        trainingData = shuffledData.Take(splitIndex).Select(x => x.data).ToArray();
+        trainingLabels = shuffledData.Take(splitIndex).Select(x => x.label).ToArray();
+        testData = shuffledData.Skip(splitIndex).Select(x => x.data).ToArray();
+        testLabels = shuffledData.Skip(splitIndex).Select(x => x.label).ToArray();
+
     }
 
     // train the network using a simple gradient descent
@@ -259,29 +276,28 @@ public class BinaryIrisPredictionClient : MonoBehaviour
     {
         int correctPredictions = 0;
 
-        // Iterate over the entire dataset and predict labels
-        for (int i = 0; i < trainingData.Length; i++)
+        // iterate over the entire dataset and predict labels
+        for (int i = 0; i < testData.Length; i++)
         {
-            float[] input = trainingData[i];
-            int actualLabel = trainingLabels[i] == "Iris-setosa" ? 0 : 1;
+            float[] input = testData[i];
+            int actualLabel = testLabels[i] == "Iris-setosa" ? 0 : 1;
 
-            // Forward pass (prediction)
+            // forward pass (prediction)
             float[] output = net.Forward(input);
             int predictedClass = output[0] > output[1] ? 0 : 1;
 
-            // Check if the prediction is correct
+            // check if the prediction is correct
             if (predictedClass == actualLabel)
             {
                 correctPredictions++;
             }
         }
 
-        // Calculate accuracy as a percentage
-        accuracy = (float)correctPredictions / trainingData.Length * 100f;
+        // calculate accuracy as a percentage
+        accuracy = (float)correctPredictions / testData.Length * 100f;
 
-        // Display the final accuracy
-        //Debug.Log($"Final Accuracy: {accuracy}%");
-        Debug.Log($"Final Accuracy: .95");
+        // display the final accuracy
+        Debug.Log($"Final Accuracy: {accuracy}%");
     }
     public float GetAccuracy()
     {

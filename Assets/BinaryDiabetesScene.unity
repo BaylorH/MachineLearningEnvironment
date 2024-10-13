@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465797, g: 0.4964149, b: 0.5748187, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.49641407, b: 0.57481736, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -357,7 +357,7 @@ GameObject:
   - component: {fileID: 40707265}
   - component: {fileID: 40707264}
   m_Layer: 5
-  m_Name: SepalWidth
+  m_Name: BloodPressure
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -914,7 +914,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Sepal Width
+  m_text: Blood Pressure
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1323,7 +1323,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Input Flower
+  m_text: Input Data
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1544,7 +1544,7 @@ GameObject:
   - component: {fileID: 221573578}
   - component: {fileID: 221573579}
   m_Layer: 5
-  m_Name: Petal Width Label
+  m_Name: Age Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2014,7 +2014,7 @@ GameObject:
   - component: {fileID: 325148733}
   - component: {fileID: 325148732}
   m_Layer: 5
-  m_Name: Legend - Setosa
+  m_Name: Legend - Diabetic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2059,7 +2059,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Setosa
+  m_text: Diabetic
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2250,7 +2250,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: between 3.0 and 4.0
+  m_text: between 0.0 and 120.0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2365,12 +2365,12 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Input a flower measurement to engage our machine learning model. The model
-    will predict if the Iris is Setosa or Non-Setosa.
+  m_text: 'Input a person''s data to engage our machine learning model. The model
+    will predict if the person is diabetic or non-diabetic.
 
 
-    The model is  a binary
-    classification model with accuracy score of 1.0. '
+    The model is a
+    binary classification model with accuracy score of __. '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2544,7 +2544,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Petal Width (cm): '
+  m_text: 'Age: '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2748,6 +2748,8 @@ GameObject:
   - component: {fileID: 543522019}
   - component: {fileID: 543522020}
   - component: {fileID: 543522021}
+  - component: {fileID: 543522022}
+  - component: {fileID: 543522023}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2854,7 +2856,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 543522014}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: be0b277c3b318ab44a0960515cb57bdf, type: 3}
   m_Name: 
@@ -2876,7 +2878,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 543522014}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e897de29c30c9ea4b8ec52c74328904a, type: 3}
   m_Name: 
@@ -2893,6 +2895,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0da968f9ddf9c2741a2a8f18937bf741, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &543522022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543522014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e250490fb0ef94d44a1ae86d3f54d321, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &543522023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543522014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff5b49f0733d0c640a577b3cb0892801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataPointPrefab: {fileID: 2276175150501940869, guid: 1d52bd96520404397bbd5f461520e8c7, type: 3}
+  DiabeticMaterial: {fileID: 2100000, guid: 08996e96009b6453ea8061d534867b6e, type: 2}
+  NonDiabeticMaterial: {fileID: 2100000, guid: 70759b161869f48f28eeedb7d30d29c5, type: 2}
+  glucoseInput: {fileID: 0}
+  bloodPressureInput: {fileID: 0}
+  bmiInput: {fileID: 0}
+  ageInput: {fileID: 0}
+  client: {fileID: 543522022}
+  predictionText: {fileID: 371855070}
+  ErrorText: {fileID: 1741832180}
 --- !u!1 &547093200
 GameObject:
   m_ObjectHideFlags: 0
@@ -3040,7 +3076,7 @@ GameObject:
   - component: {fileID: 614135077}
   - component: {fileID: 614135076}
   m_Layer: 5
-  m_Name: PetalWidth
+  m_Name: Age
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3215,7 +3251,7 @@ GameObject:
   - component: {fileID: 712215285}
   - component: {fileID: 712215284}
   m_Layer: 5
-  m_Name: Legend - Nonsetosa
+  m_Name: Legend - Not diabetic
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3260,9 +3296,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Non-Setosa
-
-'
+  m_text: Not diabetic
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3417,7 +3451,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: between .5 and 5.0
+  m_text: between 16.0 and 45.0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3715,7 +3749,7 @@ GameObject:
   - component: {fileID: 944421442}
   - component: {fileID: 944421443}
   m_Layer: 5
-  m_Name: Sepal Length Label
+  m_Name: Glucose Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4037,7 +4071,7 @@ GameObject:
   - component: {fileID: 1001156244}
   - component: {fileID: 1001156243}
   m_Layer: 5
-  m_Name: SepalLength
+  m_Name: Glucose
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4977,7 +5011,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Sepal Width (cm):'
+  m_text: 'Blood Pressure:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -5661,7 +5695,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'between .1 and 1.0
+  m_text: 'between 0 and 110
 
 
 '
@@ -5859,7 +5893,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Sepal Length (cm):'
+  m_text: 'Glucose:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6128,7 +6162,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Petal Length
+  m_text: BMI
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6266,7 +6300,7 @@ GameObject:
   - component: {fileID: 1497908787}
   - component: {fileID: 1497908788}
   m_Layer: 5
-  m_Name: Sepal Width Label
+  m_Name: Blood Pressure Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6389,7 +6423,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Petal Length (cm): '
+  m_text: 'BMI: '
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -6962,8 +6996,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 543522019}
-        m_TargetAssemblyTypeName: UiScript, Assembly-CSharp
+      - m_Target: {fileID: 543522023}
+        m_TargetAssemblyTypeName: BinaryDiabetesDataVisualizer, Assembly-CSharp
         m_MethodName: AddData
         m_Mode: 1
         m_Arguments:
@@ -7090,7 +7124,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: between 4.0 and 6.0
+  m_text: between 70.0 and 200.0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7315,7 +7349,7 @@ GameObject:
   - component: {fileID: 1919903588}
   - component: {fileID: 1919903587}
   m_Layer: 5
-  m_Name: PetalLength
+  m_Name: BMI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7536,7 +7570,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Sepal Length
+  m_text: Glucose
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -7880,7 +7914,7 @@ GameObject:
   - component: {fileID: 2079737864}
   - component: {fileID: 2079737865}
   m_Layer: 5
-  m_Name: Petal Length Label
+  m_Name: BMI Label
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7981,7 +8015,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2114136359}
-  - component: {fileID: 2114136358}
+  - component: {fileID: 2114136360}
   m_Layer: 0
   m_Name: PlotData
   m_TagString: Untagged
@@ -7989,28 +8023,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2114136358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2114136357}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be0b277c3b318ab44a0960515cb57bdf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dataPointPrefab: {fileID: 2276175150501940869, guid: 6acb8149aac7df34ebd9170bf3ba09c2, type: 3}
-  SetosaMaterial: {fileID: 2100000, guid: 5eac65fd6a1a8394abb4ddf030fe73ee, type: 2}
-  NonSetosaMaterial: {fileID: 2100000, guid: ef985fdd8a8bc194d80a9f0de8fa141e, type: 2}
-  petalLengthInput: {fileID: 0}
-  petalWidthInput: {fileID: 0}
-  sepalLengthInput: {fileID: 0}
-  sepalWidthInput: {fileID: 0}
-  client: {fileID: 0}
-  predictionText: {fileID: 0}
-  ErrorText: {fileID: 0}
 --- !u!4 &2114136359
 Transform:
   m_ObjectHideFlags: 0
@@ -8026,6 +8038,28 @@ Transform:
   m_Children: []
   m_Father: {fileID: 329612524}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2114136360
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114136357}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff5b49f0733d0c640a577b3cb0892801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataPointPrefab: {fileID: 2276175150501940869, guid: 1d52bd96520404397bbd5f461520e8c7, type: 3}
+  DiabeticMaterial: {fileID: 2100000, guid: 08996e96009b6453ea8061d534867b6e, type: 2}
+  NonDiabeticMaterial: {fileID: 2100000, guid: 70759b161869f48f28eeedb7d30d29c5, type: 2}
+  glucoseInput: {fileID: 0}
+  bloodPressureInput: {fileID: 0}
+  bmiInput: {fileID: 0}
+  ageInput: {fileID: 0}
+  client: {fileID: 543522022}
+  predictionText: {fileID: 371855070}
+  ErrorText: {fileID: 1741832180}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

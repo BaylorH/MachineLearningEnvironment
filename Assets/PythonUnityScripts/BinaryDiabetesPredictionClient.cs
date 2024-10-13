@@ -1,13 +1,43 @@
+//using System;
+//using UnityEngine;
+
+//public class PredictionClient : MonoBehaviour
+//{
+//    private PredictionRequester predictionRequester;
+
+//    private void Start() => InitializeServer();
+
+//    public void InitializeServer() {
+//        predictionRequester = new PredictionRequester();
+//        predictionRequester.Start();
+//    }
+
+//    public void Predict(float[] input, Action<string> onOutputReceived, Action<Exception> fallback) {
+//        predictionRequester.SetOnTextReceivedListener(onOutputReceived, fallback);
+//        predictionRequester.SendInput(input);
+//    }
+
+//    private void OnDestroy() {
+//        predictionRequester.Stop();
+//    }
+//}
+
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using UnityEngine;
-using static KNNDiabetesDataVisualizer;
+using static BinaryDiabetesDataVisualizer;
+using static UnityEngine.Mesh;
 
-public class KNNDiabetesPredictionClient : MonoBehaviour
+public class BinaryDiabetesPredictionClient : MonoBehaviour
 {
     private float[][] trainingData;
     private string[] trainingLabels;
+    private float[][] testData;
+    private string[] testLabels;
+    private float accuracy;
+
     private DiabetesDataPoint[] diabetesDataPoints = new DiabetesDataPoint[] {
         new DiabetesDataPoint { glucose = 148.0f, blood_pressure = 72.0f, bmi = 33.6f, age = 50.0f, prediction = "Diabetic" },
         new DiabetesDataPoint { glucose = 85.0f, blood_pressure = 66.0f, bmi = 26.6f, age = 31.0f, prediction = "Not diabetic" },
@@ -779,17 +809,26 @@ public class KNNDiabetesPredictionClient : MonoBehaviour
         new DiabetesDataPoint { glucose = 93.0f, blood_pressure = 70.0f, bmi = 30.4f, age = 23.0f, prediction = "Not diabetic" },
     };
 
+    private NeuralNetwork net;
+
     private void Start()
     {
         InitializeData();
+
+        // define neural network (same structure as in python: 2 layers)
+        net = new NeuralNetwork(inputSize: 4, hiddenSize: 5, outputSize: 2);
+
+        // train neural network
+        TrainNetwork();
     }
 
     private void InitializeData()
     {
+        // convert DiabetesDataPoint array into training data and labels
         List<float[]> dataArrayList = new List<float[]>();
         List<string> labelList = new List<string>();
 
-        foreach (KNNDiabetesDataVisualizer.DiabetesDataPoint point in diabetesDataPoints)
+        foreach (DiabetesDataPoint point in diabetesDataPoints)
         {
             dataArrayList.Add(new float[] { point.glucose, point.blood_pressure, point.bmi, point.age });
             labelList.Add(point.prediction);
@@ -797,13 +836,100 @@ public class KNNDiabetesPredictionClient : MonoBehaviour
 
         trainingData = dataArrayList.ToArray();
         trainingLabels = labelList.ToArray();
+
+        // shuffle data and labels
+        System.Random rand = new System.Random();
+        var shuffledData = dataArrayList.Zip(labelList, (data, label) => new { data, label })
+                                        .OrderBy(x => rand.Next())
+                                        .ToArray();
+
+        // split into training and testing sets (80% training, 20% testing)
+        int splitIndex = (int)(0.8 * shuffledData.Length);
+
+        trainingData = shuffledData.Take(splitIndex).Select(x => x.data).ToArray();
+        trainingLabels = shuffledData.Take(splitIndex).Select(x => x.label).ToArray();
+        testData = shuffledData.Skip(splitIndex).Select(x => x.data).ToArray();
+        testLabels = shuffledData.Skip(splitIndex).Select(x => x.label).ToArray();
+
+    }
+
+    // train the network using a simple gradient descent
+    private void TrainNetwork()
+    {
+        float learningRate = 0.01f;
+        int epochs = 20;
+
+        // binary encoding for labels ("Diabetic" -> 0, "Non diabetic" -> 1)
+        int[] trainLabels = new int[trainingLabels.Length];
+        for (int i = 0; i < trainingLabels.Length; i++)
+        {
+            trainLabels[i] = trainingLabels[i] == "Diabetic" ? 0 : 1;
+        }
+
+        for (int epoch = 0; epoch < epochs; epoch++)
+        {
+            float epochLoss = 0f;
+            for (int i = 0; i < trainingData.Length; i++)
+            {
+                float[] input = trainingData[i];
+                int label = trainLabels[i];
+
+                // forward pass
+                float[] output = net.Forward(input);
+
+                // calculate loss
+                float loss = CrossEntropyLoss(output, label);
+                epochLoss += loss;
+
+                // backpropagate and update weights
+                net.Backpropagate(input, label, learningRate);
+            }
+
+            Debug.Log($"Epoch {epoch + 1}/{epochs}, Loss: {epochLoss / trainingData.Length}");
+        }
+
+        CalculateAccuracy();
+    }
+
+    private void CalculateAccuracy()
+    {
+        int correctPredictions = 0;
+
+        // iterate over the entire dataset and predict labels
+        for (int i = 0; i < testData.Length; i++)
+        {
+            float[] input = testData[i];
+            int actualLabel = testLabels[i] == "Diabetic" ? 0 : 1;
+
+            // forward pass (prediction)
+            float[] output = net.Forward(input);
+            int predictedClass = output[0] > output[1] ? 0 : 1;
+
+            // check if the prediction is correct
+            if (predictedClass == actualLabel)
+            {
+                correctPredictions++;
+            }
+        }
+
+        // calculate accuracy as a percentage
+        accuracy = (float)correctPredictions / testData.Length * 100f;
+
+        // display the final accuracy
+        Debug.Log($"Final Accuracy: {accuracy}%");
+    }
+    public float GetAccuracy()
+    {
+        return accuracy;
     }
 
     public void Predict(float[] input, Action<string> onOutputReceived, Action<Exception> fallback)
     {
         try
         {
-            string prediction = KNNPredict(input, 3); // k-value = 3
+            float[] output = net.Forward(input);
+            int predictedClass = output[0] > output[1] ? 0 : 1; // choose class with highest value
+            string prediction = predictedClass == 0 ? "Diabetic" : "Not diabetic";
             onOutputReceived(prediction);
         }
         catch (Exception ex)
@@ -812,33 +938,168 @@ public class KNNDiabetesPredictionClient : MonoBehaviour
         }
     }
 
-    private string KNNPredict(float[] input, int k)
+    private float CrossEntropyLoss(float[] output, int target)
     {
-        var distances = new List<(string label, float distance)>();
-
-        for (int i = 0; i < trainingData.Length; i++)
-        {
-            float distance = EuclideanDistance(input, trainingData[i]);
-            distances.Add((trainingLabels[i], distance));
-        }
-
-        var sorted = distances.OrderBy(d => d.distance).Take(k).ToList();
-        var prediction = sorted
-            .GroupBy(d => d.label)
-            .OrderByDescending(g => g.Count())
-            .ThenBy(g => g.Min(x => x.distance)) // in case of tie, take class with closer points
-            .First().Key;
-
-        return prediction;
+        float epsilon = 1e-9f;
+        float targetValue = target == 0 ? output[0] : output[1];
+        return -Mathf.Log(targetValue + epsilon);
     }
 
-    private float EuclideanDistance(float[] a, float[] b)
+}
+public class NeuralNetworkDiabetes
+{
+    private float[] hiddenWeights;
+    private float[] outputWeights;
+    private float biasHidden, biasOutput;
+    private int inputSize;
+    private int hiddenSize;
+    private int outputSize;
+
+    public NeuralNetworkDiabetes(int inputSize, int hiddenSize, int outputSize)
     {
-        float sum = 0f;
-        for (int i = 0; i < a.Length; i++)
+        this.inputSize = inputSize;
+        this.hiddenSize = hiddenSize;
+        this.outputSize = outputSize;
+
+        // initialize random weights for hidden layer
+        hiddenWeights = new float[inputSize * hiddenSize];
+        for (int i = 0; i < hiddenWeights.Length; i++)
         {
-            sum += Mathf.Pow(a[i] - b[i], 2);
+            hiddenWeights[i] = UnityEngine.Random.Range(-1f, 1f);
         }
-        return Mathf.Sqrt(sum);
+
+        // initialize random weights for output layer
+        outputWeights = new float[hiddenSize * outputSize];
+        for (int i = 0; i < outputWeights.Length; i++)
+        {
+            outputWeights[i] = UnityEngine.Random.Range(-1f, 1f);
+        }
+
+        biasHidden = UnityEngine.Random.Range(-1f, 1f);
+        biasOutput = UnityEngine.Random.Range(-1f, 1f);
+    }
+
+    // forward pass: Input -> Hidden Layer -> Output Layer
+    public float[] Forward(float[] input)
+    {
+        // hidden layer computation
+        float[] hiddenOutput = new float[hiddenSize];
+        for (int i = 0; i < hiddenSize; i++)
+        {
+            hiddenOutput[i] = biasHidden;
+            for (int j = 0; j < inputSize; j++)
+            {
+                hiddenOutput[i] += input[j] * hiddenWeights[j * hiddenSize + i];
+            }
+            hiddenOutput[i] = ReLU(hiddenOutput[i]); // ReLU activation function
+        }
+
+        // output layer computation
+        float[] finalOutput = new float[outputSize]; // binary output (2 classes)
+        for (int i = 0; i < outputSize; i++)
+        {
+            finalOutput[i] = biasOutput;
+            for (int j = 0; j < hiddenSize; j++)
+            {
+                finalOutput[i] += hiddenOutput[j] * outputWeights[j * outputSize + i];
+            }
+        }
+
+        // apply softmax for output layer
+        return Softmax(finalOutput);
+    }
+
+    // backpropagation for weight updates
+    public void Backpropagate(float[] input, int target, float learningRate)
+    {
+        // forward pass to get the outputs
+        float[] hiddenOutput = new float[hiddenSize];
+        for (int i = 0; i < hiddenSize; i++)
+        {
+            hiddenOutput[i] = biasHidden;
+            for (int j = 0; j < inputSize; j++)
+            {
+                hiddenOutput[i] += input[j] * hiddenWeights[j * hiddenSize + i];
+            }
+            hiddenOutput[i] = ReLU(hiddenOutput[i]); // ReLU activation function
+        }
+
+        // get the output from the forward pass
+        float[] finalOutput = new float[outputSize];
+        for (int i = 0; i < outputSize; i++)
+        {
+            finalOutput[i] = biasOutput;
+            for (int j = 0; j < hiddenSize; j++)
+            {
+                finalOutput[i] += hiddenOutput[j] * outputWeights[j * outputSize + i];
+            }
+        }
+        finalOutput = Softmax(finalOutput);
+
+        // compute the output layer error (Cross entropy derivative)
+        float[] outputError = new float[outputSize];
+        for (int i = 0; i < outputSize; i++)
+        {
+            outputError[i] = finalOutput[i] - (i == target ? 1 : 0);
+        }
+
+        // backpropagate to the hidden layer
+        float[] hiddenError = new float[hiddenSize];
+        for (int i = 0; i < hiddenSize; i++)
+        {
+            hiddenError[i] = 0;
+            for (int j = 0; j < outputSize; j++)
+            {
+                hiddenError[i] += outputError[j] * outputWeights[i * outputSize + j];
+            }
+            hiddenError[i] *= ReLUDerivative(hiddenOutput[i]);
+        }
+
+        // update output layer weights
+        for (int i = 0; i < hiddenSize; i++)
+        {
+            for (int j = 0; j < outputSize; j++)
+            {
+                outputWeights[i * outputSize + j] -= learningRate * outputError[j] * hiddenOutput[i];
+            }
+        }
+
+        // update hidden layer weights
+        for (int i = 0; i < inputSize; i++)
+        {
+            for (int j = 0; j < hiddenSize; j++)
+            {
+                hiddenWeights[i * hiddenSize + j] -= learningRate * hiddenError[j] * input[i];
+            }
+        }
+
+        // update biases
+        for (int i = 0; i < outputSize; i++)
+        {
+            biasOutput -= learningRate * outputError[i];
+        }
+        for (int i = 0; i < hiddenSize; i++)
+        {
+            biasHidden -= learningRate * hiddenError[i];
+        }
+    }
+
+    // ReLU activation function
+    private float ReLU(float x)
+    {
+        return Mathf.Max(0, x);
+    }
+
+    // derivative of ReLU
+    private float ReLUDerivative(float x)
+    {
+        return x > 0 ? 1f : 0f;
+    }
+
+    // softmax activation function for the output layer
+    private float[] Softmax(float[] z)
+    {
+        float sumExp = Mathf.Exp(z[0]) + Mathf.Exp(z[1]);
+        return new float[] { Mathf.Exp(z[0]) / sumExp, Mathf.Exp(z[1]) / sumExp };
     }
 }

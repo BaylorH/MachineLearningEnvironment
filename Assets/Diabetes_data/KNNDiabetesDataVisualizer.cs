@@ -1,14 +1,42 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using TMPro;
 using UnityEngine;
-using static KNNDiabetesDataVisualizer;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Drawing;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
+using System.Linq;
 
-public class KNNDiabetesPredictionClient : MonoBehaviour
+public class KNNDiabetesDataVisualizer : MonoBehaviour
 {
-    private float[][] trainingData;
-    private string[] trainingLabels;
-    private DiabetesDataPoint[] diabetesDataPoints = new DiabetesDataPoint[] {
+    public GameObject dataPointPrefab;
+    public Material DiabeticMaterial;
+    public Material NonDiabeticMaterial;
+
+    // input fields
+    public TMP_InputField glucoseInput;
+    public TMP_InputField bloodPressureInput;
+    public TMP_InputField bmiInput;
+    public TMP_InputField ageInput;
+
+    public KNNDiabetesPredictionClient client;
+
+    public TextMeshProUGUI predictionText;
+    public TextMeshProUGUI ErrorText;
+    private string prediction;
+
+    [System.Serializable]
+    public class DiabetesDataPoint
+    {
+        public float glucose;
+        public float blood_pressure;
+        public float bmi;
+        public float age;
+        public string prediction;
+    }
+
+    private DiabetesDataPoint[] dataPoints = new DiabetesDataPoint[] {
         new DiabetesDataPoint { glucose = 148.0f, blood_pressure = 72.0f, bmi = 33.6f, age = 50.0f, prediction = "Diabetic" },
         new DiabetesDataPoint { glucose = 85.0f, blood_pressure = 66.0f, bmi = 26.6f, age = 31.0f, prediction = "Not diabetic" },
         new DiabetesDataPoint { glucose = 183.0f, blood_pressure = 64.0f, bmi = 23.3f, age = 32.0f, prediction = "Diabetic" },
@@ -779,66 +807,138 @@ public class KNNDiabetesPredictionClient : MonoBehaviour
         new DiabetesDataPoint { glucose = 93.0f, blood_pressure = 70.0f, bmi = 30.4f, age = 23.0f, prediction = "Not diabetic" },
     };
 
-    private void Start()
+    void Start()
     {
-        InitializeData();
+        FindInputFields();
+
+        // Get min points
+        float xMin = dataPoints.Min(p => p.glucose);
+        float yMin = dataPoints.Min(p => p.blood_pressure);
+        float zMin = dataPoints.Min(p => p.bmi);
+
+        // For every data point in the set plot it
+        foreach (DiabetesDataPoint point in dataPoints)
+        {
+            // Adjust positions based on provided offsets and invert Z-coordinate
+            float scaler = 0.5f;
+            float glucoseScaler = 0.5f;
+            float bloodPressureScaler = 0.5f;
+            float bmiScaler = 1.7f;
+
+            Vector3 position = new Vector3(
+                point.glucose * (glucoseScaler) + 720 - xMin * scaler, // X-coordinate adjustment
+                point.blood_pressure * (bloodPressureScaler) + 547 - yMin * scaler,  // Y-coordinate adjustment
+                -point.bmi * (bmiScaler) + 56 + zMin * scaler // Z-coordinate adjustment and inversion
+            );
+
+            // Adjust rotation to point up
+            Quaternion rotation = Quaternion.Euler(-90, 0, 0);
+            // Instantiate a sphere at the adjusted position and rotation
+            GameObject sphere = Instantiate(dataPointPrefab, position, rotation);
+
+            // Determine scale based on petal_width, with a chosen multiplier for visualization purposes
+            float baseScale = 1f; // Minimum scale to ensure visibility
+            float scaleMultiplier = .1f;
+            float scale = baseScale + (point.age * scaleMultiplier);
+            sphere.transform.localScale = new Vector3(scale, scale, scale);
+
+            // Assign material based on the prediction
+            Material chosenMaterial = point.prediction == "Diabetic" ? DiabeticMaterial : NonDiabeticMaterial;
+            sphere.GetComponent<Renderer>().material = chosenMaterial;
+
+            Debug.Log($"Data point instantiated at: {position} with scale: {scale}");
+        }
     }
 
-    private void InitializeData()
+    private void FindInputFields()
     {
-        List<float[]> dataArrayList = new List<float[]>();
-        List<string> labelList = new List<string>();
+        glucoseInput = GameObject.Find("Glucose").GetComponent<TMP_InputField>();
+        bloodPressureInput = GameObject.Find("BloodPressure").GetComponent<TMP_InputField>();
+        bmiInput = GameObject.Find("BMI").GetComponent<TMP_InputField>();
+        ageInput = GameObject.Find("Age").GetComponent<TMP_InputField>();
+    }
 
-        foreach (KNNDiabetesDataVisualizer.DiabetesDataPoint point in diabetesDataPoints)
+    public void AddData()
+    {
+        // Check if any input field is empty
+        if (string.IsNullOrWhiteSpace(glucoseInput.text) ||
+                string.IsNullOrWhiteSpace(bloodPressureInput.text) ||
+                string.IsNullOrWhiteSpace(bmiInput.text) ||
+                string.IsNullOrWhiteSpace(ageInput.text))
         {
-            dataArrayList.Add(new float[] { point.glucose, point.blood_pressure, point.bmi, point.age });
-            labelList.Add(point.prediction);
+            // Debug.LogError("All input fields must be filled.");
+            ErrorText.text = "Error: All fields must be filled.";
+            return; // Exit the method early if any field is empty
         }
 
-        trainingData = dataArrayList.ToArray();
-        trainingLabels = labelList.ToArray();
-    }
+        float[] inputs = new float[4];
 
-    public void Predict(float[] input, Action<string> onOutputReceived, Action<Exception> fallback)
-    {
         try
         {
-            string prediction = KNNPredict(input, 3); // k-value = 3
-            onOutputReceived(prediction);
+            inputs[0] = float.Parse(glucoseInput.text);
+            inputs[1] = float.Parse(bloodPressureInput.text);
+            inputs[2] = float.Parse(bmiInput.text);
+            inputs[3] = float.Parse(ageInput.text);
         }
-        catch (Exception ex)
+        catch (FormatException)
         {
-            fallback(ex);
+            Debug.LogError("Input is not in a correct numeric format.");
+            //predictionText.text = "Error: Please enter valid numbers.";
+            ErrorText.text = "Error: Please enter valid numbers.";
+            return; // Exit the method if parsing fails
         }
+
+        // Get min points
+        float xMin = dataPoints.Min(p => p.glucose);
+        float yMin = dataPoints.Min(p => p.blood_pressure);
+        float zMin = dataPoints.Min(p => p.bmi);
+
+        string predictedLabel = Predict(inputs);
+        System.Threading.Thread.Sleep(500);
+        Debug.Log(prediction);
+        Debug.Log("predicted label:" + predictedLabel);
+        predictionText.text = prediction;
+        ErrorText.text = "";
+
+        float scaler = 0.5f;
+        float glucoseScaler = 0.5f;
+        float bloodPressureScaler = 0.5f;
+        float bmiScaler = 1.7f;
+        Vector3 finalPosition = new Vector3(
+            inputs[0] * glucoseScaler + 720 - xMin * scaler, // X-coordinate adjustment
+            inputs[1] * bloodPressureScaler + 547 - yMin * scaler, // Y-coordinate adjustment
+            -inputs[2] * bmiScaler + 56 + zMin * scaler // Z-coordinate adjustment and inversion
+        );
+        Vector3 position = new Vector3(829, 648, -54);
+        // Adjust rotation to point up
+        Quaternion rotation = Quaternion.Euler(-90, 0, 0);
+        GameObject newDataPoint = Instantiate(dataPointPrefab, position, rotation);
+        float baseScale = 1f; // Minimum scale to ensure visibility
+        float scaleMultiplier = .1f;
+        float scale = baseScale + (inputs[3] * scaleMultiplier);
+        newDataPoint.transform.localScale = new Vector3(scale, scale, scale);
+        Material chosenMaterial = prediction == "Prediction: Diabetic" ? DiabeticMaterial : NonDiabeticMaterial;
+        Debug.Log(chosenMaterial);
+        newDataPoint.GetComponent<Renderer>().material = chosenMaterial;
+        MoveTowards mT = newDataPoint.GetComponent<MoveTowards>();
+        mT.moveTowards(finalPosition);
+
+        // Reset user input fields
+        glucoseInput.text = "";
+        bloodPressureInput.text = "";
+        bmiInput.text = "";
+        ageInput.text = "";
+        ageInput.text = "";
     }
 
-    private string KNNPredict(float[] input, int k)
+    private string Predict(float[] input)
     {
-        var distances = new List<(string label, float distance)>();
-
-        for (int i = 0; i < trainingData.Length; i++)
+        client.Predict(input, output =>
         {
-            float distance = EuclideanDistance(input, trainingData[i]);
-            distances.Add((trainingLabels[i], distance));
-        }
-
-        var sorted = distances.OrderBy(d => d.distance).Take(k).ToList();
-        var prediction = sorted
-            .GroupBy(d => d.label)
-            .OrderByDescending(g => g.Count())
-            .ThenBy(g => g.Min(x => x.distance)) // in case of tie, take class with closer points
-            .First().Key;
-
+            prediction = "Prediction: " + output;
+        }, error =>
+        {
+        });
         return prediction;
-    }
-
-    private float EuclideanDistance(float[] a, float[] b)
-    {
-        float sum = 0f;
-        for (int i = 0; i < a.Length; i++)
-        {
-            sum += Mathf.Pow(a[i] - b[i], 2);
-        }
-        return Mathf.Sqrt(sum);
     }
 }
