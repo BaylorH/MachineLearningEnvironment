@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using UnityEngine.UIElements;
 using System.Linq;
 
-public class DiabetesDataVisualizer : MonoBehaviour
+public class BinaryDiabetesDataVisualizer : MonoBehaviour
 {
     public GameObject dataPointPrefab;
     public Material DiabeticMaterial;
@@ -20,7 +20,7 @@ public class DiabetesDataVisualizer : MonoBehaviour
     public TMP_InputField bmiInput;
     public TMP_InputField ageInput;
 
-    public KNNDiabetesPredictionClient client;
+    public BinaryDiabetesPredictionClient client;
 
     public TextMeshProUGUI predictionText;
     public TextMeshProUGUI ErrorText;
