@@ -14,6 +14,8 @@ public class BinaryDiabetesDataVisualizer : MonoBehaviour
     public Material DiabeticMaterial;
     public Material NonDiabeticMaterial;
 
+    public ObjectPooler objectPooler;
+
     // input fields
     public TMP_InputField glucoseInput;
     public TMP_InputField bloodPressureInput;
@@ -805,48 +807,118 @@ public class BinaryDiabetesDataVisualizer : MonoBehaviour
         new DiabetesDataPoint { glucose = 121.0f, blood_pressure = 72.0f, bmi = 26.2f, age = 30.0f, prediction = "Not diabetic" },
         new DiabetesDataPoint { glucose = 126.0f, blood_pressure = 60.0f, bmi = 30.1f, age = 47.0f, prediction = "Diabetic" },
         new DiabetesDataPoint { glucose = 93.0f, blood_pressure = 70.0f, bmi = 30.4f, age = 23.0f, prediction = "Not diabetic" },
+
+
     };
+
+    //void Start()
+    //{
+    //    FindInputFields();
+
+    //    // Get min points
+    //    float xMin = dataPoints.Min(p => p.glucose);
+    //    float yMin = dataPoints.Min(p => p.blood_pressure);
+    //    float zMin = dataPoints.Min(p => p.bmi);
+
+    //    // For every data point in the set plot it
+    //    foreach (DiabetesDataPoint point in dataPoints)
+    //    {
+    //        // Adjust positions based on provided offsets and invert Z-coordinate
+    //        float scaler = 0.5f;
+    //        float glucoseScaler = 0.5f;
+    //        float bloodPressureScaler = 0.5f;
+    //        float bmiScaler = 1.7f;
+
+    //        Vector3 position = new Vector3(
+    //            point.glucose * (glucoseScaler) + 720 - xMin * scaler, // X-coordinate adjustment
+    //            point.blood_pressure * (bloodPressureScaler) + 547 - yMin * scaler,  // Y-coordinate adjustment
+    //            -point.bmi * (bmiScaler) + 56 + zMin * scaler // Z-coordinate adjustment and inversion
+    //        );
+
+    //        // Adjust rotation to point up
+    //        Quaternion rotation = Quaternion.Euler(-90, 0, 0);
+    //        // Instantiate a sphere at the adjusted position and rotation
+    //        GameObject sphere = Instantiate(dataPointPrefab, position, rotation);
+
+    //        // Determine scale based on petal_width, with a chosen multiplier for visualization purposes
+    //        float baseScale = 1f; // Minimum scale to ensure visibility
+    //        float scaleMultiplier = .1f;
+    //        float scale = baseScale + (point.age * scaleMultiplier);
+    //        sphere.transform.localScale = new Vector3(scale, scale, scale);
+
+    //        // Assign material based on the prediction
+    //        Material chosenMaterial = point.prediction == "Diabetic" ? DiabeticMaterial : NonDiabeticMaterial;
+    //        sphere.GetComponent<Renderer>().material = chosenMaterial;
+
+    //        Debug.Log($"Data point instantiated at: {position} with scale: {scale}");
+    //    }
+    //}
 
     void Start()
     {
         FindInputFields();
+
+        // Ensure the objectPooler is assigned
+        if (objectPooler == null)
+        {
+            objectPooler = FindObjectOfType<ObjectPooler>();
+            if (objectPooler == null)
+            {
+                Debug.LogError("ObjectPooler is not assigned and couldn't be found in the scene.");
+                return;
+            }
+        }
 
         // Get min points
         float xMin = dataPoints.Min(p => p.glucose);
         float yMin = dataPoints.Min(p => p.blood_pressure);
         float zMin = dataPoints.Min(p => p.bmi);
 
-        // For every data point in the set plot it
+        // For every data point in the set, get a pooled object and position it
         foreach (DiabetesDataPoint point in dataPoints)
         {
-            // Adjust positions based on provided offsets and invert Z-coordinate
-            float scaler = 0.5f;
-            float glucoseScaler = 0.5f;
-            float bloodPressureScaler = 0.5f;
-            float bmiScaler = 1.7f;
+            GameObject pooledObject = objectPooler.GetPooledObject();
 
-            Vector3 position = new Vector3(
-                point.glucose * (glucoseScaler) + 720 - xMin * scaler, // X-coordinate adjustment
-                point.blood_pressure * (bloodPressureScaler) + 547 - yMin * scaler,  // Y-coordinate adjustment
-                -point.bmi * (bmiScaler) + 56 + zMin * scaler // Z-coordinate adjustment and inversion
-            );
+            if (pooledObject != null)
+            {
+                // Set the object active
+                pooledObject.SetActive(true);
 
-            // Adjust rotation to point up
-            Quaternion rotation = Quaternion.Euler(-90, 0, 0);
-            // Instantiate a sphere at the adjusted position and rotation
-            GameObject sphere = Instantiate(dataPointPrefab, position, rotation);
+                // Adjust positions based on provided offsets and invert Z-coordinate
+                float scaler = 0.5f;
+                float glucoseScaler = 0.5f;
+                float bloodPressureScaler = 0.5f;
+                float bmiScaler = 1.7f;
 
-            // Determine scale based on petal_width, with a chosen multiplier for visualization purposes
-            float baseScale = 1f; // Minimum scale to ensure visibility
-            float scaleMultiplier = .1f;
-            float scale = baseScale + (point.age * scaleMultiplier);
-            sphere.transform.localScale = new Vector3(scale, scale, scale);
+                Vector3 position = new Vector3(
+                    point.glucose * (glucoseScaler) + 720 - xMin * scaler, // X-coordinate adjustment
+                    point.blood_pressure * (bloodPressureScaler) + 547 - yMin * scaler,  // Y-coordinate adjustment
+                    -point.bmi * (bmiScaler) + 56 + zMin * scaler // Z-coordinate adjustment and inversion
+                );
 
-            // Assign material based on the prediction
-            Material chosenMaterial = point.prediction == "Diabetic" ? DiabeticMaterial : NonDiabeticMaterial;
-            sphere.GetComponent<Renderer>().material = chosenMaterial;
+                // Adjust rotation to point up
+                Quaternion rotation = Quaternion.Euler(-90, 0, 0);
 
-            Debug.Log($"Data point instantiated at: {position} with scale: {scale}");
+                // Set the pooled object's position and rotation
+                pooledObject.transform.position = position;
+                pooledObject.transform.rotation = rotation;
+
+                // Determine scale based on age, with a chosen multiplier for visualization purposes
+                float baseScale = 1f; // Minimum scale to ensure visibility
+                float scaleMultiplier = .1f;
+                float scale = baseScale + (point.age * scaleMultiplier);
+                pooledObject.transform.localScale = new Vector3(scale, scale, scale);
+
+                // Assign material based on the prediction
+                Material chosenMaterial = point.prediction == "Diabetic" ? DiabeticMaterial : NonDiabeticMaterial;
+                pooledObject.GetComponent<Renderer>().material = chosenMaterial;
+
+                Debug.Log($"Data point pooled at: {position} with scale: {scale}");
+            }
+            else
+            {
+                Debug.LogWarning("No available pooled objects.");
+            }
         }
     }
 
