@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.49641407, b: 0.57481736, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657922, g: 0.49641395, b: 0.5748176, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2922,7 +2922,7 @@ MonoBehaviour:
   dataPointPrefab: {fileID: 2276175150501940869, guid: 1d52bd96520404397bbd5f461520e8c7, type: 3}
   DiabeticMaterial: {fileID: 2100000, guid: 08996e96009b6453ea8061d534867b6e, type: 2}
   NonDiabeticMaterial: {fileID: 2100000, guid: 70759b161869f48f28eeedb7d30d29c5, type: 2}
-  objectPooler: {fileID: 1710559676}
+  objectPooler: {fileID: 0}
   glucoseInput: {fileID: 0}
   bloodPressureInput: {fileID: 0}
   bmiInput: {fileID: 0}
@@ -6655,7 +6655,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1710559677}
-  - component: {fileID: 1710559676}
+  - component: {fileID: 1710559678}
   m_Layer: 0
   m_Name: PoolingSystem
   m_TagString: Untagged
@@ -6663,20 +6663,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1710559676
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1710559675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1801abd5d34f4a3abc8f11ab1b8e213, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectToPool: {fileID: 8126079179514674599, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
-  initialPoolSize: 10
 --- !u!4 &1710559677
 Transform:
   m_ObjectHideFlags: 0
@@ -6692,6 +6678,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1710559678
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1710559675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1801abd5d34f4a3abc8f11ab1b8e213, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  objectToPool: {fileID: 8126079179514674599, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
+  initialPoolSize: 1000
 --- !u!1 &1741832178
 GameObject:
   m_ObjectHideFlags: 0
@@ -8097,10 +8097,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5b49f0733d0c640a577b3cb0892801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataPointPrefab: {fileID: 2276175150501940869, guid: 1d52bd96520404397bbd5f461520e8c7, type: 3}
+  dataPointPrefab: {fileID: 8126079179514674599, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
   DiabeticMaterial: {fileID: 2100000, guid: 08996e96009b6453ea8061d534867b6e, type: 2}
   NonDiabeticMaterial: {fileID: 2100000, guid: 70759b161869f48f28eeedb7d30d29c5, type: 2}
-  objectPooler: {fileID: 1710559676}
+  objectPooler: {fileID: 1710559678}
   glucoseInput: {fileID: 0}
   bloodPressureInput: {fileID: 0}
   bmiInput: {fileID: 0}

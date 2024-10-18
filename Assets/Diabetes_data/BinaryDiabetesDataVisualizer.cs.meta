@@ -3,7 +3,18 @@ guid: ff5b49f0733d0c640a577b3cb0892801
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - dataPointPrefab: {instanceID: 0}
+  - DiabeticMaterial: {fileID: 2100000, guid: 08996e96009b6453ea8061d534867b6e, type: 2}
+  - NonDiabeticMaterial: {fileID: 2100000, guid: 70759b161869f48f28eeedb7d30d29c5, type: 2}
+  - objectPooler: {fileID: 2873399413912933210, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+  - glucoseInput: {instanceID: 0}
+  - bloodPressureInput: {instanceID: 0}
+  - bmiInput: {instanceID: 0}
+  - ageInput: {instanceID: 0}
+  - client: {instanceID: 0}
+  - predictionText: {instanceID: 0}
+  - ErrorText: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

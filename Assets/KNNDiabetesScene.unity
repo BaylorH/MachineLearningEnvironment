@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.49641407, b: 0.57481736, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657922, g: 0.49641395, b: 0.5748176, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3533,7 +3533,7 @@ MonoBehaviour:
   dataPointPrefab: {fileID: 2276175150501940869, guid: 1d52bd96520404397bbd5f461520e8c7, type: 3}
   DiabeticMaterial: {fileID: 2100000, guid: 08996e96009b6453ea8061d534867b6e, type: 2}
   NonDiabeticMaterial: {fileID: 2100000, guid: 70759b161869f48f28eeedb7d30d29c5, type: 2}
-  objectPooler: {fileID: 618385403}
+  objectPooler: {fileID: 0}
   glucoseInput: {fileID: 0}
   bloodPressureInput: {fileID: 0}
   bmiInput: {fileID: 0}
@@ -3990,52 +3990,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 614135074}
   m_CullTransparentMesh: 1
---- !u!1 &618385402
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 618385404}
-  - component: {fileID: 618385403}
-  m_Layer: 0
-  m_Name: PoolingSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &618385403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 618385402}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1801abd5d34f4a3abc8f11ab1b8e213, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  objectToPool: {fileID: 8126079179514674599, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
-  initialPoolSize: 10
---- !u!4 &618385404
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 618385402}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 932.9199, y: 541.6651, z: -12.74973}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &712215282
 GameObject:
   m_ObjectHideFlags: 0
@@ -5209,6 +5163,74 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1007116054}
   m_CullTransparentMesh: 1
+--- !u!1001 &1063811774
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 932.9199
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 541.6651
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -12.74973
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8027860587299139900, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_Name
+      value: PoolingSystem
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+--- !u!114 &1063811775 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2873399413912933210, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+  m_PrefabInstance: {fileID: 1063811774}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1801abd5d34f4a3abc8f11ab1b8e213, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1074802364
 GameObject:
   m_ObjectHideFlags: 0
@@ -9067,7 +9089,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2114136359}
-  - component: {fileID: 2114136358}
   - component: {fileID: 2114136360}
   m_Layer: 0
   m_Name: PlotData
@@ -9076,28 +9097,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &2114136358
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2114136357}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be0b277c3b318ab44a0960515cb57bdf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  dataPointPrefab: {fileID: 0}
-  SetosaMaterial: {fileID: 2100000, guid: 5eac65fd6a1a8394abb4ddf030fe73ee, type: 2}
-  NonSetosaMaterial: {fileID: 2100000, guid: ef985fdd8a8bc194d80a9f0de8fa141e, type: 2}
-  petalLengthInput: {fileID: 0}
-  petalWidthInput: {fileID: 0}
-  sepalLengthInput: {fileID: 0}
-  sepalWidthInput: {fileID: 0}
-  client: {fileID: 0}
-  predictionText: {fileID: 0}
-  ErrorText: {fileID: 0}
 --- !u!4 &2114136359
 Transform:
   m_ObjectHideFlags: 0
@@ -9125,10 +9124,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a1025f682989bb459d1fd3bd449cf6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataPointPrefab: {fileID: 2276175150501940869, guid: 1d52bd96520404397bbd5f461520e8c7, type: 3}
+  dataPointPrefab: {fileID: 8126079179514674599, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
   DiabeticMaterial: {fileID: 2100000, guid: 08996e96009b6453ea8061d534867b6e, type: 2}
   NonDiabeticMaterial: {fileID: 2100000, guid: 70759b161869f48f28eeedb7d30d29c5, type: 2}
-  objectPooler: {fileID: 618385403}
+  objectPooler: {fileID: 1063811775}
   glucoseInput: {fileID: 0}
   bloodPressureInput: {fileID: 0}
   bmiInput: {fileID: 0}
@@ -9145,4 +9144,4 @@ SceneRoots:
   - {fileID: 543522018}
   - {fileID: 2037165075}
   - {fileID: 329612524}
-  - {fileID: 618385404}
+  - {fileID: 1063811774}
