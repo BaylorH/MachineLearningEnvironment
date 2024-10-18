@@ -889,8 +889,8 @@ public class KNNDiabetesDataVisualizer : MonoBehaviour
                 float bmiScaler = 1.7f;
 
                 Vector3 position = new Vector3(
-                    point.glucose * (glucoseScaler) + 720 - xMin * scaler, // X-coordinate adjustment
-                    point.blood_pressure * (bloodPressureScaler) + 547 - yMin * scaler,  // Y-coordinate adjustment
+                    point.glucose * (glucoseScaler) + 720+37 - xMin * scaler, // X-coordinate adjustment
+                    point.blood_pressure * (bloodPressureScaler) + 547-15 - yMin * scaler,  // Y-coordinate adjustment
                     -point.bmi * (bmiScaler) + 56 + zMin * scaler // Z-coordinate adjustment and inversion
                 );
 
@@ -975,8 +975,8 @@ public class KNNDiabetesDataVisualizer : MonoBehaviour
         float bloodPressureScaler = 0.5f;
         float bmiScaler = 1.7f;
         Vector3 finalPosition = new Vector3(
-            inputs[0] * glucoseScaler + 720 - xMin * scaler, // X-coordinate adjustment
-            inputs[1] * bloodPressureScaler + 547 - yMin * scaler, // Y-coordinate adjustment
+            inputs[0] * glucoseScaler + 720+37 - xMin * scaler, // X-coordinate adjustment
+            inputs[1] * bloodPressureScaler + 547-15 - yMin * scaler, // Y-coordinate adjustment
             -inputs[2] * bmiScaler + 56 + zMin * scaler // Z-coordinate adjustment and inversion
         );
         Vector3 position = new Vector3(829, 648, -54);

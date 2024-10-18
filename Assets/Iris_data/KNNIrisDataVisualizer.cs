@@ -203,8 +203,8 @@ public class KNNIrisDataVisualizer : MonoBehaviour {
             // Adjust positions based on provided offsets and invert Z-coordinate
             float scaler = 20.0f;
             Vector3 position = new Vector3(
-                point.sepal_length*(scaler) + 720 - xMin*scaler, // X-coordinate adjustment
-                point.sepal_width*(scaler) + 547 - yMin*scaler,  // Y-coordinate adjustment
+                point.sepal_length*(scaler) + 720+37 - xMin*scaler, // X-coordinate adjustment
+                point.sepal_width*(scaler) + 547-15 - yMin*scaler,  // Y-coordinate adjustment
                 -point.petal_length*(scaler) + 56 + zMin*scaler // Z-coordinate adjustment and inversion
             );
 
@@ -276,8 +276,8 @@ public class KNNIrisDataVisualizer : MonoBehaviour {
 
         float scaler = 20.0f;
         Vector3 finalPosition = new Vector3(
-            inputs[0] * scaler + 720 - xMin * scaler, // X-coordinate adjustment
-            inputs[1] * scaler + 547 - yMin * scaler, // Y-coordinate adjustment
+            inputs[0] * scaler + 720+37 - xMin * scaler, // X-coordinate adjustment
+            inputs[1] * scaler + 547-15 - yMin * scaler, // Y-coordinate adjustment
             -inputs[2] * scaler + 56 + zMin * scaler // Z-coordinate adjustment and inversion
         );
         Vector3 position = new Vector3(829, 648, -54);
