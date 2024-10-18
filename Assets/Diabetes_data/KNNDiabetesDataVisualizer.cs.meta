@@ -4,9 +4,10 @@ MonoImporter:
   externalObjects: {}
   serializedVersion: 2
   defaultReferences:
-  - dataPointPrefab: {fileID: 2276175150501940869, guid: 1d52bd96520404397bbd5f461520e8c7, type: 3}
+  - dataPointPrefab: {fileID: 2276175150501940869, guid: f5e35a5f6b777c349abacabca23083a6, type: 3}
   - DiabeticMaterial: {instanceID: 0}
   - NonDiabeticMaterial: {instanceID: 0}
+  - objectPooler: {instanceID: 0}
   - glucoseInput: {instanceID: 0}
   - bloodPressureInput: {instanceID: 0}
   - bmiInput: {instanceID: 0}

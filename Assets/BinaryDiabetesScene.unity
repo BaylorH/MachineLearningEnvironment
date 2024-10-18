@@ -3053,7 +3053,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5b49f0733d0c640a577b3cb0892801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataPointPrefab: {fileID: 2276175150501940869, guid: 1d52bd96520404397bbd5f461520e8c7, type: 3}
+  dataPointPrefab: {fileID: 2276175150501940869, guid: f5e35a5f6b777c349abacabca23083a6, type: 3}
   DiabeticMaterial: {fileID: 2100000, guid: 08996e96009b6453ea8061d534867b6e, type: 2}
   NonDiabeticMaterial: {fileID: 2100000, guid: 70759b161869f48f28eeedb7d30d29c5, type: 2}
   objectPooler: {fileID: 0}
@@ -6824,7 +6824,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1801abd5d34f4a3abc8f11ab1b8e213, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  objectToPool: {fileID: 8126079179514674599, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
+  objectToPool: {fileID: 2276175150501940869, guid: f5e35a5f6b777c349abacabca23083a6, type: 3}
   initialPoolSize: 1000
 --- !u!1 &1741832178
 GameObject:
@@ -8365,7 +8365,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff5b49f0733d0c640a577b3cb0892801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataPointPrefab: {fileID: 8126079179514674599, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
+  dataPointPrefab: {fileID: 2276175150501940869, guid: f5e35a5f6b777c349abacabca23083a6, type: 3}
   DiabeticMaterial: {fileID: 2100000, guid: 08996e96009b6453ea8061d534867b6e, type: 2}
   NonDiabeticMaterial: {fileID: 2100000, guid: 70759b161869f48f28eeedb7d30d29c5, type: 2}
   objectPooler: {fileID: 1710559678}
@@ -8376,63 +8376,6 @@ MonoBehaviour:
   client: {fileID: 543522022}
   predictionText: {fileID: 371855070}
   ErrorText: {fileID: 1741832180}
---- !u!1001 &1033399618462408708
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 843098539362152725, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 958.2969
-      objectReference: {fileID: 0}
-    - target: {fileID: 843098539362152725, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 590.48236
-      objectReference: {fileID: 0}
-    - target: {fileID: 843098539362152725, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -12.062547
-      objectReference: {fileID: 0}
-    - target: {fileID: 843098539362152725, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 843098539362152725, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 843098539362152725, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 843098539362152725, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 843098539362152725, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 843098539362152725, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 843098539362152725, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8126079179514674599, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
-      propertyPath: m_Name
-      value: Cube
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -8443,4 +8386,3 @@ SceneRoots:
   - {fileID: 2037165075}
   - {fileID: 329612524}
   - {fileID: 1710559677}
-  - {fileID: 1033399618462408708}

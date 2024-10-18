@@ -5439,6 +5439,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2873399413912933210, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: objectToPool
+      value: 
+      objectReference: {fileID: 2276175150501940869, guid: f5e35a5f6b777c349abacabca23083a6, type: 3}
     - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 932.9199
@@ -9392,7 +9396,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a1025f682989bb459d1fd3bd449cf6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dataPointPrefab: {fileID: 8126079179514674599, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
+  dataPointPrefab: {fileID: 2276175150501940869, guid: f5e35a5f6b777c349abacabca23083a6, type: 3}
   DiabeticMaterial: {fileID: 2100000, guid: 08996e96009b6453ea8061d534867b6e, type: 2}
   NonDiabeticMaterial: {fileID: 2100000, guid: 70759b161869f48f28eeedb7d30d29c5, type: 2}
   objectPooler: {fileID: 1063811775}
