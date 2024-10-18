@@ -52,16 +52,44 @@ public class KMeans
     }
 
     // perform one iteration of the K-Means algorithm
-    public bool PerformIteration()
-    {
-        if (!initialized || converged)
-        {
-            return false; // don't perform if not initialized or already converged
-        }
+    //public bool PerformIteration()
+    //{
+    //    if (!initialized || converged)
+    //    {
+    //        return false; // don't perform if not initialized or already converged
+    //    }
 
+    //    bool centroidsChanged = false;
+
+    //    // step 1: assign each point to nearest centroid
+    //    for (int i = 0; i < penguinData.Count; i++)
+    //    {
+    //        int nearestCentroid = GetNearestCentroid(penguinData[i].ToVector3());
+    //        if (nearestCentroid != labels[i])
+    //        {
+    //            labels[i] = nearestCentroid;
+    //            centroidsChanged = true;
+    //        }
+    //    }
+
+    //    // step 2: recompute centroids
+    //    UpdateCentroids();
+
+    //    // step 3: check for convergence
+    //    if (!centroidsChanged || currentIteration >= maxIterations)
+    //    {
+    //        converged = true; // stop if centroids have not changed or max iterations reached
+    //    }
+
+    //    currentIteration++;
+    //    return centroidsChanged;
+    //}
+
+    public bool AssignPoints()
+    {
         bool centroidsChanged = false;
 
-        // step 1: assign each point to nearest centroid
+        // Assign each point to the nearest centroid
         for (int i = 0; i < penguinData.Count; i++)
         {
             int nearestCentroid = GetNearestCentroid(penguinData[i].ToVector3());
@@ -72,17 +100,43 @@ public class KMeans
             }
         }
 
-        // step 2: recompute centroids
-        UpdateCentroids();
+        return centroidsChanged;
+    }
 
-        // step 3: check for convergence
-        if (!centroidsChanged || currentIteration >= maxIterations)
+    public void RecalculateCentroids()
+    {
+        Vector3[] newCentroids = new Vector3[numClusters];
+        int[] count = new int[numClusters];
+
+        // Reset centroids
+        for (int i = 0; i < numClusters; i++)
         {
-            converged = true; // stop if centroids have not changed or max iterations reached
+            newCentroids[i] = Vector3.zero;
+            count[i] = 0;
         }
 
-        currentIteration++;
-        return centroidsChanged;
+        // Sum up all points in each cluster
+        for (int i = 0; i < penguinData.Count; i++)
+        {
+            newCentroids[labels[i]] += penguinData[i].ToVector3();
+            count[labels[i]]++;
+        }
+
+        // Recompute centroids by taking the average
+        for (int i = 0; i < numClusters; i++)
+        {
+            if (count[i] > 0)
+            {
+                centroids[i] = newCentroids[i] / count[i];
+            }
+        }
+    }
+
+    public bool CheckConvergence()
+    {
+        // For this demo, you could define your convergence logic here. 
+        // You could return true if centroids don't change anymore, or a certain iteration limit is reached.
+        return currentIteration >= maxIterations;
     }
 
     private int GetNearestCentroid(Vector3 point)

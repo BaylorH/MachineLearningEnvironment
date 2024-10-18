@@ -20,6 +20,8 @@ public class KNNIrisDataVisualizer : MonoBehaviour {
     public TMP_InputField sepalLengthInput;
     public TMP_InputField sepalWidthInput;
 
+    private TMP_InputField[] inputFields;
+
     public KNNIrisPredictionClient client;
 
     public TextMeshProUGUI predictionText;
@@ -234,7 +236,55 @@ public class KNNIrisDataVisualizer : MonoBehaviour {
         sepalLengthInput = GameObject.Find("SepalLength").GetComponent<TMP_InputField>();
         sepalWidthInput = GameObject.Find("SepalWidth").GetComponent<TMP_InputField>();
         //dataPointPrefab = GameObject.Find("DataPoint");
+
+        inputFields = new TMP_InputField[] { petalLengthInput, petalWidthInput, sepalLengthInput, sepalWidthInput };
     }
+
+    void Update()
+    {
+        // Detect Tab key press
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            MoveFocusToNextInputField();
+        }
+    }
+
+    void MoveFocusToNextInputField()
+    {
+        // Get the currently focused input field
+        TMP_InputField currentField = GetCurrentlyFocusedField();
+
+        if (currentField == null)
+        {
+            return;
+        }
+
+        // Find the index of currently focused input field
+        int currentFieldIndex = System.Array.IndexOf(inputFields, currentField);
+
+        // Move to the next input field
+        currentFieldIndex++;
+        if (currentFieldIndex >= inputFields.Length)
+        {
+            currentFieldIndex = 0;
+        }
+
+        // Set the selected input field to be the next one
+        inputFields[currentFieldIndex].Select();
+    }
+
+    TMP_InputField GetCurrentlyFocusedField()
+    {
+        foreach (TMP_InputField field in inputFields)
+        {
+            if (field.isFocused)
+            {
+                return field;
+            }
+        }
+        return null;
+    }
+
     public void AddData()
     {
         // Check if any input field is empty

@@ -5,6 +5,10 @@ TagManager:
   serializedVersion: 2
   tags:
   - DataPoint
+  - Centroid
+  - Centroid0
+  - Centroid1
+  - Centroid2
   layers:
   - Default
   - TransparentFX
