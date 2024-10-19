@@ -3759,7 +3759,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: '3D Machinge Learning Visualization
+  m_text: '3D Machine Learning Visualization
 
 '
   m_isRightToLeft: 0
