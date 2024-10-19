@@ -3,13 +3,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using TMPro;
-using System.Drawing;
 
 public class KMeansPenguinDataVisualizer : MonoBehaviour
 {
     public GameObject dataPointPrefab;
     public GameObject centroidPrefab;
-    public Material Material1, Material2, Material3;
+    public Material Material1, Material2, Material3, Material4, Material5, Material6;
     public int numClusters = 3;
     public int maxIterations = 100;
 
@@ -20,8 +19,18 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
 
     private int iteration = 0;
 
+    public Button clusterButton2;
+    public Button clusterButton3;
+    public Button clusterButton4;
+    public Button clusterButton5;
+    public Button clusterButton6;
+
+    public Color selectedColor = Color.white;
+    public Color unselectedColor = Color.gray;
+
     public Button recalculateButton;
     public Button restartButton;
+
     public TMP_Text iterationText;
     public TMP_Text convergedText;
 
@@ -412,6 +421,14 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
 
         restartButton.gameObject.SetActive(false);
         restartButton.onClick.AddListener(OnRestartButtonClick);
+
+        clusterButton2.onClick.AddListener(() => OnClusterButtonClick(2));
+        clusterButton3.onClick.AddListener(() => OnClusterButtonClick(3));
+        clusterButton4.onClick.AddListener(() => OnClusterButtonClick(4));
+        clusterButton5.onClick.AddListener(() => OnClusterButtonClick(5));
+        clusterButton6.onClick.AddListener(() => OnClusterButtonClick(6));
+
+        UpdateClusterButtonVisuals();
     }
 
     // set up and plot initial data points
@@ -507,6 +524,54 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
         SetupDataPoints();
     }
 
+    void OnClusterButtonClick(int selectedCluster)
+    {
+        numClusters = selectedCluster;
+        kmeans = new KMeans(numClusters, maxIterations, dataPoints.ToList());  // reinitialize KMeans with new cluster count
+
+        convergedText.text = "";
+        iteration = 0;
+        iterationText.text = "Iteration #0";
+        restartButton.gameObject.SetActive(false);
+        recalculateButton.interactable = true;
+        currentState = KMeansState.InitializeCentroids;
+        recalculateButton.GetComponentInChildren<TMP_Text>().text = "Place Random Centroids";
+
+        ClearPreviousDataPoints();
+        ClearPreviousCentroids();
+        SetupDataPoints();
+
+        UpdateClusterButtonVisuals();  // update button visuals to reflect the new selection
+    }
+
+    void UpdateClusterButtonVisuals()
+    {
+        clusterButton2.GetComponent<Image>().color = unselectedColor;
+        clusterButton3.GetComponent<Image>().color = unselectedColor;
+        clusterButton4.GetComponent<Image>().color = unselectedColor;
+        clusterButton5.GetComponent<Image>().color = unselectedColor;
+        clusterButton6.GetComponent<Image>().color = unselectedColor;
+
+        // set the selected button to a lighter color
+        switch (numClusters)
+        {
+            case 2:
+                clusterButton2.GetComponent<Image>().color = selectedColor;
+                break;
+            case 3:
+                clusterButton3.GetComponent<Image>().color = selectedColor;
+                break;
+            case 4:
+                clusterButton4.GetComponent<Image>().color = selectedColor;
+                break;
+            case 5:
+                clusterButton5.GetComponent<Image>().color = selectedColor;
+                break;
+            case 6:
+                clusterButton6.GetComponent<Image>().color = selectedColor;
+                break;
+        }
+    }
 
 
     void PlaceRandomCentroids()
@@ -573,7 +638,7 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
         }
     }
 
-    // visualize the clusters with materials and print cluster info
+    // visualize clusters with materials and print cluster info
     void VisualizeClusters()
     {
         ClearPreviousDataPoints();  // clear data points
@@ -628,6 +693,9 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
             case 0: return Material1;
             case 1: return Material2;
             case 2: return Material3;
+            case 3: return Material4;
+            case 4: return Material5;
+            case 5: return Material6;
             default: return Material1; // default material if no valid label
         }
     }
