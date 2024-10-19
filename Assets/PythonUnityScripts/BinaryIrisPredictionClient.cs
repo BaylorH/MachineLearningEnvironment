@@ -270,11 +270,12 @@ public class BinaryIrisPredictionClient : MonoBehaviour
         }
 
         // calculate accuracy as a percentage
-        accuracy = (float)correctPredictions / testData.Length * 100f;
+        accuracy = (float)correctPredictions / testData.Length;
 
         // display the final accuracy
-        Debug.Log($"Final Accuracy: {accuracy}%");
+        Debug.Log($"Final Accuracy: {accuracy}");
     }
+
     public float GetAccuracy()
     {
         return accuracy;

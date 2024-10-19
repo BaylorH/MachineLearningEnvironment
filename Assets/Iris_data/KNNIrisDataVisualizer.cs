@@ -195,6 +195,10 @@ public class KNNIrisDataVisualizer : MonoBehaviour {
     void Start() {
         FindInputFields();
 
+        float finalAccuracy = client.GetAccuracy();
+        string introText = predictionText.text + " " + finalAccuracy + ".";
+        predictionText.text = introText;
+
         // Get min points
         float xMin = dataPoints.Min(p => p.sepal_length);
         float yMin = dataPoints.Min(p => p.sepal_width);

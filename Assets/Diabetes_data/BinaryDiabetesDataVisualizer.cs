@@ -818,6 +818,10 @@ public class BinaryDiabetesDataVisualizer : MonoBehaviour
     {
         FindInputFields();
 
+        float finalAccuracy = client.GetAccuracy();
+        string introText = predictionText.text + " " + finalAccuracy + ".";
+        predictionText.text = introText;
+
         // Ensure the objectPooler is assigned
         if (objectPooler == null)
         {

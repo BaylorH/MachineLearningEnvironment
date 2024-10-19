@@ -32,6 +32,10 @@ public class KNNIrisPredictionClient : MonoBehaviour
 {
     private float[][] trainingData;
     private string[] trainingLabels;
+    private float[][] testingData;
+    private string[] testingLabels;
+    private float accuracy;
+
     private IrisDataPoint[] irisDataPoints = new IrisDataPoint[] {
         new IrisDataPoint { sepal_length = 5.1f, sepal_width = 3.5f, petal_length = 1.4f, petal_width = 0.2f, prediction = "Iris-setosa" },
         new IrisDataPoint { sepal_length = 4.9f, sepal_width = 3.0f, petal_length = 1.4f, petal_width = 0.2f, prediction = "Iris-setosa" },
@@ -201,8 +205,17 @@ public class KNNIrisPredictionClient : MonoBehaviour
             labelList.Add(point.prediction);
         }
 
-        trainingData = dataArrayList.ToArray();
-        trainingLabels = labelList.ToArray();
+        System.Random rand = new System.Random();
+        var shuffledData = dataArrayList.Zip(labelList, (data, label) => new { data, label })
+                                        .OrderBy(x => rand.Next())
+                                        .ToArray();
+
+        int splitIndex = (int)(0.8 * shuffledData.Length);
+
+        trainingData = shuffledData.Take(splitIndex).Select(x => x.data).ToArray();
+        trainingLabels = shuffledData.Take(splitIndex).Select(x => x.label).ToArray();
+        testingData = shuffledData.Skip(splitIndex).Select(x => x.data).ToArray();
+        testingLabels = shuffledData.Skip(splitIndex).Select(x => x.label).ToArray();
     }
 
     public void Predict(float[] input, Action<string> onOutputReceived, Action<Exception> fallback)
@@ -246,5 +259,38 @@ public class KNNIrisPredictionClient : MonoBehaviour
             sum += Mathf.Pow(a[i] - b[i], 2);
         }
         return Mathf.Sqrt(sum);
+    }
+
+    private void CalculateAccuracy()
+    {
+        int correctPredictions = 0;
+
+        // iterate over the entire dataset and predict labels
+        for (int i = 0; i < testingData.Length; i++)
+        {
+            float[] input = testingData[i];
+            int actualLabel = testingLabels[i] == "Iris-setosa" ? 0 : 1;
+
+            // forward pass (prediction)
+            string output = KNNPredict(testingData[i], 3);
+            int predictedLabel = output == "Iris-setosa" ? 0 : 1; ;
+
+            // check if the prediction is correct
+            if (predictedLabel == actualLabel)
+            {
+                correctPredictions++;
+            }
+        }
+
+        // calculate accuracy as a percentage
+        accuracy = (float)correctPredictions / testingData.Length;
+
+        // display the final accuracy
+        Debug.Log($"Final Accuracy: {accuracy}");
+    }
+
+    public float GetAccuracy()
+    {
+        return accuracy;
     }
 }

@@ -8,6 +8,10 @@ public class KNNDiabetesPredictionClient : MonoBehaviour
 {
     private float[][] trainingData;
     private string[] trainingLabels;
+    private float[][] testingData;
+    private string[] testingLabels;
+    private float accuracy;
+
     private DiabetesDataPoint[] diabetesDataPoints = new DiabetesDataPoint[] {
         new DiabetesDataPoint { glucose = 148.0f, blood_pressure = 72.0f, bmi = 33.6f, age = 50.0f, prediction = "Diabetic" },
         new DiabetesDataPoint { glucose = 85.0f, blood_pressure = 66.0f, bmi = 26.6f, age = 31.0f, prediction = "Not diabetic" },
@@ -795,8 +799,17 @@ public class KNNDiabetesPredictionClient : MonoBehaviour
             labelList.Add(point.prediction);
         }
 
-        trainingData = dataArrayList.ToArray();
-        trainingLabels = labelList.ToArray();
+        System.Random rand = new System.Random();
+        var shuffledData = dataArrayList.Zip(labelList, (data, label) => new { data, label })
+                                        .OrderBy(x => rand.Next())
+                                        .ToArray();
+
+        int splitIndex = (int)(0.75 * shuffledData.Length);
+
+        trainingData = shuffledData.Take(splitIndex).Select(x => x.data).ToArray();
+        trainingLabels = shuffledData.Take(splitIndex).Select(x => x.label).ToArray();
+        testingData = shuffledData.Skip(splitIndex).Select(x => x.data).ToArray();
+        testingLabels = shuffledData.Skip(splitIndex).Select(x => x.label).ToArray();
     }
 
     public void Predict(float[] input, Action<string> onOutputReceived, Action<Exception> fallback)
@@ -840,5 +853,38 @@ public class KNNDiabetesPredictionClient : MonoBehaviour
             sum += Mathf.Pow(a[i] - b[i], 2);
         }
         return Mathf.Sqrt(sum);
+    }
+
+    private void CalculateAccuracy()
+    {
+        int correctPredictions = 0;
+
+        // iterate over the entire dataset and predict labels
+        for (int i = 0; i < testingData.Length; i++)
+        {
+            float[] input = testingData[i];
+            int actualLabel = testingLabels[i] == "Diabetic" ? 0 : 1;
+
+            // forward pass (prediction)
+            string output = KNNPredict(testingData[i], 3);
+            int predictedLabel = output == "Diabetic" ? 0 : 1; ;
+
+            // check if the prediction is correct
+            if (predictedLabel == actualLabel)
+            {
+                correctPredictions++;
+            }
+        }
+
+        // calculate accuracy as a percentage
+        accuracy = (float)correctPredictions / testingData.Length;
+
+        // display the final accuracy
+        Debug.Log($"Final Accuracy: {accuracy}");
+    }
+
+    public float GetAccuracy()
+    {
+        return accuracy;
     }
 }

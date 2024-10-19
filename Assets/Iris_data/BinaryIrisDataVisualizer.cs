@@ -201,7 +201,8 @@ public class BinaryIrisDataVisualizer : MonoBehaviour
 
         // Display the accuracy on start after training
         float finalAccuracy = client.GetAccuracy();
-        //accuracyText.text = $"Model Accuracy: {finalAccuracy}%";
+        string introText = predictionText.text + " " + finalAccuracy + ".";
+        predictionText.text = introText;
 
         // Get min points
         float xMin = dataPoints.Min(p => p.sepal_length);
@@ -329,7 +330,6 @@ public class BinaryIrisDataVisualizer : MonoBehaviour
         float zMin = dataPoints.Min(p => p.petal_length);
 
         string predictedLabel = Predict(inputs);
-        System.Threading.Thread.Sleep(500);
         Debug.Log(prediction);
         Debug.Log("predicted label:" + predictedLabel);
         predictionText.text = prediction;
