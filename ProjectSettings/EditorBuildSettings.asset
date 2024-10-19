@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/BinaryDiabetesScene.unity
     guid: 233e1cb6fe3974cf7bb5582f28d6e6d3
+  - enabled: 1
+    path: Assets/KMeansPenguinScene.unity
+    guid: a84ece74a533a7249a5abe740b9cb724
   m_configObjects: {}
