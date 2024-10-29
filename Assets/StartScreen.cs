@@ -48,6 +48,19 @@ public class StartScreen : MonoBehaviour
         DynamicGI.UpdateEnvironment();
     }
 
+    // From Start scene, if select 'K-Means++'
+    public void On_KMeansPlusPlus_algorithm()
+    {
+        StartCoroutine(LoadKMeansPlusPlus());
+    }
+    IEnumerator LoadKMeansPlusPlus()
+    {
+        transition.SetTrigger("Start");
+        yield return new WaitForSeconds(transitionTime);
+        SceneManager.LoadScene("KMeans++PenguinScene");
+        DynamicGI.UpdateEnvironment();
+    }
+
     // From BinaryScene, if select 'Iris dataset'
     public void On_BINARYIRIS_dataset ()
     {

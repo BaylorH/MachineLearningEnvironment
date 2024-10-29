@@ -1866,10 +1866,16 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: KMeans is a clustering algorithm that groups data points into a specified
+  m_text: 'KMeans++ is a clustering algorithm that groups data points into a specified
     number of clusters by minimizing the distance between points and their nearest
     centroid. It iteratively assigns data points to clusters, recalculates centroid
     positions, and stops when the cluster assignments no longer change.
+
+
+    The
+    difference between KMeans and KMeans++ is that KMeans++ picks initial centroids
+    that are an optimal distance apart, which can significantly reduce the number
+    of iterations needed to converge.'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -2089,7 +2095,7 @@ GameObject:
   - component: {fileID: 437509525}
   - component: {fileID: 437509524}
   m_Layer: 5
-  m_Name: NumClusters
+  m_Name: NumClustersText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2111,7 +2117,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -578, y: 122}
+  m_AnchoredPosition: {x: -578, y: 32}
   m_SizeDelta: {x: 509.1, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &437509524
@@ -2362,6 +2368,7 @@ GameObject:
   - component: {fileID: 543522023}
   - component: {fileID: 543522022}
   - component: {fileID: 543522024}
+  - component: {fileID: 543522025}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2531,7 +2538,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 543522014}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e515871cfeb32442adfccb17b66fbc3, type: 3}
   m_Name: 
@@ -2540,6 +2547,39 @@ MonoBehaviour:
   centroidPrefab: {fileID: 3464172476529527857, guid: 67cf1e7aa5fc9e34499bbee4f23df7fb, type: 3}
   Material1: {fileID: 2100000, guid: cb92d08f34cef544a84f93a29c387da2, type: 2}
   Material2: {fileID: 2100000, guid: b99885c38c72f604ea6cc0f94967d3f9, type: 2}
+  Material3: {fileID: 2100000, guid: 398b494c26891ad45afbcd29d06e5615, type: 2}
+  Material4: {fileID: 2100000, guid: a00ca60a38ee4ef4a8caf1659dfe17e0, type: 2}
+  Material5: {fileID: 2100000, guid: 27e2fe48e6a55a7488fdf674a24d392d, type: 2}
+  Material6: {fileID: 2100000, guid: e055fcb61a1a1554a8c90b50927efc5e, type: 2}
+  numClusters: 3
+  maxIterations: 100
+  clusterButton2: {fileID: 793804659}
+  clusterButton3: {fileID: 1464114154}
+  clusterButton4: {fileID: 727303335}
+  clusterButton5: {fileID: 1607749050}
+  clusterButton6: {fileID: 1267475345}
+  selectedColor: {r: 1, g: 1, b: 1, a: 1}
+  unselectedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  recalculateButton: {fileID: 1863521265}
+  restartButton: {fileID: 988975702}
+  iterationText: {fileID: 907342789}
+  convergedText: {fileID: 688391688}
+--- !u!114 &543522025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 543522014}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae9246c9dd0a17f4f8c6234be7741b5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dataPointPrefab: {fileID: 2289717848152070011, guid: 0a073f1b9d9825e4da4dfae27c9aba89, type: 3}
+  centroidPrefab: {fileID: 3464172476529527857, guid: 67cf1e7aa5fc9e34499bbee4f23df7fb, type: 3}
+  Material1: {fileID: 2100000, guid: b99885c38c72f604ea6cc0f94967d3f9, type: 2}
+  Material2: {fileID: 2100000, guid: cb92d08f34cef544a84f93a29c387da2, type: 2}
   Material3: {fileID: 2100000, guid: 398b494c26891ad45afbcd29d06e5615, type: 2}
   Material4: {fileID: 2100000, guid: a00ca60a38ee4ef4a8caf1659dfe17e0, type: 2}
   Material5: {fileID: 2100000, guid: 27e2fe48e6a55a7488fdf674a24d392d, type: 2}
@@ -2725,7 +2765,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -578, y: -140}
+  m_AnchoredPosition: {x: -578, y: -200}
   m_SizeDelta: {x: 509.1, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &688391688
@@ -2861,7 +2901,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 66, y: 180}
+  m_AnchoredPosition: {x: 66, y: -47}
   m_SizeDelta: {x: 55, y: 63.1023}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &727303335
@@ -3069,7 +3109,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -358, y: 180}
+  m_AnchoredPosition: {x: -358, y: -47}
   m_SizeDelta: {x: 55, y: 63.1023}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &793804659
@@ -3200,7 +3240,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -578, y: -13}
+  m_AnchoredPosition: {x: -578, y: -87}
   m_SizeDelta: {x: 509.1, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &907342789
@@ -3471,7 +3511,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 66, y: -485}
+  m_AnchoredPosition: {x: 66, y: -623}
   m_SizeDelta: {x: 135, y: 63.1023}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &988975702
@@ -4572,7 +4612,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 490, y: 180}
+  m_AnchoredPosition: {x: 490, y: -47}
   m_SizeDelta: {x: 55, y: 63.1023}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1267475345
@@ -5222,7 +5262,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -146, y: 180}
+  m_AnchoredPosition: {x: -146, y: -47}
   m_SizeDelta: {x: 55, y: 63.1023}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1464114154
@@ -5690,7 +5730,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 278, y: 180}
+  m_AnchoredPosition: {x: 278, y: -47}
   m_SizeDelta: {x: 55, y: 63.1023}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1607749050
@@ -5821,7 +5861,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 232.14282, y: 503}
+  m_AnchoredPosition: {x: 2700, y: -942}
   m_SizeDelta: {x: 509.1, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1741832180
@@ -5853,7 +5893,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278190335
   m_fontColor: {r: 1, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -6225,8 +6265,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 66, y: -160}
-  m_SizeDelta: {x: 300, y: 63.1023}
+  m_AnchoredPosition: {x: 66, y: -335}
+  m_SizeDelta: {x: 350, y: 63.1023}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1863521265
 MonoBehaviour:
