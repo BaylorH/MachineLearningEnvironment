@@ -12,6 +12,8 @@ public class KMeans
     public int[] labels;
     private bool converged;
     private int currentIteration;
+    private bool centroidsInitializedManually = false;
+
 
     public KMeans(int numClusters, int maxIterations, List<PenguinDataPoint> penguinData)
     {
@@ -20,6 +22,25 @@ public class KMeans
         this.penguinData = penguinData;
         centroids = new Vector3[numClusters];
         labels = new int[penguinData.Count];
+        converged = false;
+        currentIteration = 0;
+    }
+
+    // Method to manually set centroids
+    public void SetCentroids(List<Vector3> initialCentroids)
+    {
+        if (initialCentroids.Count != numClusters)
+        {
+            Debug.LogError("Number of provided centroids does not match numClusters.");
+            return;
+        }
+
+        for (int i = 0; i < numClusters; i++)
+        {
+            centroids[i] = initialCentroids[i];
+        }
+
+        centroidsInitializedManually = true;
         converged = false;
         currentIteration = 0;
     }
