@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 2561a2115ccba40c9b20ec3baccdd1d8
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - dataPointPrefab: {fileID: 8126079179514674599, guid: 359156e3dc0c945ec8d2959eb269f7cf, type: 3}
+  - AdelieMaterial: {fileID: 2100000, guid: cb92d08f34cef544a84f93a29c387da2, type: 2}
+  - GentooMaterial: {fileID: 2100000, guid: b99885c38c72f604ea6cc0f94967d3f9, type: 2}
+  - ChinstrapMaterial: {fileID: 2100000, guid: 398b494c26891ad45afbcd29d06e5615, type: 2}
+  - billLengthInput: {instanceID: 0}
+  - billDepthInput: {instanceID: 0}
+  - flipperLengthInput: {instanceID: 0}
+  - bodyMassInput: {instanceID: 0}
+  - predictionText: {instanceID: 0}
+  - errorText: {instanceID: 0}
+  - objectPooler: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
