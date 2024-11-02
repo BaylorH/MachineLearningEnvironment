@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.49641407, b: 0.57481736, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657922, g: 0.49641395, b: 0.5748176, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2853,6 +2853,7 @@ MonoBehaviour:
   Material6: {fileID: 2100000, guid: e055fcb61a1a1554a8c90b50927efc5e, type: 2}
   numClusters: 3
   maxIterations: 100
+  iterationDelay: 0.2
   clusterButton2: {fileID: 793804659}
   clusterButton3: {fileID: 1464114154}
   clusterButton4: {fileID: 727303335}
@@ -2860,9 +2861,10 @@ MonoBehaviour:
   clusterButton6: {fileID: 1267475345}
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
   unselectedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  recalculateButton: {fileID: 1863521265}
+  randomCentroidsButton: {fileID: 1863521265}
   restartButton: {fileID: 988975702}
   chooseCentroidsButton: {fileID: 2427505}
+  skipToEndButton: {fileID: 2068267993}
   iterationText: {fileID: 907342789}
   convergedText: {fileID: 688391688}
   orText: {fileID: 108301197}
