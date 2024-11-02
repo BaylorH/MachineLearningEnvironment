@@ -113,6 +113,19 @@ public class StartScreen : MonoBehaviour
         DynamicGI.UpdateEnvironment();
     }
 
+    // From KNNScene, if select 'Penguine dataset'
+    public void On_KNNPENGUINE_dataset ()
+    {
+        StartCoroutine(LoadKNNPENGUINE());
+    }
+    IEnumerator LoadKNNPENGUINE()
+    {
+        transition.SetTrigger("Start");
+        yield return new WaitForSeconds(transitionTime);
+        SceneManager.LoadScene("KNNPenguineScene");
+        DynamicGI.UpdateEnvironment();
+    }
+
     // If 'Main menu' button is selected
     public void onMAIN ()
     {

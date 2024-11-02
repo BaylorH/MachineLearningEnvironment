@@ -195,10 +195,6 @@ public class KNNIrisDataVisualizer : MonoBehaviour {
     void Start() {
         FindInputFields();
 
-        float finalAccuracy = client.GetAccuracy();
-        string introText = predictionText.text + " " + finalAccuracy + ".";
-        predictionText.text = introText;
-
         // Get min points
         float xMin = dataPoints.Min(p => p.sepal_length);
         float yMin = dataPoints.Min(p => p.sepal_width);
@@ -322,7 +318,6 @@ public class KNNIrisDataVisualizer : MonoBehaviour {
         float zMin = dataPoints.Min(p => p.petal_length);
 
         string predictedLabel = Predict(inputs);
-        System.Threading.Thread.Sleep(500);
         Debug.Log(prediction);
         Debug.Log("predicted label:" + predictedLabel);
         predictionText.text = prediction;
@@ -347,6 +342,10 @@ public class KNNIrisDataVisualizer : MonoBehaviour {
         newDataPoint.GetComponent<Renderer>().material = chosenMaterial;
         MoveTowards mT = newDataPoint.GetComponent<MoveTowards>();
         mT.moveTowards(finalPosition);
+
+        float finalAccuracy = client.GetAccuracy();
+        string introText = predictionText.text + "\nAccuracy: " + finalAccuracy + ".";
+        predictionText.text = introText;
 
         // Reset user input fields
         petalLengthInput.text = "";

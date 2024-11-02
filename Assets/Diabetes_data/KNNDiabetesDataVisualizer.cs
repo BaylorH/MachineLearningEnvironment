@@ -816,10 +816,6 @@ public class KNNDiabetesDataVisualizer : MonoBehaviour
     {
         FindInputFields();
 
-        float finalAccuracy = client.GetAccuracy();
-        string introText = predictionText.text + " " + finalAccuracy + ".";
-        predictionText.text = introText;
-
         // Ensure the objectPooler is assigned
         if (objectPooler == null)
         {
@@ -975,7 +971,6 @@ public class KNNDiabetesDataVisualizer : MonoBehaviour
         float zMin = dataPoints.Min(p => p.bmi);
 
         string predictedLabel = Predict(inputs);
-        System.Threading.Thread.Sleep(500);
         Debug.Log(prediction);
         Debug.Log("predicted label:" + predictedLabel);
         predictionText.text = prediction;
@@ -1003,6 +998,10 @@ public class KNNDiabetesDataVisualizer : MonoBehaviour
         newDataPoint.GetComponent<Renderer>().material = chosenMaterial;
         MoveTowards mT = newDataPoint.GetComponent<MoveTowards>();
         mT.moveTowards(finalPosition);
+
+        float finalAccuracy = client.GetAccuracy();
+        string introText = predictionText.text + "\nAccuracy: " + finalAccuracy + ".";
+        predictionText.text = introText;
 
         // Reset user input fields
         glucoseInput.text = "";
