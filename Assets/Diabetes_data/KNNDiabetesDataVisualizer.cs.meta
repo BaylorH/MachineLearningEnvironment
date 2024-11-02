@@ -5,7 +5,7 @@ MonoImporter:
   serializedVersion: 2
   defaultReferences:
   - dataPointPrefab: {fileID: 2276175150501940869, guid: f5e35a5f6b777c349abacabca23083a6, type: 3}
-  - DiabeticMaterial: {instanceID: 0}
+  - DiabeticMaterial: {fileID: 2100000, guid: 08996e96009b6453ea8061d534867b6e, type: 2}
   - NonDiabeticMaterial: {instanceID: 0}
   - objectPooler: {instanceID: 0}
   - glucoseInput: {instanceID: 0}
