@@ -810,6 +810,8 @@ public class KNNDiabetesPredictionClient : MonoBehaviour
         trainingLabels = shuffledData.Take(splitIndex).Select(x => x.label).ToArray();
         testingData = shuffledData.Skip(splitIndex).Select(x => x.data).ToArray();
         testingLabels = shuffledData.Skip(splitIndex).Select(x => x.label).ToArray();
+
+        CalculateAccuracy();
     }
 
     public void Predict(float[] input, Action<string> onOutputReceived, Action<Exception> fallback)

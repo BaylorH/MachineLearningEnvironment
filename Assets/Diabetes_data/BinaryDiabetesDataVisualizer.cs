@@ -819,7 +819,7 @@ public class BinaryDiabetesDataVisualizer : MonoBehaviour
         FindInputFields();
 
         float finalAccuracy = client.GetAccuracy();
-        string introText = predictionText.text + " " + finalAccuracy + ".";
+        string introText = "Input a person's data to engage our machine learning model. The model will predict if the person is diabetic or non-diabetic. \n\nThe model is a binary classification model with accuracy score of " + finalAccuracy + ".";
         predictionText.text = introText;
 
         // Ensure the objectPooler is assigned
@@ -977,7 +977,6 @@ public class BinaryDiabetesDataVisualizer : MonoBehaviour
         float zMin = dataPoints.Min(p => p.bmi);
 
         string predictedLabel = Predict(inputs);
-        System.Threading.Thread.Sleep(500);
         Debug.Log(prediction);
         Debug.Log("predicted label:" + predictedLabel);
         predictionText.text = prediction;

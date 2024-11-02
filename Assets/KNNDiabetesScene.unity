@@ -2842,12 +2842,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Input a person''s data to engage our machine learning model. The model
-    will predict if the person is diabetic or non-diabetic.
-
-
-    The model is a
-    K Nearest Neighbor model with accuracy score of'
+  m_text: Input a person's data to engage our machine learning model. The model will
+    predict if the person is diabetic or non-diabetic.
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3231,6 +3227,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 374754535}
   m_CullTransparentMesh: 1
+--- !u!1001 &384568203
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 932.9199
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 541.6651
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -12.74973
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8027860587299139900, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+      propertyPath: m_Name
+      value: PoolingSystem
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
 --- !u!1 &397987760
 GameObject:
   m_ObjectHideFlags: 0
@@ -4124,6 +4177,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 614135074}
   m_CullTransparentMesh: 1
+--- !u!114 &671692179 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2873399413912933210, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
+  m_PrefabInstance: {fileID: 384568203}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1801abd5d34f4a3abc8f11ab1b8e213, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &712215282
 GameObject:
   m_ObjectHideFlags: 0
@@ -5431,78 +5495,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1007116054}
   m_CullTransparentMesh: 1
---- !u!1001 &1063811774
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 2873399413912933210, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
-      propertyPath: objectToPool
-      value: 
-      objectReference: {fileID: 2276175150501940869, guid: f5e35a5f6b777c349abacabca23083a6, type: 3}
-    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 932.9199
-      objectReference: {fileID: 0}
-    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 541.6651
-      objectReference: {fileID: 0}
-    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -12.74973
-      objectReference: {fileID: 0}
-    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2951652053906573692, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8027860587299139900, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
-      propertyPath: m_Name
-      value: PoolingSystem
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
---- !u!114 &1063811775 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2873399413912933210, guid: dc1201627f05d483caccc5beb0505f3e, type: 3}
-  m_PrefabInstance: {fileID: 1063811774}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1801abd5d34f4a3abc8f11ab1b8e213, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1074802364
 GameObject:
   m_ObjectHideFlags: 0
@@ -9399,7 +9391,7 @@ MonoBehaviour:
   dataPointPrefab: {fileID: 2276175150501940869, guid: f5e35a5f6b777c349abacabca23083a6, type: 3}
   DiabeticMaterial: {fileID: 2100000, guid: 08996e96009b6453ea8061d534867b6e, type: 2}
   NonDiabeticMaterial: {fileID: 2100000, guid: 70759b161869f48f28eeedb7d30d29c5, type: 2}
-  objectPooler: {fileID: 1063811775}
+  objectPooler: {fileID: 671692179}
   glucoseInput: {fileID: 0}
   bloodPressureInput: {fileID: 0}
   bmiInput: {fileID: 0}
@@ -9416,4 +9408,4 @@ SceneRoots:
   - {fileID: 543522018}
   - {fileID: 2037165075}
   - {fileID: 329612524}
-  - {fileID: 1063811774}
+  - {fileID: 384568203}
