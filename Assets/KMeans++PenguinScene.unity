@@ -1037,7 +1037,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -2818,6 +2818,7 @@ MonoBehaviour:
   Material6: {fileID: 2100000, guid: e055fcb61a1a1554a8c90b50927efc5e, type: 2}
   numClusters: 3
   maxIterations: 100
+  iterationDelay: 0.2
   clusterButton2: {fileID: 793804659}
   clusterButton3: {fileID: 1464114154}
   clusterButton4: {fileID: 727303335}
@@ -2825,12 +2826,14 @@ MonoBehaviour:
   clusterButton6: {fileID: 1267475345}
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
   unselectedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  recalculateButton: {fileID: 1863521265}
+  randomCentroidsButton: {fileID: 0}
   restartButton: {fileID: 988975702}
   chooseCentroidsButton: {fileID: 0}
+  skipToEndButton: {fileID: 0}
   iterationText: {fileID: 907342789}
   convergedText: {fileID: 688391688}
   orText: {fileID: 0}
+  centroidsLeftText: {fileID: 0}
 --- !u!114 &543522025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2853,6 +2856,7 @@ MonoBehaviour:
   Material6: {fileID: 2100000, guid: e055fcb61a1a1554a8c90b50927efc5e, type: 2}
   numClusters: 3
   maxIterations: 100
+  iterationDelay: 0.2
   clusterButton2: {fileID: 793804659}
   clusterButton3: {fileID: 1464114154}
   clusterButton4: {fileID: 727303335}
@@ -2860,9 +2864,10 @@ MonoBehaviour:
   clusterButton6: {fileID: 1267475345}
   selectedColor: {r: 1, g: 1, b: 1, a: 1}
   unselectedColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  recalculateButton: {fileID: 1863521265}
+  randomCentroidsButton: {fileID: 1863521265}
   restartButton: {fileID: 988975702}
   chooseCentroidsButton: {fileID: 2427505}
+  skipToEndButton: {fileID: 2068267993}
   iterationText: {fileID: 907342789}
   convergedText: {fileID: 688391688}
   orText: {fileID: 108301197}
@@ -7465,7 +7470,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -991.4}
-  m_SizeDelta: {x: 135, y: 63.1023}
+  m_SizeDelta: {x: 140.15, y: 63.1023}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2068267993
 MonoBehaviour:
