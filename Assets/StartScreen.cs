@@ -113,16 +113,16 @@ public class StartScreen : MonoBehaviour
         DynamicGI.UpdateEnvironment();
     }
 
-    // From KNNScene, if select 'Penguine dataset'
-    public void On_KNNPENGUINE_dataset ()
+    // From KNNScene, if select 'Penguin dataset'
+    public void On_KNNPENGUIN_dataset ()
     {
-        StartCoroutine(LoadKNNPENGUINE());
+        StartCoroutine(LoadKNNPENGUIN());
     }
-    IEnumerator LoadKNNPENGUINE()
+    IEnumerator LoadKNNPENGUIN()
     {
         transition.SetTrigger("Start");
         yield return new WaitForSeconds(transitionTime);
-        SceneManager.LoadScene("KNNPenguineScene");
+        SceneManager.LoadScene("KNNPenguinScene");
         DynamicGI.UpdateEnvironment();
     }
 
