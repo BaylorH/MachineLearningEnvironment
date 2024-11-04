@@ -6,33 +6,33 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Start.unity
+    path: Assets/Scenes/Start.unity
     guid: 863b6f725d7ec4f77bf71103a8f748f5
   - enabled: 1
-    path: Assets/BinaryIrisScene.unity
+    path: Assets/Scenes/BinaryIrisScene.unity
     guid: 63daa92de5695d24899c687188863f4f
   - enabled: 1
-    path: Assets/KNNIrisScene.unity
+    path: Assets/Scenes/KNNIrisScene.unity
     guid: a2b8e1bd9ecbb2747bf2ae0ffa378411
   - enabled: 1
-    path: Assets/BinaryScene.unity
+    path: Assets/Scenes/BinaryScene.unity
     guid: 21476700382c546f4971b4f65ee2c32d
   - enabled: 1
-    path: Assets/KNNScene.unity
+    path: Assets/Scenes/KNNScene.unity
     guid: da1567258c76040608ee201624335d8c
   - enabled: 1
-    path: Assets/KNNDiabetesScene.unity
+    path: Assets/Scenes/KNNDiabetesScene.unity
     guid: c05b13a6c1c4749669c4d36ac59443ba
   - enabled: 1
-    path: Assets/BinaryDiabetesScene.unity
+    path: Assets/Scenes/BinaryDiabetesScene.unity
     guid: 233e1cb6fe3974cf7bb5582f28d6e6d3
   - enabled: 1
-    path: Assets/KMeansPenguinScene.unity
+    path: Assets/Scenes/KMeansPenguinScene.unity
     guid: a84ece74a533a7249a5abe740b9cb724
   - enabled: 1
-    path: Assets/KMeans++PenguinScene.unity
+    path: Assets/Scenes/KMeans++PenguinScene.unity
     guid: f71c13934a7af05469c791b233a4d02d
   - enabled: 1
-    path: Assets/KNNPenguinScene.unity
+    path: Assets/Scenes/KNNPenguinScene.unity
     guid: 199c4768efd574be29d70a4dd215d87e
   m_configObjects: {}
