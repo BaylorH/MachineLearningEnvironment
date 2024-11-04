@@ -8,7 +8,7 @@ public class ObjectPooler : MonoBehaviour
     public int initialPoolSize = 1000;
     private List<GameObject> pooledObjects;
 
-    void Start()
+    void OnEnable()
     {
         pooledObjects = new List<GameObject>();
         for (int i = 0; i < initialPoolSize; i++)
