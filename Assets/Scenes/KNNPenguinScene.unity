@@ -2853,12 +2853,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Input a penguin''s data to engage our machine learning model. The model
+  m_text: Input a penguin's data to engage our machine learning model. The model
     will predict if the penguin is adelie, gentoo, or chinstrap.
-
-
-    The model
-    is a K Nearest Neighbor model with accuracy score of'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -3722,6 +3718,7 @@ MonoBehaviour:
   bodyMassInput: {fileID: 40707264}
   predictionText: {fileID: 371855070}
   errorText: {fileID: 1741832180}
+  client: {fileID: 543522024}
   objectPooler: {fileID: 295737129}
 --- !u!1 &547093200
 GameObject:
@@ -9597,6 +9594,7 @@ MonoBehaviour:
   bodyMassInput: {fileID: 40707264}
   predictionText: {fileID: 371855070}
   errorText: {fileID: 1741832180}
+  client: {fileID: 543522024}
   objectPooler: {fileID: 295737129}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

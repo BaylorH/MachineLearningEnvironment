@@ -22,6 +22,8 @@ public class KNNPenguinDataVisualizer : MonoBehaviour
     public TextMeshProUGUI errorText;
     private string prediction;
 
+    public KNNPenguinPredictionClient client;
+
     public ObjectPooler objectPooler;
 
     [System.Serializable]
@@ -473,8 +475,12 @@ public class KNNPenguinDataVisualizer : MonoBehaviour
         }
 
         string predictedSpecies = Predict(inputs);
-        predictionText.text = "Prediction: " + predictedSpecies;
+        predictionText.text = predictedSpecies;
         errorText.text = "";
+
+        float finalAccuracy = client.GetAccuracy();
+        string introText = predictionText.text + "\nAccuracy: " + finalAccuracy + ".";
+        predictionText.text = introText;
 
         Vector3 position = new Vector3(inputs[0], inputs[1], inputs[2]);
         GameObject newDataPoint = Instantiate(dataPointPrefab, position, Quaternion.identity);
@@ -490,16 +496,13 @@ public class KNNPenguinDataVisualizer : MonoBehaviour
 
     private string Predict(float[] input)
     {
-        var neighbors = dataPoints.OrderBy(p => CalculateDistance(input, p)).Take(5); // K = 5
-        var prediction = neighbors.GroupBy(p => p.species).OrderByDescending(g => g.Count()).First().Key;
+        client.Predict(input, output =>
+        {
+            prediction = "Prediction: " + output;
+        }, error =>
+        {
+            // TODO: 
+        });
         return prediction;
-    }
-
-    private float CalculateDistance(float[] input, PenguinDataPoint point)
-    {
-        return Mathf.Sqrt(Mathf.Pow(input[0] - point.bill_length_mm, 2) +
-                          Mathf.Pow(input[1] - point.bill_depth_mm, 2) +
-                          Mathf.Pow(input[2] - point.flipper_length_mm, 2) +
-                          Mathf.Pow(input[3] - point.body_mass_g, 2));
     }
 }

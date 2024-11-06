@@ -392,7 +392,7 @@ public class KNNPenguinPredictionClient : MonoBehaviour
     {
         try
         {
-            string prediction = KNNPredict(input, 3); // k-value = 3
+            string prediction = KNNPredict(input, 5); // k-value = 5
             onOutputReceived(prediction);
         }
         catch (Exception ex)
@@ -403,32 +403,17 @@ public class KNNPenguinPredictionClient : MonoBehaviour
 
     private string KNNPredict(float[] input, int k)
     {
-        var distances = new List<(string label, float distance)>();
-
-        for (int i = 0; i < trainingData.Length; i++)
-        {
-            float distance = EuclideanDistance(input, trainingData[i]);
-            distances.Add((trainingLabels[i], distance));
-        }
-
-        var sorted = distances.OrderBy(d => d.distance).Take(k).ToList();
-        var prediction = sorted
-            .GroupBy(d => d.label)
-            .OrderByDescending(g => g.Count())
-            .ThenBy(g => g.Min(x => x.distance)) // Resolve ties with closer points
-            .First().Key;
-
+        var neighbors = penguinDataPoints.OrderBy(p => CalculateDistance(input, p)).Take(k); // K = 5
+        var prediction = neighbors.GroupBy(p => p.species).OrderByDescending(g => g.Count()).First().Key;
         return prediction;
     }
 
-    private float EuclideanDistance(float[] a, float[] b)
+    private float CalculateDistance(float[] input, PenguinDataPoint point)
     {
-        float sum = 0f;
-        for (int i = 0; i < a.Length; i++)
-        {
-            sum += Mathf.Pow(a[i] - b[i], 2);
-        }
-        return Mathf.Sqrt(sum);
+        return Mathf.Sqrt(Mathf.Pow(input[0] - point.bill_length_mm, 2) +
+                          Mathf.Pow(input[1] - point.bill_depth_mm, 2) +
+                          Mathf.Pow(input[2] - point.flipper_length_mm, 2) +
+                          Mathf.Pow(input[3] - point.body_mass_g, 2));
     }
 
     private void CalculateAccuracy()
