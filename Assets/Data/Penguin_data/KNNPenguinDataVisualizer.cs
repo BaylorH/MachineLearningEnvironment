@@ -400,25 +400,40 @@ public class KNNPenguinDataVisualizer : MonoBehaviour
     // Plot all penguin data points with colors based on species
     private void PlotDataPoints()
     {
-        float scaler = 80f;
         float xMin = dataPoints.Min(p => p.bill_length_mm);
         float yMin = dataPoints.Min(p => p.bill_depth_mm);
         float zMin = dataPoints.Min(p => p.flipper_length_mm);
 
+        // Dynamically calculate the range of body mass
+        float bodyMassMin = dataPoints.Min(p => p.body_mass_g);
+        float bodyMassMax = dataPoints.Max(p => p.body_mass_g);
+
         foreach (PenguinDataPoint point in dataPoints)
         {
-            Vector3 position = NormalizeAndScalePoint(point, scaler, xMin, yMin, zMin);
+            Vector3 position = NormalizeAndScalePoint(point, 80f, xMin, yMin, zMin);
             GameObject pooledObject = objectPooler ? objectPooler.GetPooledObject() : Instantiate(dataPointPrefab);
 
             if (pooledObject != null)
             {
                 pooledObject.SetActive(true);
+
+                // Set position
                 pooledObject.transform.position = position;
-                pooledObject.transform.localScale = Vector3.one * (1.0f + point.body_mass_g * 0.0005f);
+
+                // Dynamically scale based on body mass with a moderate size range
+                float normalizedBodyMass = (point.body_mass_g - bodyMassMin) / (bodyMassMax - bodyMassMin);
+                float baseScale = 1.5f; 
+                float maxScale = 4.0f;
+                float scale = baseScale + normalizedBodyMass * (maxScale - baseScale);
+
+                pooledObject.transform.localScale = Vector3.one * scale;
+
+                // Set material based on species
                 pooledObject.GetComponent<Renderer>().material = GetMaterialBySpecies(point.species);
             }
         }
     }
+
 
     // Normalizes and scales a data point's position
     private Vector3 NormalizeAndScalePoint(PenguinDataPoint point, float scaler, float xMin, float yMin, float zMin)
@@ -482,10 +497,47 @@ public class KNNPenguinDataVisualizer : MonoBehaviour
         string introText = predictionText.text + "\nAccuracy: " + finalAccuracy + ".";
         predictionText.text = introText;
 
-        Vector3 position = new Vector3(inputs[0], inputs[1], inputs[2]);
-        GameObject newDataPoint = Instantiate(dataPointPrefab, position, Quaternion.identity);
-        Material chosenMaterial = predictedSpecies == "Adelie" ? AdelieMaterial : predictedSpecies == "Gentoo" ? GentooMaterial : ChinstrapMaterial;
+        // Get the min values for normalization
+        float xMin = dataPoints.Min(p => p.bill_length_mm);
+        float yMin = dataPoints.Min(p => p.bill_depth_mm);
+        float zMin = dataPoints.Min(p => p.flipper_length_mm);
+
+        // Create a temporary PenguinDataPoint with input values
+        PenguinDataPoint tempPoint = new PenguinDataPoint
+        {
+            bill_length_mm = inputs[0],
+            bill_depth_mm = inputs[1],
+            flipper_length_mm = inputs[2],
+            body_mass_g = inputs[3],
+            species = predictedSpecies
+        };
+
+        // Calculate the final position using NormalizeAndScalePoint
+        float scaler = 80f;
+        Vector3 finalPosition = NormalizeAndScalePoint(tempPoint, scaler, xMin, yMin, zMin);
+
+        // Place the point at the starting position (829, 648, -54)
+        Vector3 startPosition = new Vector3(829, 648, -54);
+        Quaternion rotation = Quaternion.identity;
+        GameObject newDataPoint = Instantiate(dataPointPrefab, startPosition, rotation);
+
+        // Dynamically scale based on body mass
+        float bodyMassMin = dataPoints.Min(p => p.body_mass_g);
+        float bodyMassMax = dataPoints.Max(p => p.body_mass_g);
+        float normalizedBodyMass = (inputs[3] - bodyMassMin) / (bodyMassMax - bodyMassMin);
+        float baseScale = 1.5f;
+        float maxScale = 4.0f;
+        float scale = baseScale + normalizedBodyMass * (maxScale - baseScale);
+        newDataPoint.transform.localScale = Vector3.one * scale;
+
+        // Set material based on the predicted species
+        Material chosenMaterial = predictedSpecies == "Adelie" ? AdelieMaterial :
+                                  predictedSpecies == "Gentoo" ? GentooMaterial : ChinstrapMaterial;
         newDataPoint.GetComponent<Renderer>().material = chosenMaterial;
+
+        // Animate movement to the final position
+        MoveTowards mT = newDataPoint.GetComponent<MoveTowards>();
+        mT.moveTowards(finalPosition);
 
         // Reset input fields
         foreach (var field in inputFields)
@@ -493,6 +545,7 @@ public class KNNPenguinDataVisualizer : MonoBehaviour
             field.text = "";
         }
     }
+
 
     private string Predict(float[] input)
     {
