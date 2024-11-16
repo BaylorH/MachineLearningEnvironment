@@ -816,7 +816,7 @@ public class BinaryDiabetesPredictionClient : MonoBehaviour
         InitializeData();
 
         // define neural network (same structure as in python: 2 layers)
-        net = new NeuralNetwork(inputSize: 4, hiddenSize: 5, outputSize: 2);
+        net = new NeuralNetwork(inputSize: 4, hiddenSize: 10, outputSize: 2);
 
         // train neural network
         TrainNetwork();
@@ -856,8 +856,8 @@ public class BinaryDiabetesPredictionClient : MonoBehaviour
     // train the network using a simple gradient descent
     private void TrainNetwork()
     {
-        float learningRate = 0.01f;
-        int epochs = 20;
+        float learningRate = 0.001f;  // Lower learning rate
+        int epochs = 100;             // Increase epochs
 
         // binary encoding for labels ("Diabetic" -> 0, "Non diabetic" -> 1)
         int[] trainLabels = new int[trainingLabels.Length];

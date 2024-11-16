@@ -1,22 +1,25 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Linq;
 using TMPro;
+using Unity.VisualScripting;
+using System.Collections.Generic;
+using System.Collections;
 
-public class KMeansPenguinDataVisualizer : MonoBehaviour
+public class KMeansPlusPlusPenguinDataVisualizer : MonoBehaviour
 {
     public GameObject dataPointPrefab;
     public GameObject centroidPrefab;
     public Material Material1, Material2, Material3, Material4, Material5, Material6;
     public int numClusters = 3;
     public int maxIterations = 100;
+    public float iterationDelay = 0.2f;
 
     private GameObject pointsContainer;
     private GameObject centroidsContainer;
     private List<Vector3> selectedCentroids = new List<Vector3>();
 
-    private KMeans kmeans;
+    private KMeansPlusPlus kmeansPlusPlus;
 
     private int iteration = 0;
     private int currentCluster = 0;
@@ -30,13 +33,15 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
     public Color selectedColor = Color.white;
     public Color unselectedColor = Color.gray;
 
-    public Button recalculateButton;
+    public Button randomCentroidsButton;
     public Button restartButton;
     public Button chooseCentroidsButton;
+    public Button skipToEndButton;
 
     public TMP_Text iterationText;
     public TMP_Text convergedText;
     public TMP_Text orText;
+    public TMP_Text centroidsLeftText;
 
     private bool isChoosingCentroids = false;
 
@@ -57,7 +62,8 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
 
     public enum KMeansState
     {
-        InitializeCentroids,
+        InitializeFirstCentroid,
+        InitializeRestOfCentroids,
         AssignPoints,
         RecalculateCentroids
     }
@@ -416,18 +422,21 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
         centroidsContainer = new GameObject("CentroidsContainer");
         SetupDataPoints();
 
-        kmeans = new KMeans(numClusters, maxIterations, dataPoints.ToList());
+        kmeansPlusPlus = new KMeansPlusPlus(numClusters, maxIterations, dataPoints.ToList());
 
-        currentState = KMeansState.InitializeCentroids;
-        recalculateButton.GetComponentInChildren<TMP_Text>().text = "Place\nRandom\nCentroids";
+        currentState = KMeansState.InitializeFirstCentroid;
+        randomCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Random First Centroid";
 
         convergedText.text = "";
 
-        recalculateButton.onClick.AddListener(OnRecalculateButtonClick);
+        randomCentroidsButton.onClick.AddListener(OnRandomButtonClick);
         chooseCentroidsButton.onClick.AddListener(OnChooseCentroidsButtonClick);
+        skipToEndButton.onClick.AddListener(OnSkipToEndButtonClick);
 
         restartButton.gameObject.SetActive(false);
         restartButton.onClick.AddListener(OnRestartButtonClick);
+
+        skipToEndButton.gameObject.SetActive(false);
 
         clusterButton2.onClick.AddListener(() => OnClusterButtonClick(2));
         clusterButton3.onClick.AddListener(() => OnClusterButtonClick(3));
@@ -485,7 +494,6 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
     }
 
 
-
     // create a sphere for each penguin data point
     void CreateSphere(Vector3 position, float bodyMass)
     {
@@ -494,37 +502,47 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
         sphere.transform.SetParent(pointsContainer.transform);
         sphere.tag = "DataPoint";
 
-        // Add a collider to detect clicks
+        // collider to detect clicks
         if (sphere.GetComponent<Collider>() == null)
         {
             sphere.AddComponent<SphereCollider>();
         }
     }
 
-
-    void OnRecalculateButtonClick()
+    void OnRandomButtonClick()
     {
-        RectTransform buttonRectTransform = recalculateButton.GetComponent<RectTransform>();
+        RectTransform buttonRectTransform = randomCentroidsButton.GetComponent<RectTransform>();
 
         switch (currentState)
         {
-            case KMeansState.InitializeCentroids:
-                PlaceRandomCentroids();
-                currentState = KMeansState.AssignPoints;
-                recalculateButton.GetComponentInChildren<TMP_Text>().text = "Assign\nPoints";
-                chooseCentroidsButton.gameObject.SetActive(false);
+            case KMeansState.InitializeFirstCentroid:
+                PlaceFirstCentroid();
                 orText.gameObject.SetActive(false);
+                currentState = KMeansState.InitializeRestOfCentroids;
+                randomCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Initialize\nRest of\nCentroids";
+                chooseCentroidsButton.gameObject.SetActive(false);
                 // adjust width
-                float preferredWidth = recalculateButton.GetComponentInChildren<TMP_Text>().preferredWidth;
+                float preferredWidth = randomCentroidsButton.GetComponentInChildren<TMP_Text>().preferredWidth;
+                //buttonRectTransform.sizeDelta = new Vector2(preferredWidth + 40f, buttonRectTransform.sizeDelta.y);
+                break;
+
+            case KMeansState.InitializeRestOfCentroids:
+                PlaceRestOfCentroidsMaxDist();
+                currentState = KMeansState.AssignPoints;
+                randomCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Assign\nPoints";
+                skipToEndButton.gameObject.SetActive(true);
+                skipToEndButton.interactable = true;
+                // adjust width
+                preferredWidth = randomCentroidsButton.GetComponentInChildren<TMP_Text>().preferredWidth;
                 //buttonRectTransform.sizeDelta = new Vector2(preferredWidth + 40f, buttonRectTransform.sizeDelta.y);
                 break;
 
             case KMeansState.AssignPoints:
                 AssignPointsToCentroids();
                 currentState = KMeansState.RecalculateCentroids;
-                recalculateButton.GetComponentInChildren<TMP_Text>().text = "Recalculate\nCentroids";
+                randomCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Recalculate\nCentroids";
                 // adjust width
-                preferredWidth = recalculateButton.GetComponentInChildren<TMP_Text>().preferredWidth;
+                preferredWidth = randomCentroidsButton.GetComponentInChildren<TMP_Text>().preferredWidth;
                 //buttonRectTransform.sizeDelta = new Vector2(preferredWidth + 40f, buttonRectTransform.sizeDelta.y);
                 iteration++;
                 iterationText.text = "Iteration #" + iteration;
@@ -533,27 +551,28 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
             case KMeansState.RecalculateCentroids:
                 RecalculateCentroids();
 
-                if (kmeans.IsConverged())
+                if (kmeansPlusPlus.IsConverged())
                 {
                     convergedText.text = "Converged";
                     // adjust width
-                    preferredWidth = recalculateButton.GetComponentInChildren<TMP_Text>().preferredWidth;
+                    preferredWidth = randomCentroidsButton.GetComponentInChildren<TMP_Text>().preferredWidth;
                     //buttonRectTransform.sizeDelta = new Vector2(preferredWidth + 40f, buttonRectTransform.sizeDelta.y);
-                    recalculateButton.interactable = false;  // disable the button to stop further recalculations
+                    randomCentroidsButton.interactable = false;  // disable the button to stop further recalculations
                     restartButton.gameObject.SetActive(true); // restart button
+                    skipToEndButton.gameObject.SetActive(false);
                 }
                 else
                 {
                     currentState = KMeansState.AssignPoints;
-                    recalculateButton.GetComponentInChildren<TMP_Text>().text = "Assign\nPoints";
+                    randomCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Assign\nPoints";
                     // adjust width
-                    preferredWidth = recalculateButton.GetComponentInChildren<TMP_Text>().preferredWidth;
+                    preferredWidth = randomCentroidsButton.GetComponentInChildren<TMP_Text>().preferredWidth;
                     //buttonRectTransform.sizeDelta = new Vector2(preferredWidth + 40f, buttonRectTransform.sizeDelta.y);
-
                 }
                 break;
         }
     }
+
 
     void OnRestartButtonClick()
     {
@@ -563,23 +582,23 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
         isChoosingCentroids = false;
         iterationText.text = "Iteration #0";
         restartButton.gameObject.SetActive(false);
-        recalculateButton.gameObject.SetActive(true);
+        randomCentroidsButton.gameObject.SetActive(true);
         chooseCentroidsButton.gameObject.SetActive(true);
         orText.gameObject.SetActive(true);
-        recalculateButton.interactable = true;
+        randomCentroidsButton.interactable = true;
         chooseCentroidsButton.interactable = true;
         chooseCentroidsButton.GetComponent<Image>().color = selectedColor;
-        recalculateButton.GetComponent<Image>().color = selectedColor;
+        randomCentroidsButton.GetComponent<Image>().color = selectedColor;
         selectedCentroids.Clear();
 
         // Re-initialize KMeans
-        kmeans.InitializeCentroids();
-        currentState = KMeansState.InitializeCentroids;
-        recalculateButton.GetComponentInChildren<TMP_Text>().text = "Place\nRandom\nCentroids";
-        chooseCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Choose\nCentroids";
+        kmeansPlusPlus.InitializeFirstCentroid();
+        currentState = KMeansState.InitializeFirstCentroid;
+        chooseCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Choose\nFirst\nCentroid";
+        randomCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Random\nFirst\nCentroid";
         // adjust width
-        float preferredWidth = recalculateButton.GetComponentInChildren<TMP_Text>().preferredWidth;
-        RectTransform buttonRectTransform = recalculateButton.GetComponent<RectTransform>();
+        float preferredWidth = randomCentroidsButton.GetComponentInChildren<TMP_Text>().preferredWidth;
+        RectTransform buttonRectTransform = randomCentroidsButton.GetComponent<RectTransform>();
         //buttonRectTransform.sizeDelta = new Vector2(preferredWidth + 40f, buttonRectTransform.sizeDelta.y);
 
         ClearPreviousDataPoints();
@@ -590,25 +609,28 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
     void OnClusterButtonClick(int selectedCluster)
     {
         numClusters = selectedCluster;
-        kmeans = new KMeans(numClusters, maxIterations, dataPoints.ToList());  // reinitialize KMeans with new cluster count
+        kmeansPlusPlus = new KMeansPlusPlus(numClusters, maxIterations, dataPoints.ToList());  // reinitialize KMeans with new cluster count
 
         convergedText.text = "";
+        centroidsLeftText.text = "";
         iteration = 0;
         currentCluster = 0;
         iterationText.text = "Iteration #0";
         restartButton.gameObject.SetActive(false);
         chooseCentroidsButton.gameObject.SetActive(true);
-        recalculateButton.gameObject.SetActive(true);
-        recalculateButton.interactable = true;
+        randomCentroidsButton.gameObject.SetActive(true);
+        skipToEndButton.gameObject.SetActive(false);
+        randomCentroidsButton.interactable = true;
         chooseCentroidsButton.interactable = true;
-        currentState = KMeansState.InitializeCentroids;
-        recalculateButton.GetComponentInChildren<TMP_Text>().text = "Place\nRandom\nCentroids";
-        chooseCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Choose\nCentroids";
-        selectedCentroids.Clear();
+        currentState = KMeansState.InitializeFirstCentroid;
+        randomCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Random\nFirst\nCentroid";
+        chooseCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Choose\nFirst\nCentroid";
+        selectedCentroids.Clear();        
         // width
-        float preferredWidth = recalculateButton.GetComponentInChildren<TMP_Text>().preferredWidth;
-        RectTransform buttonRectTransform = recalculateButton.GetComponent<RectTransform>();
+        float preferredWidth = randomCentroidsButton.GetComponentInChildren<TMP_Text>().preferredWidth;
+        RectTransform buttonRectTransform = randomCentroidsButton.GetComponent<RectTransform>();
         //buttonRectTransform.sizeDelta = new Vector2(preferredWidth + 40f, buttonRectTransform.sizeDelta.y);
+
 
         ClearPreviousDataPoints();
         ClearPreviousCentroids();
@@ -647,50 +669,77 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
     }
 
 
-    void PlaceRandomCentroids()
+    void PlaceFirstCentroid()
     {
-        kmeans.InitializeCentroids(); // initialize random centroids
-        VisualizeCentroids(); // visualize the centroids on the graph
+        kmeansPlusPlus.InitializeFirstCentroid(); // initialize random centroids
+        VisualizeCentroids(true); // visualize the centroids on the graph
     }
 
-    void VisualizeCentroids()
+    void PlaceRestOfCentroidsMaxDist()
+    {
+        kmeansPlusPlus.InitializeRestOfCentroidsMaxDist(); // initialize maximally distant centroids
+        VisualizeCentroids(false); // visualize the centroids on the graph
+    }
+
+    void VisualizeCentroids(bool first)
     {
         ClearPreviousCentroids();
 
         float scaler = 80f;
-        Vector3[] centroids = kmeans.GetCentroids();
+        Vector3[] centroids = kmeansPlusPlus.GetCentroids();
 
-        for (int i = 0; i < centroids.Length; i++)
+        Vector3 centroidPosition = NormalizeAndScaleCentroid(centroids[0], scaler);
+        GameObject centroid = Instantiate(centroidPrefab, centroidPosition, Quaternion.Euler(-90, 0, 0));
+        centroid.transform.localScale = Vector3.one * 2.0f;
+        centroid.transform.SetParent(centroidsContainer.transform);
+        centroid.tag = "Centroid";
+        Renderer renderer = centroid.GetComponent<Renderer>();
+        if (renderer != null)
         {
-            Vector3 centroidPosition = NormalizeAndScaleCentroid(centroids[i], scaler);
-            GameObject centroid = Instantiate(centroidPrefab, centroidPosition, Quaternion.Euler(-90, 0, 0));
-            centroid.transform.localScale = Vector3.one * 2.0f;
-            centroid.transform.SetParent(centroidsContainer.transform);
-            centroid.tag = "Centroid";
-            Renderer renderer = centroid.GetComponent<Renderer>();
-            if (renderer != null)
-            {
-                renderer.sharedMaterial = GetClusterMaterial(i);
+            renderer.sharedMaterial = GetClusterMaterial(0);
 
-                // add glow
-                Material glowMaterial = new Material(renderer.sharedMaterial);
-                glowMaterial.EnableKeyword("_EMISSION");
-                glowMaterial.SetColor("_EmissionColor", GetClusterMaterial(i).color * 2.0f);
-                renderer.sharedMaterial = glowMaterial;
+            // add glow
+            Material glowMaterial = new Material(renderer.sharedMaterial);
+            glowMaterial.EnableKeyword("_EMISSION");
+            glowMaterial.SetColor("_EmissionColor", GetClusterMaterial(0).color * 2.0f);
+            renderer.sharedMaterial = glowMaterial;
+        }
+
+        if (!first)
+        {
+            for (int i = 1; i < centroids.Length; i++)
+            {
+                centroidPosition = NormalizeAndScaleCentroid(centroids[i], scaler);
+                centroid = Instantiate(centroidPrefab, centroidPosition, Quaternion.Euler(-90, 0, 0));
+                centroid.transform.localScale = Vector3.one * 2.0f;
+                centroid.transform.SetParent(centroidsContainer.transform);
+                centroid.tag = "Centroid";
+                renderer = centroid.GetComponent<Renderer>();
+                if (renderer != null)
+                {
+                    renderer.sharedMaterial = GetClusterMaterial(i);
+
+                    // add glow
+                    Material glowMaterial = new Material(renderer.sharedMaterial);
+                    glowMaterial.EnableKeyword("_EMISSION");
+                    glowMaterial.SetColor("_EmissionColor", GetClusterMaterial(i).color * 2.0f);
+                    renderer.sharedMaterial = glowMaterial;
+                }
             }
         }
+        
     }
 
     void AssignPointsToCentroids()
     {
-        kmeans.AssignPoints();
+        kmeansPlusPlus.AssignPoints();
         VisualizeClusters();
     }
 
     void RecalculateCentroids()
     {
-        kmeans.RecalculateCentroids(); // move the centroids based on point assignments
-        VisualizeCentroids(); // re-visualize the centroids after they move
+        kmeansPlusPlus.RecalculateCentroids(); // move the centroids based on point assignments
+        VisualizeCentroids(false); // re-visualize the centroids after they move
     }
 
     // clear only data points
@@ -730,13 +779,13 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
             Renderer renderer = point.GetComponent<Renderer>();
             if (renderer != null)
             {
-                int clusterLabel = kmeans.GetLabels()[i];
+                int clusterLabel = kmeansPlusPlus.GetLabels()[i];
                 renderer.sharedMaterial = GetClusterMaterial(clusterLabel);
             }
         }
 
         // plot the centroids again
-        VisualizeCentroids();
+        VisualizeCentroids(false);
     }
 
     // normalize and scale centroids similarly to data points
@@ -790,15 +839,8 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
         }
     }
 
-
     void OnDataPointClicked(GameObject dataPoint)
     {
-        if (selectedCentroids.Count >= numClusters)
-        {
-            Debug.Log("Maximum number of centroids selected.");
-            return;
-        }
-
         Debug.Log("Data Point clicked for centroid selection: " + dataPoint.name);
 
         dataPoint.GetComponent<Renderer>().material = GetClusterMaterial(currentCluster);
@@ -808,14 +850,13 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
 
         selectedCentroids.Add(ReverseNormalizeAndScalePoint(dataPoint.transform.position, scaler));
 
-        if (selectedCentroids.Count == numClusters)
-        {
-            Debug.Log("All centroids selected. Proceeding with clustering.");
-            isChoosingCentroids = false;
-            chooseCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Assign\nPoints";
-
-            kmeans.SetCentroids(selectedCentroids); ;
-        }
+        Debug.Log("All centroids selected.");
+        isChoosingCentroids = false;
+        kmeansPlusPlus.SetFirstCentroid(selectedCentroids);
+        centroidsLeftText.text = "";
+        chooseCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Set\nRest Of\nCentroids";
+        chooseCentroidsButton.GetComponent<Image>().color = selectedColor;
+        chooseCentroidsButton.interactable = true;  // enable the button
     }
 
 
@@ -829,14 +870,28 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
 
         switch (currentState)
         {
-            case KMeansState.InitializeCentroids:
-                currentState = KMeansState.AssignPoints;
+            case KMeansState.InitializeFirstCentroid:
+                currentState = KMeansState.InitializeRestOfCentroids;
                 isChoosingCentroids = true;
-                recalculateButton.gameObject.SetActive(false);
+                randomCentroidsButton.gameObject.SetActive(false);
                 orText.gameObject.SetActive(false);
                 chooseCentroidsButton.GetComponentInChildren<TMP_Text>().text = "(choosing centroids)";
+                chooseCentroidsButton.GetComponent<Image>().color = unselectedColor;
+                chooseCentroidsButton.interactable = false;  // disable the button
+                centroidsLeftText.text = "Select 1 datapoint:";
                 // adjust width
                 float preferredWidth = chooseCentroidsButton.GetComponentInChildren<TMP_Text>().preferredWidth;
+                //buttonRectTransform.sizeDelta = new Vector2(preferredWidth + 40f, buttonRectTransform.sizeDelta.y);
+                break;
+
+            case KMeansState.InitializeRestOfCentroids:
+                PlaceRestOfCentroidsMaxDist();
+                currentState = KMeansState.AssignPoints;
+                chooseCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Assign\nPoints";
+                skipToEndButton.gameObject.SetActive(true);
+                skipToEndButton.interactable = true;
+                // adjust width
+                preferredWidth = chooseCentroidsButton.GetComponentInChildren<TMP_Text>().preferredWidth;
                 //buttonRectTransform.sizeDelta = new Vector2(preferredWidth + 40f, buttonRectTransform.sizeDelta.y);
                 break;
 
@@ -854,7 +909,7 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
             case KMeansState.RecalculateCentroids:
                 RecalculateCentroids();
 
-                if (kmeans.IsConverged())
+                if (kmeansPlusPlus.IsConverged())
                 {
                     convergedText.text = "Converged";
                     // adjust width
@@ -863,6 +918,7 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
                     chooseCentroidsButton.interactable = false;  // disable the button to stop further recalculations
                     chooseCentroidsButton.GetComponent<Image>().color = unselectedColor;
                     restartButton.gameObject.SetActive(true); // restart button
+                    skipToEndButton.gameObject.SetActive(false);
                 }
                 else
                 {
@@ -876,4 +932,66 @@ public class KMeansPenguinDataVisualizer : MonoBehaviour
                 break;
         }
     }
+
+    void OnSkipToEndButtonClick()
+    {
+        // Disable the Skip to End button to prevent multiple clicks
+        skipToEndButton.interactable = false;
+
+        // Start coroutine to animate the iterations until convergence
+        StartCoroutine(SkipToEndAnimation());
+    }
+
+    IEnumerator SkipToEndAnimation()
+    {
+        bool converged = false;
+        while (!converged && (currentState == KMeansState.AssignPoints || currentState == KMeansState.RecalculateCentroids))
+        {
+            switch (currentState)
+            {
+                // Perform one iteration of assigning points and recalculating centroids
+                case KMeansState.AssignPoints:
+                    AssignPointsToCentroids();
+                    currentState = KMeansState.RecalculateCentroids;
+                    chooseCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Recalculate\nCentroids";
+                    randomCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Recalculate\nCentroids";
+                    // adjust width
+                    //buttonRectTransform.sizeDelta = new Vector2(preferredWidth + 40f, buttonRectTransform.sizeDelta.y);
+                    iteration++;
+                    iterationText.text = "Iteration #" + iteration;
+                    break;
+
+                case KMeansState.RecalculateCentroids:
+                    RecalculateCentroids();
+
+                    if (kmeansPlusPlus.IsConverged())
+                    {
+                        convergedText.text = "Converged";
+                        // adjust width
+                        //buttonRectTransform.sizeDelta = new Vector2(preferredWidth + 40f, buttonRectTransform.sizeDelta.y);
+                        chooseCentroidsButton.interactable = false;  // disable the button to stop further recalculations
+                        chooseCentroidsButton.GetComponent<Image>().color = unselectedColor;
+                        randomCentroidsButton.interactable = false;  // disable the button to stop further recalculations
+                        randomCentroidsButton.GetComponent<Image>().color = unselectedColor;
+                        restartButton.gameObject.SetActive(true); // restart button
+                        skipToEndButton.gameObject.SetActive(false);
+                        converged = true;
+                    }
+                    else
+                    {
+                        currentState = KMeansState.AssignPoints;
+                        chooseCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Assign\nPoints";
+                        randomCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Assign\nPoints";
+                        // adjust width
+                        //buttonRectTransform.sizeDelta = new Vector2(preferredWidth + 40f, buttonRectTransform.sizeDelta.y); 
+                    }
+                    break;
+            }
+
+            // Wait for a short delay to create the animation effect
+            yield return new WaitForSeconds(iterationDelay);
+        }
+
+    }
+
 }

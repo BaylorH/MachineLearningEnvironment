@@ -26,7 +26,15 @@ public class KMeansPlusPlus
         currentIteration = 0;
     }
 
-    // initialize centroids (randomized)
+    // initialize first centroid (chosen)
+    public void SetFirstCentroid(List<Vector3> initialCentroids)
+    {
+        centroids[0] = initialCentroids[0];
+        converged = false;
+        currentIteration = 0;
+    }
+
+    // initialize first centroid (randomized)
     public void InitializeFirstCentroid()
     {
         System.Random random = new System.Random();
@@ -37,62 +45,51 @@ public class KMeansPlusPlus
         selected.Add(firstCentroidIndex);
     }
 
-    public void InitializeRestOfCentroids()
+    // calculate max dist
+    public void InitializeRestOfCentroidsMaxDist()
     {
-        System.Random random = new System.Random();
-
         for (int i = 1; i < numClusters; i++)
         {
-            float[] distances = new float[penguinData.Count];
-            float totalDistance = 0;
+            float maxMinDistance = -1;
+            int selectedIndex = -1;
 
             for (int j = 0; j < penguinData.Count; j++)
             {
                 if (selected.Contains(j)) continue; // skip already selected points
 
-                float minDistance = float.MaxValue;
                 Vector3 point = penguinData[j].ToVector3();
+                float minDistanceToCentroids = float.MaxValue;
 
-                // find the minimum distance to any of the already chosen centroids
+                // calculate the min distance of this point to any of the selected centroids
                 for (int k = 0; k < i; k++)
                 {
-                    float distance = Vector3.Distance(point, centroids[k]);
-                    if (distance < minDistance)
+                    float distanceToCentroid = Vector3.Distance(point, centroids[k]);
+                    if (distanceToCentroid < minDistanceToCentroids)
                     {
-                        minDistance = distance;
+                        minDistanceToCentroids = distanceToCentroid;
                     }
                 }
 
-                distances[j] = minDistance;
-                totalDistance += minDistance;
-            }
-
-            float threshold = (float)(random.NextDouble() * totalDistance);
-            float runningSum = 0;
-            int selectedIndex = -1;
-
-            for (int j = 0; j < penguinData.Count; j++)
-            {
-                if (selected.Contains(j)) continue; // Skip already selected points
-
-                runningSum += distances[j];
-                if (runningSum >= threshold)
+                // find the point that maximizes the minimum distance to any centroid
+                if (minDistanceToCentroids > maxMinDistance)
                 {
+                    maxMinDistance = minDistanceToCentroids;
                     selectedIndex = j;
-                    break;
                 }
             }
 
+            // if valid index found, select this point as next centroid
             if (selectedIndex != -1)
             {
                 selected.Add(selectedIndex);
-                centroids[i] = penguinData[selectedIndex].ToVector3(); // Set the new centroid
+                centroids[i] = penguinData[selectedIndex].ToVector3();
             }
         }
 
         converged = false;
         currentIteration = 0;
     }
+
 
     public bool AssignPoints()
     {

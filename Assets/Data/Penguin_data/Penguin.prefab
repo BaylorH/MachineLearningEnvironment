@@ -12,8 +12,10 @@ GameObject:
   - component: {fileID: 7163242622528168495}
   - component: {fileID: 407544971322628791}
   - component: {fileID: 6483837077064928701}
+  - component: {fileID: 4591822187413063914}
+  - component: {fileID: -4366082949411184598}
   m_Layer: 0
-  m_Name: Sphere
+  m_Name: Penguin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41,7 +43,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2289717848152070011}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 212370497460711607, guid: 578b2d9fbec2b82448d1210dab0e68d8, type: 3}
 --- !u!23 &407544971322628791
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -105,3 +107,33 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4591822187413063914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2289717848152070011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a661bc022cb9be4f8470b225083f82f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target_pos: {x: 0, y: 0, z: 0}
+  speed: 1
+  velocity: {x: 0, y: 0, z: 0}
+--- !u!114 &-4366082949411184598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2289717848152070011}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a661bc022cb9be4f8470b225083f82f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target_pos: {x: 0, y: 0, z: 0}
+  speed: 1
+  velocity: {x: 0, y: 0, z: 0}
