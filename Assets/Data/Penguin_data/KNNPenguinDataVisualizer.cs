@@ -537,7 +537,7 @@ public class KNNPenguinDataVisualizer : MonoBehaviour
 
         // Animate movement to the final position
         MoveTowards mT = newDataPoint.GetComponent<MoveTowards>();
-        mT.moveTowards(finalPosition);
+        mT.moveTowards(finalPosition, (float)50);
 
         // Reset input fields
         foreach (var field in inputFields)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,6 +19,14 @@ public class MoveTowards : MonoBehaviour
     {
         // Specify the target position
         target_pos = position; // Example target position
+
+    }
+
+    public void moveTowards(Vector3 position, float newSpeed)
+    {
+        // Specify the target position
+        target_pos = position; // Example target position
+        speed = newSpeed;
 
     }
 

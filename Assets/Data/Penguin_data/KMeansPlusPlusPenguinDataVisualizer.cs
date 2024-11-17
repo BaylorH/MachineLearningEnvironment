@@ -594,7 +594,7 @@ public class KMeansPlusPlusPenguinDataVisualizer : MonoBehaviour
         // Re-initialize KMeans
         kmeansPlusPlus.InitializeFirstCentroid();
         currentState = KMeansState.InitializeFirstCentroid;
-        chooseCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Choose\nFirst\nCentroid";
+        chooseCentroidsButton.GetComponentInChildren<TMP_Text>().text = "User Choose\nFirst Centroid";
         randomCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Random\nFirst\nCentroid";
         // adjust width
         float preferredWidth = randomCentroidsButton.GetComponentInChildren<TMP_Text>().preferredWidth;
@@ -624,7 +624,7 @@ public class KMeansPlusPlusPenguinDataVisualizer : MonoBehaviour
         chooseCentroidsButton.interactable = true;
         currentState = KMeansState.InitializeFirstCentroid;
         randomCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Random\nFirst\nCentroid";
-        chooseCentroidsButton.GetComponentInChildren<TMP_Text>().text = "Choose\nFirst\nCentroid";
+        chooseCentroidsButton.GetComponentInChildren<TMP_Text>().text = "User Choose\nFirst Centroid";
         selectedCentroids.Clear();        
         // width
         float preferredWidth = randomCentroidsButton.GetComponentInChildren<TMP_Text>().preferredWidth;
