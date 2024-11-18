@@ -1,0 +1,17 @@
+Welcome to our capstone project, the 3D visualization environment for machine learning algorithms. In this project we use unity to showcase 4 different algorithms combined with 3 different datasets on a 3d graph.
+
+The Scenes in our unity project are as follows:
+
+Start Screen
+The Start scene is the main menu for the project. From this screen, the user can select either option of supervised learning algorithms, a binary classification algorithm using a neural network, or on with a KNN algorithm, or the 2 options for an unsupervised learning algorithms being K means and K means++. Each scene will also use the level loader object that is paired with a Start Screen script, that changes scenes while showing a short fade animation.
+
+Algorithm Select Screens:
+The binary classification menu and KNN menu are both very similar to each other and to the start scene. Each one gives options for the dataset to be used in the 3D visualization. Those being the iris dataset and the diabetes dataset for both scenes, with the addition of the penguin dataset for the KNN algorithm. Once again, the scenes use the level loader object to transition between these scenes with the short animation. 
+
+3D Graph Scenes:
+Each of the graph scenes in the project are very similar and have subtle changes with the dataset, those being the binary iris and diabetes, KNN iris, diabetes, and penguin, and both the k means and k means++ that use the same dataset being the penguin dataset. As the scene loads, the visualizer script plots all the points in the dataset on the graph, while also training the prediction client script, where both of these scripts are located on the canvas object, which can also be seen by finding references in the scene that correlate to the given datapoint. Once the scene loads, the graph will be populated with the datapoints, where the coordinates are 3 of the 4 inputs, and the last input is represented in the scale of the object. Each different graph uses its own datapoint to represent what the dataset is about. In the scene, after the graph population, the camera can be moved around using left click to move, and right click to zoom in using the movement script that is on the main camera. The scene will also take input of new datapoints. Each of the inputs on the left side of the screen get passed into the same data visualizer script that plots the original points. This time, the point gets plotted at the far corner of the graph, and can be seen move to the location in the graph that it is supposed to go to using the move data script, so that the user can see where the point goes. Along with this, the data visualizer script also shows the prediction of the datapoint, and the accuracy of the algorithm. The canvas will also have popup screens for the user to click, to show how the camera movement works, and how the algorithm works. Once again, the menu options on the bottom right will change the scenes to each respective option using the same level loader object with animation.
+
+
+
+
+Each 3D object in the project is created with blender, and exported to an fbx file. Both file extensions of each object are in the /Data/blend&fbxfiles folder. In future expansion, the blend files can only be used if the current editor has blender installed, otherwise the fbx equivalent should be used.
